@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { getSets } from "@/lib/data";
 import logo from "../../public/logo.jpg";
+import { Phrase } from "@/components/Phrase";
 
 export const revalidate = 300;
 
@@ -28,7 +29,7 @@ export default async function HomePage() {
               <br />
               都有屬於自己的花期
             </h1>
-            <p className="m-0 font-serif text-[clamp(16px,1.5vw,19px)] leading-[2] tracking-[.1em] text-on-rose">
+            <p className="poem m-0 font-serif text-[clamp(16px,1.5vw,19px)] leading-[2] tracking-[.1em] text-on-rose">
               把走過的每一步人生，化作溫柔而堅定的心語
             </p>
             <div className="mt-2 flex flex-wrap gap-[14px]">
@@ -50,11 +51,11 @@ export default async function HomePage() {
       </section>
 
       <section data-screen-label="首頁 序言" className="px-6 py-[clamp(72px,10vw,140px)] text-center">
-        <div className="mx-auto flex max-w-[620px] flex-col gap-[30px] font-serif text-[clamp(16px,1.6vw,19px)] leading-[2.2] tracking-[.08em] text-ink-2">
+        <div className="poem mx-auto flex max-w-[620px] flex-col gap-[30px] font-serif text-[clamp(16px,1.6vw,19px)] leading-[2.2] tracking-[.08em] text-ink-2">
           <p className="m-0">
             人生很多時候，
             <br />
-            我們常常會有告別一個人、一段關係、一種身分、
+            我們常常會有告別一個人、<span className="whitespace-nowrap">一段關係、一種身分、</span>
             <br />
             一種生活，或是一種模式的時候——
             <br />
@@ -105,7 +106,7 @@ export default async function HomePage() {
             <div className="flex flex-col gap-5 bg-cream p-[clamp(28px,4vw,48px)]">
               <span className="font-en text-[14px] tracking-[.3em] text-gold">WHISPERS</span>
               <h3 className="m-0 font-serif text-[26px] font-medium tracking-[.14em] text-rose-deep">朵朵曉語</h3>
-              <p className="m-0 font-serif text-[18px] leading-[1.8] text-ink">把走過的人生，沉澱成溫柔且堅強的心語</p>
+              <p className="poem m-0 font-serif text-[18px] leading-[1.8] text-ink">把走過的人生，沉澱成溫柔且堅強的心語</p>
               <p className="m-0 text-[15px] leading-[2] text-body">這裡有我的故事、我的生活、我的體悟，也有那些一路走來，慢慢才明白的事。</p>
               <Link
                 href="/whispers"
@@ -117,7 +118,7 @@ export default async function HomePage() {
             <div className="flex flex-col gap-5 bg-rose p-[clamp(28px,4vw,48px)] text-on-rose">
               <span className="font-en text-[14px] tracking-[.3em] text-on-rose-2">A GRACEFUL FAREWELL</span>
               <h3 className="m-0 font-serif text-[26px] font-medium tracking-[.14em]">好好告別</h3>
-              <p className="m-0 font-serif text-[18px] leading-[1.8]">陪妳，好好告別；也陪妳，好好開始。</p>
+              <p className="poem m-0 font-serif text-[18px] leading-[1.8]">陪妳，好好告別；也陪妳，好好開始。</p>
               <p className="m-0 text-[15px] leading-[2]">
                 也許是一段讓自己重新變美的時光；也許是一張值得珍藏的照片；也許是一場只屬於自己的美好儀式。陪妳為每一個階段留下句點，也為下一個自己，留下美好的起點。
               </p>
@@ -145,7 +146,9 @@ export default async function HomePage() {
               <Link key={s.slug} href={`/farewell/${s.slug}`} className="flex flex-col gap-4 hover:opacity-[.88]">
                 <PhotoSlot ratio="4/5" label={s.photo} src={s.coverUrl} sizes="(max-width: 819px) 100vw, 33vw" />
                 <span className="font-en text-[13px] tracking-[.24em] text-gold">{s.no}</span>
-                <h3 className="m-0 font-serif text-[21px] font-medium tracking-[.1em] text-ink">{s.name}</h3>
+                <h3 className="poem m-0 font-serif text-[21px] font-medium tracking-[.1em] text-ink">
+                  <Phrase text={s.name} />
+                </h3>
                 <p className="m-0 text-[15px] leading-[1.9] text-body">{s.tagline}</p>
               </Link>
             ))}

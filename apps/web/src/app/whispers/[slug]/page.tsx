@@ -4,6 +4,7 @@ import { fallbackWhispers } from "@duoduo/content";
 import { getWhisper } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 import { parseWhisperBody } from "@/lib/whisper-body";
+import { Phrase } from "@/components/Phrase";
 
 export const revalidate = 300;
 
@@ -48,12 +49,14 @@ export default async function WhisperPage({ params }: Props) {
         <span className="mt-6 text-[13px] tracking-[.2em] text-gold">
           {a.no}｜{a.theme}
         </span>
-        <h1 className="m-0 font-serif text-[clamp(26px,3.2vw,38px)] leading-[1.6] font-normal tracking-[.04em] text-ink">{a.title}</h1>
+        <h1 className="poem m-0 font-serif text-[clamp(26px,3.2vw,38px)] leading-[1.6] font-normal tracking-[.04em] text-ink">
+          <Phrase text={a.title} />
+        </h1>
         <p className="m-0 mb-5 font-serif text-[17px] leading-[1.9] text-rose-deep">{a.sub}</p>
         {blocks.map((b, i) =>
           b.kind === "heading" ? (
-            <h2 key={i} className={`mb-0 font-normal tracking-[.03em] ${blockClass.heading}`}>
-              {b.text}
+            <h2 key={i} className={`poem mb-0 font-normal tracking-[.03em] ${blockClass.heading}`}>
+              <Phrase text={b.text} />
             </h2>
           ) : b.kind === "quote" ? (
             <blockquote key={i} className={`mx-0 tracking-[.03em] [text-wrap:pretty] ${blockClass.quote}`}>

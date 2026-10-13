@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { content, fallbackStories } from "@duoduo/content";
 import { getStory } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
+import { Phrase } from "@/components/Phrase";
 
 export const revalidate = 300;
 
@@ -37,7 +38,9 @@ export default async function StoryPage({ params }: Props) {
         </Link>
         <div className="flex flex-col gap-[14px]">
           <span className="text-[13px] tracking-[.2em] text-gold">{story.no}</span>
-          <h1 className="m-0 font-serif text-[clamp(26px,3vw,36px)] leading-[1.6] font-normal tracking-[.06em]">{story.title}</h1>
+          <h1 className="poem m-0 font-serif text-[clamp(26px,3vw,36px)] leading-[1.6] font-normal tracking-[.06em]">
+            <Phrase text={story.title} />
+          </h1>
         </div>
         {content.storyDetailStructure.map((part, i) => {
           const text = story.parts[i];

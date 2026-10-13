@@ -4,7 +4,7 @@ export function BrandClosing() {
       data-screen-label="品牌收尾"
       className="bg-blush px-6 py-[clamp(80px,11vw,150px)] text-center"
     >
-      <div className="mx-auto flex max-w-[600px] flex-col items-center gap-7 font-serif">
+      <div className="poem mx-auto flex max-w-[600px] flex-col items-center gap-7 font-serif">
         <h2 className="m-0 text-[clamp(26px,3.2vw,40px)] leading-[1.6] font-normal tracking-[.1em] text-ink">
           妳不需要急著開花。
           <br />

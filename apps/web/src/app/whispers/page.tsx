@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getWhispers } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
+import { Phrase } from "@/components/Phrase";
 
 export const revalidate = 300;
 
@@ -17,10 +18,12 @@ export default async function WhispersPage() {
       <div className="mx-auto flex max-w-[1000px] flex-col gap-14">
         <div className="flex max-w-[680px] flex-col gap-[22px]">
           <span className="font-en text-[14px] tracking-[.3em] text-gold">WHISPERS</span>
-          <h1 className="m-0 font-serif text-[clamp(26px,3.2vw,40px)] leading-[1.6] font-normal tracking-[.08em]">
+          <h1 className="poem m-0 font-serif text-[clamp(26px,3.2vw,40px)] leading-[1.6] font-normal tracking-[.08em]">
             把走過的人生，
             <br />
-            沉澱成溫柔而堅定的心語。
+            沉澱成
+            <wbr />
+            溫柔而堅定的心語。
           </h1>
           <p className="m-0 text-[16px] leading-[2.1] text-body">
             有些故事，是經歷過才懂得。這裡記錄我的生活、心情、故事與體悟，也分享那些曾經困住我，後來才漸漸明白的事。
@@ -37,7 +40,9 @@ export default async function WhispersPage() {
               <span className="font-en text-[clamp(30px,4vw,46px)] leading-none text-gold-line">{ar.no}</span>
               <div className="flex flex-col gap-[10px]">
                 <span className="text-[13px] tracking-[.2em] text-gold">{ar.theme}</span>
-                <h3 className="m-0 font-serif text-[clamp(18px,2vw,23px)] leading-[1.6] font-medium tracking-[.04em] text-ink">{ar.title}</h3>
+                <h3 className="poem m-0 font-serif text-[clamp(18px,2vw,23px)] leading-[1.6] font-medium tracking-[.04em] text-ink">
+                  <Phrase text={ar.title} />
+                </h3>
                 <p className="m-0 text-[15px] leading-[1.9] text-body">{ar.sub}</p>
               </div>
             </Link>

@@ -13,12 +13,14 @@ export default function PartnerPage() {
       <section data-screen-label="一起創造美好" className="bg-rose px-[clamp(20px,4vw,48px)] py-[clamp(72px,10vw,130px)] text-on-rose">
         <div className="mx-auto flex max-w-[880px] flex-col gap-[26px]">
           <span className="font-en text-[14px] tracking-[.3em] text-on-rose-2">CREATE BEAUTY TOGETHER</span>
-          <h1 className="m-0 font-serif text-[clamp(28px,3.8vw,46px)] leading-[1.55] font-normal tracking-[.08em]">
+          <h1 className="poem m-0 font-serif text-[clamp(28px,3.8vw,46px)] leading-[1.55] font-normal tracking-[.08em]">
             讓你的專業，
             <br />
-            成為別人生命裡的一道光。
+            成為別人
+            <wbr />
+            生命裡的一道光。
           </h1>
-          <p className="m-0 font-serif text-[18px] leading-[2]">
+          <p className="poem m-0 font-serif text-[18px] leading-[2]">
             每一份用心，都值得被看見。
             <br />
             每一種專業，都有機會成為一段美好故事的開始。
@@ -33,7 +35,7 @@ export default function PartnerPage() {
             </p>
             <p className="m-0">
               在不同領域裡，有許多用心的店家、專業的職人，以及擁有美感與熱情的創作者。我們把這些願意用專業創造美好的你，稱為
-              <span className="font-serif text-rose-deep">「美麗的魔法師」</span>。
+              <span className="font-serif whitespace-nowrap text-rose-deep">「美麗的魔法師」</span>。
             </p>
             <p className="m-0">
               也許，你擅長讓一個人重新喜歡鏡子裡的自己；也許，你能用鏡頭留下重要的生命片刻；也許，你的花藝、設計或一項用心的服務，能為一段新的開始增添意義。

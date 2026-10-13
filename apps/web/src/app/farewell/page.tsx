@@ -3,6 +3,7 @@ import { content } from "@duoduo/content";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { getRoadmap, getSets } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
+import { Phrase } from "@/components/Phrase";
 
 export const revalidate = 300;
 
@@ -18,21 +19,23 @@ export default async function FarewellPage() {
     <>
       <section data-screen-label="好好告別 共鳴" className="bg-rose px-6 py-[clamp(80px,11vw,150px)] text-center text-on-rose">
         <div className="mx-auto flex max-w-[680px] flex-col items-center gap-[30px]">
-          <span className="font-en text-[14px] tracking-[.34em] text-on-rose-2">A GRACEFUL FAREWELL · <span className="whitespace-nowrap">好好告別</span>
+          <span className="font-en text-[14px] tracking-[.34em] text-on-rose-2">A GRACEFUL FAREWELL <span className="whitespace-nowrap">· 好好告別</span>
           </span>
-          <h1 className="m-0 font-serif text-[clamp(28px,3.8vw,46px)] leading-[1.6] font-normal tracking-[.1em]">
+          <h1 className="poem m-0 font-serif text-[clamp(28px,3.8vw,46px)] leading-[1.6] font-normal tracking-[.1em]">
             有些告別，
             <br />
-            是為了讓我們重新遇見自己。
+            是為了讓我們
+            <wbr />
+            重新遇見自己。
           </h1>
-          <p className="m-0 font-serif text-[17px] leading-[2.2] tracking-[.06em]">
+          <p className="poem m-0 font-serif text-[17px] leading-[2.2] tracking-[.06em]">
             人生裡，總會有一些時刻，讓我們不得不重新選擇。
             <br />
             離開熟悉的關係，換一種生活方式，
             <br />
             重新整理自己，也重新想像下一個自己。
           </p>
-          <p className="m-0 font-serif text-[17px] leading-[2.2] tracking-[.06em]">
+          <p className="poem m-0 font-serif text-[17px] leading-[2.2] tracking-[.06em]">
             原來人生不是失去了一個版本的自己，
             <br />
             而是終於有機會，成為下一個自己。
@@ -44,7 +47,13 @@ export default async function FarewellPage() {
         <div className="mx-auto flex max-w-[1000px] flex-wrap items-center justify-center gap-[clamp(10px,2vw,24px)] font-serif text-[clamp(16px,1.8vw,20px)] tracking-[.14em] text-rose-deep">
           {["告別", "整理", "重拾自己", "綻放", "重新開始"].map((w, i) => (
             <span key={w} className="contents">
-              {i > 0 && <span className="text-gold-line">—</span>}
+              {/* 窄螢幕（<480）一行放不下：在「綻放」前換行，並隱藏落在行尾的破折號 */}
+              {i === 3 && <span aria-hidden className="hidden h-0 basis-full max-[479.98px]:block" />}
+              {i > 0 && (
+                <span aria-hidden className={i === 3 ? "text-gold-line max-[479.98px]:hidden" : "text-gold-line"}>
+                  —
+                </span>
+              )}
               <span>{w}</span>
             </span>
           ))}
@@ -103,7 +112,9 @@ export default async function FarewellPage() {
                 <PhotoSlot ratio="4/3" label={s.photo} src={s.coverUrl} sizes="(max-width: 819px) 100vw, 33vw" />
                 <div className="flex flex-1 flex-col gap-[14px] px-7 pt-2 pb-[30px]">
                   <span className="font-en text-[13px] tracking-[.24em] text-gold">{s.no}</span>
-                  <h3 className="m-0 font-serif text-[22px] font-medium tracking-[.1em] text-ink">{s.name}</h3>
+                  <h3 className="poem m-0 font-serif text-[22px] font-medium tracking-[.1em] text-ink">
+                    <Phrase text={s.name} />
+                  </h3>
                   <p className="m-0 font-serif text-[16px] text-rose-deep">{s.tagline}</p>
                   <p className="m-0 text-[14px] leading-[1.9] text-body">{s.desc}</p>
                   <Link

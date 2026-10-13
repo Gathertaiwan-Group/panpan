@@ -17,10 +17,12 @@ export default function AboutPage() {
           <span className="font-en text-[17px] tracking-[.1em] text-gold italic">About Duoduo</span>
         </div>
         <div className="flex flex-col gap-[22px]">
-          <h1 className="m-0 font-serif text-[clamp(26px,3.2vw,40px)] leading-[1.6] font-normal tracking-[.08em] text-ink">
+          <h1 className="poem m-0 font-serif text-[clamp(26px,3.2vw,40px)] leading-[1.6] font-normal tracking-[.08em] text-ink">
             我不是天生閃亮，
             <br />
-            只是決定重新把自己找回來。
+            只是決定
+            <wbr />
+            重新把自己找回來。
           </h1>
           {content.about.map((t, i) =>
             t.startsWith(">") ? (

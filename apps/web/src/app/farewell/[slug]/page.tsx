@@ -6,6 +6,7 @@ import { SetActions } from "@/components/SetActions";
 import { getSet } from "@/lib/data";
 import { LINE_URL } from "@/lib/env";
 import { pageMeta } from "@/lib/seo";
+import { Phrase } from "@/components/Phrase";
 
 export const revalidate = 300;
 
@@ -38,10 +39,19 @@ export default async function SetPage({ params }: Props) {
           ← 好好告別 ／ 所有體驗
         </Link>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start gap-[clamp(32px,6vw,80px)]">
-          <PhotoSlot ratio="4/5" label={cur.photo} src={cur.coverUrl} pad={16} className="dt:sticky dt:top-[110px]" />
+          {/* 行動版：主圖高度不超過第一屏扣掉底部固定 CTA，避免 CTA 蓋住主圖下緣（桌面不受影響） */}
+          <PhotoSlot
+            ratio="4/5"
+            label={cur.photo}
+            src={cur.coverUrl}
+            pad={16}
+            className="max-dt:max-h-[max(300px,calc(100svh_-_260px_-_env(safe-area-inset-bottom)))] dt:sticky dt:top-[110px]"
+          />
           <div className="flex flex-col gap-6">
             <span className="font-en text-[14px] tracking-[.26em] text-gold">{cur.no}</span>
-            <h1 className="m-0 font-serif text-[clamp(28px,3.4vw,42px)] font-medium tracking-[.1em] text-ink">{cur.name}</h1>
+            <h1 className="poem m-0 font-serif text-[clamp(28px,3.4vw,42px)] font-medium tracking-[.1em] text-ink">
+              <Phrase text={cur.name} />
+            </h1>
             <p className="m-0 font-serif text-[clamp(18px,1.8vw,22px)] leading-[1.8] text-rose-deep">{cur.headline}</p>
             <div className="h-px w-10 bg-gold-line" />
             <div className="flex flex-col gap-[14px]">

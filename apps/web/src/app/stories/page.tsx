@@ -3,6 +3,7 @@ import { PhotoSlot } from "@/components/PhotoSlot";
 import { StoryShareButton } from "@/components/StoryShare";
 import { getStories } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
+import { Phrase } from "@/components/Phrase";
 
 export const revalidate = 300;
 
@@ -40,7 +41,9 @@ export default async function StoriesPage() {
             >
               <PhotoSlot ratio="3/2" label="故事主視覺（經同意）" src={st.coverUrl} sizes="(max-width: 819px) 100vw, 33vw" />
               <span className="text-[13px] tracking-[.2em] text-gold">{st.no}</span>
-              <h3 className="m-0 font-serif text-[20px] leading-[1.6] font-medium tracking-[.06em] text-ink">{st.title}</h3>
+              <h3 className="poem m-0 font-serif text-[20px] leading-[1.6] font-medium tracking-[.06em] text-ink">
+                <Phrase text={st.title} />
+              </h3>
               <p className="m-0 text-[15px] leading-[1.9] text-body">{st.desc}</p>
               <span className="text-[14px] tracking-[.14em] text-rose-deep">閱讀這段故事 →</span>
             </Link>

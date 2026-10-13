@@ -90,7 +90,7 @@
   .hit::after {
     content: "";
     position: absolute;
-    inset: -12px -8px;
+    inset: -14px -8px;
   }
   /* Hero Logo 邊緣融入玫瑰底 */
   .hero-logo-mask {
@@ -103,6 +103,22 @@
 @media (max-width: 819.98px) {
   body:has([data-mobile-cta]) footer {
     padding-bottom: 110px;
+  }
+}
+
+/* 行動版（<820）中文斷行：
+   - .poem：詞組不拆（keep-all，只在標點、空白與 <wbr> 處換行），單段過長才退回任意斷行；
+     手動 <br> 保留為詩句換行，單行超寬時在標點處自然折成平衡的兩行
+   桌面不套用，維持原排版 */
+@media (max-width: 819.98px) {
+  .poem {
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+  /* <Phrase>：每個子句為 inline-block → 優先在標點處換行，子句過長才在詞界折行 */
+  .poem .phrase-clause {
+    display: inline-block;
   }
 }
 
