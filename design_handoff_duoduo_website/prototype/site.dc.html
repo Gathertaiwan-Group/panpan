@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#FAF5F2;color:#3A2826;-webkit-font-smoothing:antialiased}
+body{font-family:"Noto Sans TC",sans-serif}
+a{color:#8C4A46;text-decoration:none}
+a:hover{color:#A9605A}
+*{box-sizing:border-box}
+input,textarea,select{font-family:inherit}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;flex-direction:column">
+
+<header style="position:sticky;top:0;z-index:20;background:rgba(250,245,242,.94);backdrop-filter:blur(10px);border-bottom:1px solid #EADAD3">
+  <div style="max-width:1240px;margin:0 auto;padding:14px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+    <div onClick="{{ goHome }}" style="display:flex;flex-direction:column;cursor:pointer;gap:2px">
+      <span style="font-family:'Noto Serif TC',serif;font-size:21px;letter-spacing:.32em;color:#8C4A46;font-weight:500">朵朵曉語</span>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.3em;color:#7A615D">DUODUO WHISPERS</span>
+    </div>
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+      <nav style="display:flex;gap:clamp(14px,2.2vw,30px);flex-wrap:wrap;align-items:center">
+        <sc-for list="{{ nav }}" as="n" hint-placeholder-count="6">
+          <span onClick="{{ n.go }}" style="font-size:14px;letter-spacing:.12em;cursor:pointer;padding:6px 0;color:{{ n.color }};border-bottom:1px solid {{ n.line }}" style-hover="color:#A9605A">{{ n.label }}</span>
+        </sc-for>
+      </nav>
+    </sc-if>
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <span onClick="{{ toggleMenu }}" aria-label="選單" style="cursor:pointer;width:44px;height:44px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:7px;margin-right:-8px;padding:8px">
+        <span style="display:block;width:24px;height:1px;background:#8C4A46"></span>
+        <span style="display:block;width:16px;height:1px;background:#8C4A46"></span>
+      </span>
+    </sc-if>
+  </div>
+</header>
+
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:40;background:#A35B55;color:#FBEFEA;display:flex;flex-direction:column;padding:14px 20px 32px;overflow:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <span style="font-family:'Noto Serif TC',serif;font-size:21px;letter-spacing:.32em;color:#FBEFEA;font-weight:500">朵朵曉語</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.3em;color:#F4D9CF">DUODUO WHISPERS</span>
+      </div>
+      <span onClick="{{ toggleMenu }}" aria-label="關閉" style="cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:300;margin-right:-8px">×</span>
+    </div>
+    <nav style="display:flex;flex-direction:column;margin-top:48px">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="6">
+        <span onClick="{{ n.go }}" style="cursor:pointer;padding:20px 0;border-bottom:1px solid rgba(251,239,234,.22);display:flex;justify-content:space-between;align-items:center;font-family:'Noto Serif TC',serif;font-size:21px;letter-spacing:.18em"><span>{{ n.label }}</span><span style="font-size:15px;color:#F4D9CF">{{ n.mark }}</span></span>
+      </sc-for>
+    </nav>
+    <span style="margin-top:auto;padding-top:40px;font-size:13px;letter-spacing:.16em;color:#F4D9CF">在人生轉場時・陪妳優雅重啟</span>
+  </div>
+</sc-if>
+
+<main style="flex:1">
+
+<!-- ================= HOME ================= -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <section data-screen-label="首頁 Hero" style="background:#A35B55;color:#FBEFEA;overflow:hidden">
+    <div style="max-width:1240px;margin:0 auto;padding:clamp(40px,6vw,80px) clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,5vw,72px);align-items:center">
+      <div style="display:flex;justify-content:center">
+        <img src="assets/logo.jpg" alt="朵朵曉語 Logo" style="width:100%;max-width:{{ heroImgW }};aspect-ratio:2/3;object-fit:cover;-webkit-mask-image:radial-gradient(ellipse 72% 66% at 50% 48%,#000 58%,transparent 100%);mask-image:radial-gradient(ellipse 72% 66% at 50% 48%,#000 58%,transparent 100%)">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:28px">
+        <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;letter-spacing:.14em;color:#F4D9CF">Every flower has its own season</span>
+        <h1 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(32px,4.2vw,54px);line-height:1.45;letter-spacing:.08em;text-wrap:pretty">每一朵花，<br>都有屬於自己的花期</h1>
+        <p style="margin:0;font-family:'Noto Serif TC',serif;font-size:clamp(16px,1.5vw,19px);line-height:2;letter-spacing:.1em;color:#FBEFEA">把走過的每一步人生，化作溫柔而堅定的心語</p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px">
+          <span onClick="{{ goAbout }}" style="cursor:pointer;padding:15px 30px;background:#FBEFEA;color:#8C4A46;font-size:15px;letter-spacing:.16em" style-hover="background:#fff">認識朵朵 →</span>
+          <span onClick="{{ goFarewell }}" style="cursor:pointer;padding:14px 30px;border:1px solid #F4D9CF;color:#FBEFEA;font-size:15px;letter-spacing:.16em" style-hover="background:rgba(255,255,255,.1)">探索好好告別 →</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="首頁 序言" style="padding:clamp(72px,10vw,140px) 24px;text-align:center">
+    <div style="max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:30px;font-family:'Noto Serif TC',serif;font-size:clamp(16px,1.6vw,19px);line-height:2.2;letter-spacing:.08em;color:#4E3835">
+      <p style="margin:0">人生很多時候，<br>我們常常會有告別一個人、一段關係、一種身分、<br>一種生活，或是一種模式的時候——<br>同時，也正在重新認識自己。</p>
+      <div style="width:1px;height:48px;background:#C9A88E;margin:0 auto"></div>
+      <p style="margin:0">我相信，每個人都是世上獨一無二的一朵花，<br>都有屬於自己的花期。</p>
+      <p style="margin:0">有些日子，我們正在黑暗裡生根；<br>有些日子，我們終於迎來破曉。<br>而那些曾經走過的路，<br>也許最後都會成為我們綻放的養分。</p>
+      <p style="margin:0;color:#8C4A46;font-size:clamp(18px,1.9vw,22px)">我是朵朵，<br>這裡，是「朵朵曉語」。</p>
+    </div>
+  </section>
+
+  <section data-screen-label="首頁 IP × 品牌" style="background:#F3E6E0;padding:clamp(72px,9vw,120px) clamp(20px,4vw,48px)">
+    <div style="max-width:1140px;margin:0 auto;display:flex;flex-direction:column;gap:56px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,5vw,80px);align-items:start">
+        <h2 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(24px,2.8vw,34px);line-height:1.7;letter-spacing:.08em;color:#3A2826;text-wrap:pretty">朵朵的故事，<br>陪妳在每個人生轉場時刻，<br>一起找回最初的自己。</h2>
+        <div style="font-size:16px;line-height:2.1;letter-spacing:.06em;color:#5A4340;display:flex;flex-direction:column;gap:18px">
+          <p style="margin:0">每個人，都走在人生不同的季節。有些時候，我們正在告別；有些時候，我們正在重新開始。</p>
+          <p style="margin:0">而那些曾經走過的迷惘、失去與重新整理，慢慢也能變成帶給妳力量的種子。如果妳現在，也正在人生的某個轉場裡，希望這裡，能陪妳一起走一段。</p>
+          <p style="margin:0;font-family:'Noto Serif TC',serif;color:#8C4A46">不用急著成為誰，慢慢找回自己就好。</p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:24px">
+        <div style="background:#FAF5F2;padding:clamp(28px,4vw,48px);display:flex;flex-direction:column;gap:20px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:.3em;color:#9C7A5C">WHISPERS</span>
+          <h3 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:500;font-size:26px;letter-spacing:.14em;color:#8C4A46">朵朵曉語</h3>
+          <p style="margin:0;font-family:'Noto Serif TC',serif;font-size:18px;line-height:1.8;color:#3A2826">把走過的人生，沉澱成溫柔且堅強的心語</p>
+          <p style="margin:0;font-size:15px;line-height:2;color:#5A4340">這裡有我的故事、我的生活、我的體悟，也有那些一路走來，慢慢才明白的事。</p>
+          <span onClick="{{ goWhispers }}" style="cursor:pointer;margin-top:auto;font-size:15px;letter-spacing:.14em;color:#8C4A46;border-bottom:1px solid #C9A88E;align-self:flex-start;padding-bottom:4px">走進朵朵曉語 →</span>
+        </div>
+        <div style="background:#A35B55;color:#FBEFEA;padding:clamp(28px,4vw,48px);display:flex;flex-direction:column;gap:20px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:.3em;color:#F4D9CF">A GRACEFUL FAREWELL</span>
+          <h3 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:500;font-size:26px;letter-spacing:.14em">好好告別</h3>
+          <p style="margin:0;font-family:'Noto Serif TC',serif;font-size:18px;line-height:1.8">陪妳，好好告別；也陪妳，好好開始。</p>
+          <p style="margin:0;font-size:15px;line-height:2">也許是一段讓自己重新變美的時光；也許是一張值得珍藏的照片；也許是一場只屬於自己的美好儀式。陪妳為每一個階段留下句點，也為下一個自己，留下美好的起點。</p>
+          <span onClick="{{ goFarewell }}" style="cursor:pointer;margin-top:auto;font-size:15px;letter-spacing:.14em;border-bottom:1px solid #F4D9CF;align-self:flex-start;padding-bottom:4px">探索好好告別 →</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="首頁 體驗入口" style="padding:clamp(72px,9vw,120px) clamp(20px,4vw,48px)">
+    <div style="max-width:1140px;margin:0 auto;display:flex;flex-direction:column;gap:44px">
+      <div style="display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap">
+        <h2 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(24px,2.8vw,34px);letter-spacing:.1em">為自己選一段值得的體驗</h2>
+        <span onClick="{{ goFarewell }}" style="cursor:pointer;font-size:14px;letter-spacing:.14em;color:#8C4A46">查看全部 →</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px">
+        <sc-for list="{{ sets }}" as="s" hint-placeholder-count="3">
+          <div onClick="{{ s.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:16px" style-hover="opacity:.88">
+            <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#EFE1DA 0 10px,#F5EAE4 10px 20px);display:flex;align-items:flex-end;padding:14px">
+              <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#7A615D;background:#FAF5F2;padding:4px 8px">{{ s.photo }}</span>
+            </div>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.24em;color:#9C7A5C">{{ s.no }}</span>
+            <h3 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:500;font-size:21px;letter-spacing:.1em;color:#3A2826">{{ s.name }}</h3>
+            <p style="margin:0;font-size:15px;line-height:1.9;color:#5A4340">{{ s.tagline }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<!-- ================= 好好告別 ================= -->
+<sc-if value="{{ isFarewell }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="好好告別 共鳴" style="background:#A35B55;color:#FBEFEA;padding:clamp(80px,11vw,150px) 24px;text-align:center">
+    <div style="max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:30px;align-items:center">
+      <span style="font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:.34em;color:#F4D9CF">A GRACEFUL FAREWELL · 好好告別</span>
+      <h1 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(28px,3.8vw,46px);line-height:1.6;letter-spacing:.1em">有些告別，<br>是為了讓我們重新遇見自己。</h1>
+      <p style="margin:0;font-family:'Noto Serif TC',serif;font-size:17px;line-height:2.2;letter-spacing:.06em">人生裡，總會有一些時刻，讓我們不得不重新選擇。<br>離開熟悉的關係，換一種生活方式，<br>重新整理自己，也重新想像下一個自己。</p>
+      <p style="margin:0;font-family:'Noto Serif TC',serif;font-size:17px;line-height:2.2;letter-spacing:.06em">原來人生不是失去了一個版本的自己，<br>而是終於有機會，成為下一個自己。</p>
+    </div>
+  </section>
+  <section style="padding:44px 24px;border-bottom:1px solid #EADAD3">
+    <div style="max-width:1000px;margin:0 auto;display:flex;justify-content:center;align-items:center;gap:clamp(10px,2vw,24px);flex-wrap:wrap;font-family:'Noto Serif TC',serif;font-size:clamp(16px,1.8vw,20px);letter-spacing:.14em;color:#8C4A46">
+      <span>告別</span><span style="color:#C9A88E">—</span><span>整理</span><span style="color:#C9A88E">—</span><span>重拾自己</span><span style="color:#C9A88E">—</span><span>綻放</span><span style="color:#C9A88E">—</span><span>重新開始</span>
+    </div>
+  </section>
+
+  <section data-screen-label="好好告別 是什麼" style="padding:clamp(72px,9vw,120px) clamp(20px,4vw,48px)">
+    <div style="max-width:1140px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:clamp(32px,6vw,90px);align-items:center">
+      <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#EFE1DA 0 10px,#F5EAE4 10px 20px);display:flex;align-items:flex-end;padding:16px">
+        <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#7A615D;background:#FAF5F2;padding:4px 8px">形象照：鏡前重新打理自己的女性</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:22px;font-size:16px;line-height:2.1;color:#5A4340">
+        <h2 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(24px,2.6vw,32px);line-height:1.7;letter-spacing:.08em;color:#3A2826">為每一次重要的轉身，<br>留下一點美、一點紀念。</h2>
+        <p style="margin:0">「好好告別」，想陪妳走過的，就是這一段轉身的過程——也為下一個自己，留一份美好的期待。</p>
+        <p style="margin:0">在生活與歲月裡奔波，有些時候，我們會忘記自己最初的模樣。有些時候，只是重新打理一次自己，就會發現——原來，我們一直都還在發著光。</p>
+        <p style="margin:0;font-family:'Noto Serif TC',serif;color:#8C4A46">就像被歲月輕輕覆上一層塵埃，拂去之後，才再次看見那個熟悉而閃耀的自己。</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="好好告別 組合" style="background:#F3E6E0;padding:clamp(72px,9vw,120px) clamp(20px,4vw,48px)">
+    <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:44px;text-align:center;align-items:center">
+      <p style="margin:0;max-width:600px;font-size:16px;line-height:2.1;color:#5A4340">真正的改變，往往從一個小小的念頭開始。所以，「好好告別」想做的，不是一項項單獨的服務，而是把不同領域的美好重新組合。</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));width:100%;border-top:1px solid #D9BFB4;border-bottom:1px solid #D9BFB4">
+        <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="4">
+          <div style="padding:34px 12px;display:flex;flex-direction:column;gap:8px;align-items:center">
+            <span style="font-family:'Noto Serif TC',serif;font-size:30px;letter-spacing:.2em;color:#8C4A46">{{ p.zh }}</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.3em;color:#9C7A5C">{{ p.en }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <p style="margin:0;max-width:600px;font-family:'Noto Serif TC',serif;font-size:17px;line-height:2.1;color:#3A2826">依照妳此刻的需要，搭配不同的專業與服務，設計一段屬於妳的人生轉場體驗。讓妳不只是完成一件事，而是真真實實地，好好走過一個階段。</p>
+    </div>
+  </section>
+
+  <section data-screen-label="好好告別 三個 SET" style="padding:clamp(72px,9vw,120px) clamp(20px,4vw,48px)">
+    <div style="max-width:1140px;margin:0 auto;display:flex;flex-direction:column;gap:48px">
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:640px">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:.3em;color:#9C7A5C">✦ 重新看見自己</span>
+        <h2 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(26px,3vw,38px);letter-spacing:.1em">為自己選一段值得的體驗</h2>
+        <p style="margin:0;font-size:16px;line-height:2.1;color:#5A4340">有時候，改變不需要很大。重新整理髮型、做一雙喜歡的手、重新畫上喜歡的妝，當妳再次看見鏡子裡的自己，也許會發現——那個閃閃發光的妳，一直都在。</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:28px">
+        <sc-for list="{{ sets }}" as="s" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:16px;background:#fff;border:1px solid #EADAD3">
+            <div style="aspect-ratio:4/3;background:repeating-linear-gradient(135deg,#EFE1DA 0 10px,#F5EAE4 10px 20px);display:flex;align-items:flex-end;padding:14px">
+              <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#7A615D;background:#FAF5F2;padding:4px 8px">{{ s.photo }}</span>
+            </div>
+            <div style="padding:8px 28px 30px;display:flex;flex-direction:column;gap:14px;flex:1">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.24em;color:#9C7A5C">{{ s.no }}</span>
+              <h3 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:500;font-size:22px;letter-spacing:.1em;color:#3A2826">{{ s.name }}</h3>
+              <p style="margin:0;font-family:'Noto Serif TC',serif;font-size:16px;color:#8C4A46">{{ s.tagline }}</p>
+              <p style="margin:0;font-size:14px;line-height:1.9;color:#5A4340">{{ s.desc }}</p>
+              <span onClick="{{ s.open }}" style="cursor:pointer;margin-top:auto;align-self:flex-start;padding:12px 22px;background:#A35B55;color:#FBEFEA;font-size:14px;letter-spacing:.14em" style-hover="background:#8C4A46">探索這段體驗 →</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <sc-if value="{{ showRoadmap }}" hint-placeholder-val="{{ true }}">
+        <div style="border-top:1px solid #EADAD3;padding-top:36px;display:flex;flex-direction:column;gap:18px">
+          <span style="font-size:14px;letter-spacing:.16em;color:#7A615D">更多人生轉場體驗，陸續加入中</span>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <sc-for list="{{ roadmap }}" as="r" hint-placeholder-count="5">
+              <span style="padding:8px 16px;border:1px dashed #C9A88E;font-size:14px;letter-spacing:.08em;color:#7A615D">{{ r }}</span>
+            </sc-for>
+          </div>
+          <p style="margin:0;font-size:14px;line-height:1.9;color:#7A615D">未來也能依照妳的需求，單選或自由搭配成專屬體驗。</p>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+</sc-if>
+
+<!-- ================= SET 詳細頁 ================= -->
+<sc-if value="{{ isSet }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="商品詳細頁" style="padding:clamp(40px,6vw,72px) clamp(20px,4vw,48px) clamp(72px,9vw,120px)">
+    <div style="max-width:1140px;margin:0 auto;display:flex;flex-direction:column;gap:40px">
+      <span onClick="{{ goFarewell }}" style="cursor:pointer;font-size:14px;letter-spacing:.12em;color:#7A615D">← 好好告別 ／ 所有體驗</span>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,6vw,80px);align-items:start">
+        <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#EFE1DA 0 10px,#F5EAE4 10px 20px);display:flex;align-items:flex-end;padding:16px;position:{{ stick }};top:110px">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#7A615D;background:#FAF5F2;padding:4px 8px">{{ cur.photo }}</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:24px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:.26em;color:#9C7A5C">{{ cur.no }}</span>
+          <h1 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:500;font-size:clamp(28px,3.4vw,42px);letter-spacing:.1em;color:#3A2826">{{ cur.name }}</h1>
+          <p style="margin:0;font-family:'Noto Serif TC',serif;font-size:clamp(18px,1.8vw,22px);line-height:1.8;color:#8C4A46;text-wrap:pretty">{{ cur.headline }}</p>
+          <div style="width:40px;height:1px;background:#C9A88E"></div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ cur.body }}" as="line" hint-placeholder-count="6">
+              <p style="margin:0;font-family:'Noto Serif TC',serif;font-size:17px;line-height:2;letter-spacing:.05em;color:#4E3835">{{ line }}</p>
+            </sc-for>
+          </div>
+          <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+            <div style="position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(250,245,242,.97);border-top:1px solid #EADAD3;padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;gap:10px">
+              <span style="flex:1;text-align:center;padding:14px 0;border:1px solid #A35B55;color:#8C4A46;font-size:15px;letter-spacing:.12em">私訊詢問</span>
+              <span style="flex:1.6;text-align:center;padding:14px 0;background:#A35B55;color:#FBEFEA;font-size:15px;letter-spacing:.12em">預約這段體驗</span>
+            </div>
+          </sc-if>
+          <div style="margin-top:12px;padding:24px;background:#F3E6E0;display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:14px;letter-spacing:.14em;color:#5A4340">體驗內容、時長與價格　·　待提供</span>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <span style="cursor:pointer;padding:14px 28px;background:#A35B55;color:#FBEFEA;font-size:15px;letter-spacing:.16em" style-hover="background:#8C4A46">預約這段體驗</span>
+              <span style="cursor:pointer;padding:13px 28px;border:1px solid #A35B55;color:#8C4A46;font-size:15px;letter-spacing:.16em">私訊詢問</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px">
+            <span style="font-size:13px;letter-spacing:.14em;color:#7A615D">其他體驗</span>
+            <sc-for list="{{ otherSets }}" as="o" hint-placeholder-count="2">
+              <span onClick="{{ o.open }}" style="cursor:pointer;padding:14px 0;border-bottom:1px solid #EADAD3;display:flex;justify-content:space-between;font-family:'Noto Serif TC',serif;font-size:16px;color:#3A2826" style-hover="color:#8C4A46"><span>{{ o.name }}</span><span>→</span></span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<!-- ================= 關於朵朵 ================= -->
+<sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="關於朵朵" style="padding:clamp(56px,8vw,110px) clamp(20px,4vw,48px)">
+    <div style="max-width:1140px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(32px,6vw,90px);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:20px;position:{{ stick }};top:110px">
+        <div style="aspect-ratio:3/4;background:repeating-linear-gradient(135deg,#EFE1DA 0 10px,#F5EAE4 10px 20px);display:flex;align-items:flex-end;padding:16px">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#7A615D;background:#FAF5F2;padding:4px 8px">朵朵本人形象照</span>
+        </div>
+        <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;letter-spacing:.1em;color:#9C7A5C">About Duoduo</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <h1 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(26px,3.2vw,40px);line-height:1.6;letter-spacing:.08em;color:#3A2826;text-wrap:pretty">我不是天生閃亮，<br>只是決定重新把自己找回來。</h1>
+        <sc-for list="{{ aboutParas }}" as="a" hint-placeholder-count="8">
+          <p style="margin:0;font-size:{{ a.size }};line-height:2.1;letter-spacing:.04em;color:{{ a.color }};font-family:{{ a.font }}">{{ a.text }}</p>
+        </sc-for>
+        <div style="margin-top:20px;padding:36px 0;border-top:1px solid #EADAD3;border-bottom:1px solid #EADAD3;font-family:'Noto Serif TC',serif;font-size:19px;line-height:2;color:#8C4A46">我是朵朵。<br>願每一個曾經努力撐著的妳，都能慢慢找回自己，活出有底氣、也有光的模樣。<br>每一朵花，都有屬於自己的花期。</div>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<!-- ================= 新生故事 ================= -->
+<sc-if value="{{ isStories }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="新生故事" style="padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px)">
+    <div style="max-width:1140px;margin:0 auto;display:flex;flex-direction:column;gap:56px">
+      <div style="max-width:680px;display:flex;flex-direction:column;gap:22px">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:.3em;color:#9C7A5C">STORIES OF RENEWAL</span>
+        <h1 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(26px,3.2vw,40px);line-height:1.6;letter-spacing:.08em">每一段轉身，<br>都值得被好好珍藏</h1>
+        <p style="margin:0;font-size:16px;line-height:2.1;color:#5A4340">她們也曾經站在人生的轉身處。有人正在告別一段關係，有人正在重新開始；有人走過了很長一段辛苦的日子，終於願意為自己做一件事。</p>
+        <p style="margin:0;font-size:16px;line-height:2.1;color:#5A4340">不是為了比較誰過得比較辛苦，而是希望當下一個正在人生轉彎處的妳走進這裡時，能夠知道：人生可以有不同的走法，而妳也可以有自己的下一步。</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:28px">
+        <sc-for list="{{ stories }}" as="st" hint-placeholder-count="3">
+          <div onClick="{{ st.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:16px;padding-bottom:20px;border-bottom:1px solid #EADAD3" style-hover="opacity:.86">
+            <div style="aspect-ratio:3/2;background:repeating-linear-gradient(135deg,#EFE1DA 0 10px,#F5EAE4 10px 20px);display:flex;align-items:flex-end;padding:14px">
+              <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#7A615D;background:#FAF5F2;padding:4px 8px">故事主視覺（經同意）</span>
+            </div>
+            <span style="font-size:13px;letter-spacing:.2em;color:#9C7A5C">{{ st.no }}</span>
+            <h3 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:500;font-size:20px;line-height:1.6;letter-spacing:.06em;color:#3A2826">{{ st.title }}</h3>
+            <p style="margin:0;font-size:15px;line-height:1.9;color:#5A4340">{{ st.desc }}</p>
+            <span style="font-size:14px;letter-spacing:.14em;color:#8C4A46">閱讀這段故事 →</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="background:#F3E6E0;padding:clamp(36px,5vw,64px);display:flex;flex-direction:column;gap:20px;align-items:center;text-align:center">
+        <p style="margin:0;font-family:'Noto Serif TC',serif;font-size:clamp(17px,1.8vw,21px);line-height:2;color:#3A2826">每個人都有自己的故事，也有自己的步調。<br>如果妳也曾經歷過一段重要的轉身，歡迎在準備好的時候，與我們分享。</p>
+        <span style="cursor:pointer;padding:14px 30px;background:#A35B55;color:#FBEFEA;font-size:15px;letter-spacing:.16em" style-hover="background:#8C4A46">分享我的轉身故事</span>
+        <span style="font-size:13px;line-height:1.8;color:#7A615D">分享與公開故事均須取得當事人同意，並尊重匿名、隱私及撤回公開的意願。</span>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isStory }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="新生故事 詳細頁" style="padding:clamp(40px,6vw,72px) clamp(20px,4vw,48px) clamp(72px,9vw,120px)">
+    <div style="max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:36px">
+      <span onClick="{{ goStories }}" style="cursor:pointer;font-size:14px;letter-spacing:.12em;color:#7A615D">← 新生故事</span>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:13px;letter-spacing:.2em;color:#9C7A5C">{{ curStory.no }}</span>
+        <h1 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(26px,3vw,36px);line-height:1.6;letter-spacing:.06em">{{ curStory.title }}</h1>
+      </div>
+      <sc-for list="{{ storyParts }}" as="sp" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:14px;padding-top:28px;border-top:1px solid #EADAD3">
+          <span style="font-family:'Noto Serif TC',serif;font-size:19px;letter-spacing:.1em;color:#8C4A46">{{ sp.title }}</span>
+          <div style="padding:22px;border:1px dashed #C9A88E;font-size:14px;line-height:1.9;color:#7A615D">{{ sp.hint }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</sc-if>
+
+<!-- ================= 朵朵曉語 ================= -->
+<sc-if value="{{ isWhispers }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="朵朵曉語 列表" style="padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px)">
+    <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:56px">
+      <div style="display:flex;flex-direction:column;gap:22px;max-width:680px">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:.3em;color:#9C7A5C">WHISPERS</span>
+        <h1 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(26px,3.2vw,40px);line-height:1.6;letter-spacing:.08em">把走過的人生，<br>沉澱成溫柔而堅定的心語。</h1>
+        <p style="margin:0;font-size:16px;line-height:2.1;color:#5A4340">有些故事，是經歷過才懂得。這裡記錄我的生活、心情、故事與體悟，也分享那些曾經困住我，後來才漸漸明白的事。</p>
+        <p style="margin:0;font-family:'Noto Serif TC',serif;font-size:16px;line-height:2.1;color:#8C4A46">如果有一句話，剛好說中了妳的心情，那就讓它陪妳走一段。</p>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ articles }}" as="ar" hint-placeholder-count="5">
+          <div onClick="{{ ar.open }}" style="cursor:pointer;display:grid;grid-template-columns:{{ listCols }};gap:clamp(16px,3vw,40px);padding:{{ listPad }};border-top:1px solid #EADAD3" style-hover="background:#F7EEEA">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,46px);color:#C9A88E;line-height:1">{{ ar.no }}</span>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span style="font-size:13px;letter-spacing:.2em;color:#9C7A5C">{{ ar.theme }}</span>
+              <h3 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:500;font-size:clamp(18px,2vw,23px);line-height:1.6;letter-spacing:.04em;color:#3A2826">{{ ar.title }}</h3>
+              <p style="margin:0;font-size:15px;line-height:1.9;color:#5A4340">{{ ar.sub }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:40px 0;border-top:1px solid #EADAD3;font-family:'Noto Serif TC',serif;font-size:17px;line-height:2.1;color:#4E3835;text-align:center">我是朵朵。還在生活，也還在學習；還在經歷，也還在慢慢明白。<br>每一朵花，都有屬於自己的花期。</div>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isArticle }}" hint-placeholder-val="{{ false }}">
+  <article data-screen-label="朵朵曉語 文章" style="padding:clamp(40px,6vw,72px) clamp(20px,4vw,48px) clamp(72px,9vw,120px)">
+    <div style="max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:22px">
+      <span onClick="{{ goWhispers }}" style="cursor:pointer;font-size:14px;letter-spacing:.12em;color:#7A615D">← 朵朵曉語</span>
+      <span style="margin-top:24px;font-size:13px;letter-spacing:.2em;color:#9C7A5C">{{ curArticle.no }}｜{{ curArticle.theme }}</span>
+      <h1 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(26px,3.2vw,38px);line-height:1.6;letter-spacing:.04em;color:#3A2826;text-wrap:pretty">{{ curArticle.title }}</h1>
+      <p style="margin:0 0 20px;font-family:'Noto Serif TC',serif;font-size:17px;line-height:1.9;color:#8C4A46">{{ curArticle.sub }}</p>
+      <sc-for list="{{ articleBlocks }}" as="b" hint-placeholder-count="10">
+        <p style="margin:{{ b.margin }};font-family:{{ b.font }};font-size:{{ b.size }};line-height:{{ b.lh }};color:{{ b.color }};letter-spacing:.03em;text-wrap:pretty;padding:{{ b.pad }};border-left:{{ b.border }}">{{ b.text }}</p>
+      </sc-for>
+      <div style="margin-top:28px;padding:28px;background:#F3E6E0;display:flex;flex-direction:column;gap:10px">
+        <span style="font-size:13px;letter-spacing:.16em;color:#7A615D">{{ curArticle.letterTo }}</span>
+        <p style="margin:0;font-family:'Noto Serif TC',serif;font-size:17px;line-height:2;color:#3A2826">{{ curArticle.letter }}</p>
+      </div>
+      <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:28px;padding-top:24px;border-top:1px solid #EADAD3">
+        <span onClick="{{ prevArticle }}" style="cursor:pointer;font-size:14px;color:#8C4A46;letter-spacing:.08em">{{ prevLabel }}</span>
+        <span onClick="{{ nextArticle }}" style="cursor:pointer;font-size:14px;color:#8C4A46;letter-spacing:.08em">{{ nextLabel }}</span>
+      </div>
+    </div>
+  </article>
+</sc-if>
+
+<!-- ================= 一起創造美好 ================= -->
+<sc-if value="{{ isPartner }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="一起創造美好" style="background:#A35B55;color:#FBEFEA;padding:clamp(72px,10vw,130px) clamp(20px,4vw,48px)">
+    <div style="max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:26px">
+      <span style="font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:.3em;color:#F4D9CF">CREATE BEAUTY TOGETHER</span>
+      <h1 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(28px,3.8vw,46px);line-height:1.55;letter-spacing:.08em;text-wrap:pretty">讓你的專業，<br>成為別人生命裡的一道光。</h1>
+      <p style="margin:0;font-family:'Noto Serif TC',serif;font-size:18px;line-height:2">每一份用心，都值得被看見。<br>每一種專業，都有機會成為一段美好故事的開始。</p>
+    </div>
+  </section>
+  <section style="padding:clamp(64px,9vw,110px) clamp(20px,4vw,48px)">
+    <div style="max-width:1140px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(36px,6vw,90px);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:20px;font-size:16px;line-height:2.1;color:#5A4340">
+        <p style="margin:0">我們相信，好的服務不只是完成一件價值交換的交易。它也可以是一份溫柔的陪伴，一次重新認識自己的機會，或是在人生重要的轉折裡，為一個人留下值得珍藏的回憶。</p>
+        <p style="margin:0">在不同領域裡，有許多用心的店家、專業的職人，以及擁有美感與熱情的創作者。我們把這些願意用專業創造美好的你，稱為<span style="font-family:'Noto Serif TC',serif;color:#8C4A46">「美麗的魔法師」</span>。</p>
+        <p style="margin:0">也許，你擅長讓一個人重新喜歡鏡子裡的自己；也許，你能用鏡頭留下重要的生命片刻；也許，你的花藝、設計或一項用心的服務，能為一段新的開始增添意義。</p>
+        <p style="margin:0;font-family:'Noto Serif TC',serif;color:#3A2826">我們期待遇見的，不只是合作店家，更是認同這份理念、願意一起創造美好體驗的同行者。</p>
+      </div>
+      <div style="background:#fff;border:1px solid #EADAD3;padding:clamp(28px,4vw,44px);display:flex;flex-direction:column;gap:18px">
+        <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <h3 style="margin:0;font-family:'Noto Serif TC',serif;font-weight:500;font-size:22px;letter-spacing:.12em">成為美麗的魔法師</h3>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;letter-spacing:.1em;color:#5A4340">品牌／店家名稱<input style="padding:13px 14px;border:1px solid #DCC7BE;background:#FAF5F2;font-size:15px;outline:none"></label>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;letter-spacing:.1em;color:#5A4340">專業領域<select style="padding:13px 14px;border:1px solid #DCC7BE;background:#FAF5F2;font-size:15px"><option>美甲</option><option>美髮／妝髮</option><option>紋繡（眉／唇）</option><option>攝影／寫真</option><option>花藝</option><option>餐飲／場地</option><option>其他專業</option></select></label>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;letter-spacing:.1em;color:#5A4340">聯絡方式（Email／LINE）<input style="padding:13px 14px;border:1px solid #DCC7BE;background:#FAF5F2;font-size:15px;outline:none"></label>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;letter-spacing:.1em;color:#5A4340">想對我們說的話<textarea rows="4" style="padding:13px 14px;border:1px solid #DCC7BE;background:#FAF5F2;font-size:15px;outline:none;resize:vertical"></textarea></label>
+            <span onClick="{{ send }}" style="cursor:pointer;text-align:center;padding:15px;background:#A35B55;color:#FBEFEA;font-size:15px;letter-spacing:.2em" style-hover="background:#8C4A46">送出合作意願</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:40px 0;text-align:center;display:flex;flex-direction:column;gap:14px">
+            <span style="font-family:'Noto Serif TC',serif;font-size:22px;color:#8C4A46;letter-spacing:.1em">謝謝你，美麗的魔法師</span>
+            <span style="font-size:15px;line-height:1.9;color:#5A4340">我們會盡快與你聯繫。</span>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<!-- ================= 品牌收尾 ================= -->
+<section data-screen-label="品牌收尾" style="background:#F3E6E0;padding:clamp(80px,11vw,150px) 24px;text-align:center">
+  <div style="max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:28px;align-items:center;font-family:'Noto Serif TC',serif">
+    <h2 style="margin:0;font-weight:400;font-size:clamp(26px,3.2vw,40px);line-height:1.6;letter-spacing:.1em;color:#3A2826">妳不需要急著開花。<br>每一朵花，都有自己的花期。</h2>
+    <p style="margin:0;font-size:17px;line-height:2.2;letter-spacing:.06em;color:#4E3835">也許現在的妳，還在土裡。也許正在生根。<br>也許已經看見了一點光。沒關係，慢慢來。<br>那些曾經走過的路，都會成為妳的養分。</p>
+    <p style="margin:0;font-size:18px;line-height:2;color:#8C4A46">有一天妳會發現：原來妳一直都在成為自己。</p>
+    <div style="width:1px;height:44px;background:#C9A88E"></div>
+    <p style="margin:0;font-size:16px;line-height:2;letter-spacing:.1em;color:#4E3835">我是朵朵，這裡是朵朵曉語。<br>願我們都能，好好告別，然後好好開始。</p>
+  </div>
+</section>
+
+</main>
+
+<footer style="background:#3A2826;color:#E9D6CE;padding:56px clamp(20px,4vw,48px) {{ footPad }}">
+  <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;justify-content:space-between;gap:36px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:'Noto Serif TC',serif;font-size:22px;letter-spacing:.32em;color:#F4D9CF">朵朵曉語</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:.3em">DUODUO WHISPERS</span>
+        <span style="margin-top:10px;font-size:14px;letter-spacing:.16em">在人生轉場時・陪妳優雅重啟</span>
+      </div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+        <sc-for list="{{ nav }}" as="n" hint-placeholder-count="6">
+          <span onClick="{{ n.go }}" style="cursor:pointer;font-size:14px;letter-spacing:.1em;color:#E9D6CE" style-hover="color:#fff">{{ n.label }}</span>
+        </sc-for>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(233,214,206,.2);padding-top:22px;font-size:12px;letter-spacing:.1em;color:#BFA59C">© 2026 朵朵曉語 Duoduo Whispers · 好好告別</div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showRoadmap&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;好好告別&quot;}}">
+const SETS = [
+  { key:'nail', no:'SET 01', name:'美甲 × 寫真', photo:'美甲 × 寫真 主視覺', tagline:'從指尖開始，漂亮一次', desc:'為自己留一點時間，也替這個愛自己的時刻留下一份紀念。', headline:'從心漂亮一次',
+    body:['有時候，重新開始不需要很大的決定。','只是留一點時間給自己，做一件讓自己開心的小事。','從指尖開始，也從心開始。','漂亮，不是為了讓別人看見，而是重新看見自己。','也把這一刻，那個願意好好愛自己的自己，用張照片記錄下來。','也許未來回頭看，妳會記得——原來，那一天的我，正在好好地愛著自己。'] },
+  { key:'hair', no:'SET 02', name:'美髮 × 寫真', photo:'美髮 × 寫真 主視覺', tagline:'換一個模樣，也換一個心情', desc:'為改變留下照片，也替重新開始的自己，留下那一天的樣子。', headline:'剪掉一點過去，留住一個全新的自己。',
+    body:['有時候，重新開始，只是從改變自己的樣子開始。','剪短一點、換個髮色，或只是好好整理一次自己。','不是為了成為另一個人，而是想看看——當我換一個模樣，是不是也能看見不一樣的自己。','而這一次，也替這個新的自己留下照片。把改變的那一刻，把重新喜歡上自己的那一刻，好好記錄下來。','也許未來回頭看，妳會發現——那不只是一個新髮型，而是那一天，我決定重新開始的樣子。'] },
+  { key:'brow', no:'SET 03', name:'美甲 × 絨霧眉／霧唇改色', photo:'眉眼・唇色・指尖 主視覺', tagline:'從細節開始，喜歡現在的自己', desc:'從眉眼、唇色與指尖開始，讓喜歡自己的樣子，成為每天的日常。', headline:'當妳開始在意自己的每一個細節，生活也會跟著亮起來',
+    body:['也許只是整理眉型、調整唇色，再為指尖換上一個喜歡的樣子。','沒有什麼大不了的改變，卻能讓妳每天照鏡子的時候，多看自己一眼。','有時候，好好對待自己，就是從這些小地方開始。','讓喜歡自己的樣子，不只發生在特別的日子，而是成為每天都能感受到的小小美好。'] }
+];
+
+const ABOUT = [
+  '我是朵朵，一個曾經在婚姻裡努力撐著，卻慢慢弄丟自己的女人。',
+  '我經歷過長期的偽單親，一個人扛起許多家庭與孩子的責任；也經歷過婚內失婚，明明身在婚姻裡，卻感受不到關係應有的陪伴與依靠。',
+  '當婚姻裡的不忠，讓曾經相信的一切開始崩塌，我才發現，一段關係的結束，往往不是發生在某一個瞬間，而是在無數個失望、委屈與獨自承擔的日子裡，慢慢累積而成。',
+  '>那段不忠的事實，像是上帝狠狠打醒我的一巴掌。我沒有哭、沒有鬧，心裡只有一個聲音告訴自己——不值得！',
+  '但想明白，不代表就能立刻走出來。那天之後，反覆的內耗與糾結，成了我每天的日常。我曾經為了孩子而猶豫，想要自由卻放不下身為母親的牽掛；想重新開始，卻得面對經濟壓力與生活的不確定。',
+  '我終於明白，離開一段讓自己痛苦的關係，不代表人生從此就容易了。真正的挑戰，是如何在滿是現實的生活裡，重新把自己活回來。',
+  '2026 年，我毅然決然地恢復單身，也開始練習把自己帶回屬於自己的人生軌道。我開始去做喜歡的事，偶爾來一場說走就走的微旅行，或是開車兜風、到海邊吹吹風，甚至重新打理自己的模樣，努力活成自己喜歡的樣子。',
+  '沒有什麼神奇的轉折，只是透過這些小小的生活感行動，我慢慢找回了快樂與自由感，也重新看見那個曾經被生活吞噬的自己。',
+  '>原來，我一直都還在發著光。',
+  '這也是我創立「朵朵曉語」與「好好告別」的原因。我想分享自己走過的故事，不是為了消費傷痛，也不是要告訴誰應該怎麼選擇，而是希望那些正在婚姻、關係或人生困境裡努力撐著的女性朋友們知道：「妳並不孤單，人生也不會只剩下眼前的困境」。',
+  '但我不想只給妳幾句安慰的話。我希望透過「好好告別」，從美感新生、珍藏紀錄與人生轉場儀式開始陪妳，逐步串連形象管理、心理諮詢、家事法律等專業資源；未來也希望透過工作坊、技能培力與賦能，讓我們不只是重新找回自己，更有機會建立能力、收入與選擇生活的底氣。',
+  '>我不是站在終點告訴妳該怎麼走，而是正走在路上，把自己相信的事，一步一步實現。',
+  '我相信，真正的重生，不只是重新變漂亮，而是有一天，我們能夠不再只為了別人而活，也有能力選擇自己想要的人生。'
+];
+
+const STORIES = [
+  { no:'故事一', title:'那一天，我決定為自己做一件事。', desc:'從一個小小的念頭開始，為自己留下一段值得記住的時光。' },
+  { no:'故事二', title:'我想重新看見自己。', desc:'有時候，改變不必很大。從重新整理自己的模樣開始，也許就能找回久違的感受。' },
+  { no:'故事三', title:'走過那段日子，我想對自己說……', desc:'有些話，只有走過以後才懂。寫給曾經的自己，也留給正在路上的妳。' }
+];
+const STORY_PARTS = [
+  { title:'轉身以前', hint:'當時正經歷什麼，心裡有什麼感受。（正式上線時以實際取得同意的分享內容為主）' },
+  { title:'這一次，我為自己做了', hint:'選擇了什麼體驗，為什麼想這麼做。' },
+  { title:'那一天的紀錄', hint:'照片、體驗過程與值得珍藏的畫面。' },
+  { title:'我想留下的一句話', hint:'分享者想送給自己或其他人的話。' }
+];
+
+// "## " = 小標, "> " = 引言
+const ARTICLES = [
+{ no:'01', theme:'故事的起點', title:'我不是離開一個人，而是離開一種讓自己慢慢枯萎的生活', sub:'不是因為恨，而是因為我也想好好活著。',
+  letterTo:'寫給也曾在關係裡弄丟自己的妳', letter:'妳可以愛一個人，也可以珍惜一段關係。但請不要忘記，妳自己，也是那個值得被好好照顧的人。',
+  body:`> 我不是離開一個人。我是離開一種，讓自己慢慢枯萎的生活。
+這句話，是我走過一段婚姻之後，才真正明白的事。
+以前的我，總覺得一段關係既然開始了，就應該努力走下去。遇到問題，就想辦法解決。發生爭執，就試著溝通。感到失望，就告訴自己再等等。我總以為，只要願意努力，就能讓關係回到原本的樣子。
+我不是沒有期待過，也不是沒有努力過。只是後來我發現，有些關係裡最令人疲憊的，不一定是一次激烈的爭吵，而是那些日復一日累積的失望。
+是一次次想說的話，最後又吞回心裡。是遇到困難時，明明很希望有人能一起面對，最後卻還是告訴自己：「算了，我自己來。」是生活看起來仍然繼續，自己卻慢慢失去了期待。
+## 能夠獨立，不代表不需要陪伴
+我一直知道，自己是可以獨立生活的人。遇到事情，我會想辦法處理。有責任需要承擔，我會努力完成。很多事情，即使沒有人幫忙，我也能想辦法走過去。
+但後來我才明白，能夠自己扛，不代表應該一直自己扛。能夠獨立，不代表不渴望陪伴。能夠照顧自己，也不代表不需要被理解。
+我想要的，從來不是有人替我解決人生裡所有的問題。我只是希望，在一段關係裡，我們可以一起面對生活。當其中一個人累了，另一個人願意接住他。當其中一個人遇到困難，不需要每次都獨自想辦法。當我們對未來有不同的想法，仍然願意坐下來，好好聽聽彼此的聲音。
+我想要的不是一個讓我失去獨立能力的人，而是一個即使我有能力照顧自己，仍然願意與我並肩同行的人。
+> 因為愛不是誰依賴誰。而是兩個人都可以成為完整的自己，卻仍然願意一起生活。
+## 我不想再用委屈自己，換取關係的完整
+我曾經很習慣替別人著想。遇到事情，會先考慮對方的感受。有些話明明很在意，卻會因為不想讓氣氛變得難看，而選擇不說。有些需求明明很重要，卻會告訴自己：「沒關係，我可以。」
+久而久之，我好像很懂得體諒別人，卻不一定懂得替自己說話。我可以理解別人的難處，也可以替別人的行為尋找理由。可是，我卻慢慢忘記了一件事。
+理解一個人，不代表我必須接受所有讓自己受傷的相處方式。
+我可以承認對方也有他的困難，同時承認自己真的很累。我可以感謝一段關係曾經帶給我的一切，同時承認現在的自己已經不快樂。我也可以不恨一個人，卻選擇不再繼續原本的生活。
+這些事情並不衝突。我不需要把對方變成壞人，才能證明自己的離開有道理。也不需要讓所有人都認同我的選擇，才有資格重新開始。有些決定，只能由真正走在那段路上的自己，慢慢承擔，也慢慢理解。
+## 不是為了懲罰誰，而是我還想好好生活
+我想活。我想重新笑。想在疲憊的時候安心休息，想重新期待明天，也想讓生活裡有一些單純而美好的事情。
+我想好好陪伴孩子。想繼續感受世界的美好。想去看看沒有看過的風景，讀喜歡的書，照顧喜歡的花，也想繼續完成那些曾經放在心裡的夢想。
+我不希望自己的人生，只剩下責任、忍耐與勉強。更不希望有一天，因為長期忽略自己的感受，而連原本擁有的溫柔與熱情，都漸漸消失。
+所以，我選擇改變。不是為了懲罰誰，不是為了證明誰錯，而是因為我想讓自己，還有能力去愛孩子、愛世界，也愛未來的自己。
+我不敢說，離開之後的生活就一定比較容易。人生不會因為做了一個決定，所有問題就突然消失。我仍然需要面對現實、承擔責任，也需要學習如何走過不確定的日子。
+但至少，我開始願意正視自己的感受，也開始把自己的生命放回需要被照顧的位置。
+我終於明白，告別不一定要帶著恨。有時候，我們可以帶著遺憾、感謝、難過，甚至還有一點不捨，依然選擇向前走。
+因為我想要的，不只是結束一段讓自己疲憊的關係，而是重新建立一種，能讓自己好好生活的方式。
+> 「我不是離開一個人，我是離開一種讓自己慢慢枯萎的生活。」不是因為恨。而是因為，我想真正的活出自己。
+—— 朵朵曉語` },
+{ no:'02', theme:'回到自己', title:'我不是失去了一個家，而是開始回家', sub:'有些告別，不是為了離開誰，而是為了重新找回自己。',
+  letterTo:'寫給正在人生轉彎處的妳', letter:'願我們都有勇氣離開不再適合自己的生活，也有能力在往後的日子裡，慢慢建立一個讓自己安心的家。',
+  body:`曾經，我以為自己是在失去一個家。
+我花了很長的時間，努力維持一段婚姻，努力守住一個家庭，也努力扮演好每一個我以為自己應該扮演的角色。我以為，只要再努力一點、再體諒一點、再忍耐一點，也許事情就會慢慢變好。
+我習慣替別人著想，習慣把話放在心裡，也習慣在遇到問題的時候，先想著自己還能做些什麼。好像只要我再多做一點，就能讓一切維持原本的樣子。
+> 可是，日子久了，我漸漸忘記問自己一個問題：在努力照顧所有人的同時，我有沒有好好照顧自己？
+## 原來，一個家不只是有沒有在一起
+我們常常把家想像成一個具體的地方。有房子、有家人、有共同生活的日常，有一個看起來完整的家庭。
+但後來我慢慢明白，一個家真正重要的，也許不只是有沒有人在身邊，而是當我們回到這個地方時，能不能安心地做自己。能不能放心地說出心裡的話。能不能在疲憊的時候被理解，而不是永遠都要表現得很堅強。能不能在遇到困難時，感受到自己不是一個人承擔所有事情。
+我曾經以為，只要一家人還在一起，就代表我還擁有一個家。直到後來才發現，原來即使身邊有人，即使生活裡有許多責任與牽掛，一個人仍然可能感到孤單。
+那種孤單，不一定是沒有人陪伴。而是妳明明已經很努力了，卻漸漸不知道，還能向誰說說自己的疲憊。
+## 離開，是我很不容易才做出的選擇
+決定結束婚姻，並不是一個輕鬆的決定。我有孩子，有責任，有許多必須考慮的現實，也有對未來的不確定。
+我知道，婚姻的結束不只關乎兩個人，還牽涉到孩子的生活、彼此的責任，以及接下來要如何重新安排人生。所以我沒有辦法只憑一時的情緒，決定自己往哪裡走。
+我需要面對問題，也需要一次次整理自己的想法。我必須思考，什麼才是對孩子比較好的安排；也必須重新學習，如何在關係結束之後，繼續承擔身為父母的責任。
+我希望這段婚姻可以好好結束。不是為了證明誰對誰錯，也不是為了爭出誰輸誰贏。而是即使我們不再是夫妻，仍然可以為孩子保留應有的尊重，盡力做好父母該做的事。
+這是我對告別的理解。告別一段關係，不代表否定曾經的一切，也不代表從此就不需要負責任。只是我們終於承認，有些關係走到了必須改變的時候，而我們需要重新找到適合彼此的位置。
+## 後來，我才知道自己真正想找回的是什麼
+我不是想回到從前，也不是想成為一個從來沒有受過傷的人。我只是希望，有一天的自己，可以不用再透過別人的反應，決定自己值不值得被愛。
+可以不必一直證明自己很好、不必凡事都自己扛，也不必為了維持一段關係，而習慣忽略自己的感受。我想重新找回那個可以安心生活、真誠表達、自由選擇，也仍然保有溫柔的自己。
+> 我不是離開一個家，而是開始回家。那個家，不是一棟房子，也不是一張結婚證書，而是終於能安心住在自己心裡的那個自己。
+我想，這就是我人生這一段路，最重要的學習。有些告別很痛。但痛，不一定代表我們做錯了選擇。有時候，它只是提醒我們，曾經珍惜的事物已經改變，而現在的自己，需要另一種生活。
+如果妳也正站在人生的某個轉彎處，希望妳不用急著證明自己已經放下，也不用急著讓所有人理解妳的選擇。妳可以慢慢來。慢慢整理，慢慢往前走。
+直到有一天，妳終於發現，原來自己一直在尋找的那個家，從來不只是某個人給予的歸屬。也是妳終於願意，好好接住自己的那一刻。
+—— 朵朵曉語` },
+{ no:'03', theme:'愛與責任', title:'成為媽媽之後，我更想好好照顧自己', sub:'寫給孩子，也寫給那些習慣把所有人放在自己前面的女人。',
+  letterTo:'寫給每一位總是把自己放在最後的媽媽', letter:'妳不需要等到所有人都安頓好了，才有資格照顧自己。妳也是這個家裡，值得被關心、被理解、被好好愛著的人。',
+  body:`成為媽媽之後，我的人生多了兩個很重要的牽掛。
+很多決定，不再只是考慮自己。生活怎麼安排、時間怎麼分配、未來要怎麼走，都會想到孩子。即使自己很累，也會先想想孩子的需要。即使心裡有很多情緒，也會希望自己能好好照顧他們。
+這大概是很多媽媽都有過的心情。我們總是很自然地，把孩子放在前面。不是因為不愛自己，而是因為愛得太深，有時候反而忘了，自己也需要被照顧。
+## 婚姻的結束，並不代表父母責任的結束
+決定結束婚姻時，我心裡有很多需要面對的事情。我不只要處理自己的情緒，也必須思考孩子接下來的生活。他們還在成長，需要穩定的陪伴，需要被理解，也需要知道，即使家庭的形式改變了，爸爸和媽媽對他們的愛與責任，仍然存在。
+我知道，婚姻的結束會帶來改變。生活安排可能不同了，彼此相處的方式也需要重新調整。所以，我希望能夠在關係結束的過程裡，盡力為孩子找到適合的安排。
+我們需要討論監護、照顧、扶養，以及未來如何共同承擔父母的責任。這些事情未必每一件都容易，但我希望自己在做決定時，記得最重要的原則：孩子的需要，不應該成為大人彼此較勁的工具。
+> 因為婚姻可以結束。但對孩子的愛與責任，不應該因此消失。
+## 我想給孩子的，不只是一個完整的家庭
+曾經，我也會想，一個完整的家庭，是不是應該努力維持原本的樣子？是不是只要父母還在一起，孩子就會比較幸福？
+可是後來，我開始思考，除了家庭的形式之外，孩子真正需要的，是什麼？我想，他們需要的不只是有人照顧生活起居。他們也需要感受到愛、尊重與安全感。
+需要知道，遇到問題可以說出來。需要知道，難過的時候可以表達情緒。需要知道，愛一個人不代表要一直委屈自己，而一段關係也不應該讓人長期失去被理解的機會。
+我不敢說，自己能給孩子所有完美的答案。但我希望，我可以透過自己的生活，讓他們慢慢理解：人生會有變化，關係可能會改變，有時候，我們會遇到很難的選擇。但無論發生什麼事，都可以試著誠實面對問題，為自己的選擇負責，也保留愛人的能力。
+## 我也想讓孩子看見，一個努力生活的媽媽
+我曾經很容易把自己放在最後面。只要孩子好、家人好、事情順利，好像自己累一點也沒有關係。但我漸漸明白，如果我一直把所有需要都壓下去，久而久之，也可能失去感受生活的力氣。
+我不希望自己只是一個努力完成責任的媽媽。我也想是一個有喜好、有夢想、有情緒，會為一朵花開心，會為一本書感動，也會期待明天的女人。
+不是因為孩子不重要。恰恰是因為孩子很重要，我才更希望自己能夠好好生活。
+我希望他們看見的，不只是一個為他們付出一切的媽媽。也可以是一個懂得愛自己、尊重自己，遇到困難時願意尋找方法，做出選擇後願意承擔責任的媽媽。
+## 愛孩子，也把自己放進愛裡面
+現在的我，正在學習重新安排人生。學習如何在工作、孩子與自己的生活之間找到平衡。學習接受，有些事情不可能一次做到完美。也學習不再因為偶爾感到疲憊，就責怪自己不夠堅強。
+我相信，媽媽不必成為一個永遠不會累、永遠不會難過的人。我們也可以有脆弱的時候。可以尋求支持。可以重新學習。可以在照顧別人的同時，也為自己留一點空間。
+> 我想好好愛我的孩子。也想讓自己，有能力繼續好好愛這個世界。
+—— 朵朵曉語` },
+{ no:'04', theme:'品牌的誕生', title:'為什麼我想為離婚，辦一場派對？', sub:'從離婚派對的想法，談告別、儀式與重新開始的勇氣。',
+  letterTo:'寫給正在告別的妳', letter:'一段關係的結束，不代表人生就此失去可能。妳依然可以一步一步，找到適合自己的方向。',
+  body:`如果有人問我，為什麼想為離婚辦一場派對？我想，這個想法或許和很多人對離婚的想像不太一樣。
+對大多數人來說，離婚可能代表一段關係的結束、一個家庭的改變，也可能伴隨著失落、遺憾，甚至是不願意再提起的傷痛。而我也知道，走到這一步，並不是一件容易的事。
+曾經對婚姻有過期待，對家庭有過想像，也曾經希望兩個人可以一起把日子過好。只是人生走著走著，有些事情終究和原本想像的不一樣。
+當一段婚姻走到終點，我們除了要面對關係的結束，還得重新整理生活、家庭、身分，以及對未來的想像。有時候，真正困難的並不只是做出決定，而是決定之後，如何帶著過去的一切，繼續往前走。
+> 所以，我想為自己的離婚辦一場派對。
+不是因為我覺得離婚是一件值得慶祝的事，也不是想否定曾經的婚姻，更不是要用一場熱鬧的活動，掩蓋那些曾經發生過的難過。而是因為，我想為人生這個重要的轉折，留下一個不一樣的記號。
+我不想只記得這段關係裡的遺憾，也不想讓離婚成為往後回想人生時，唯一能夠想起的事情。這段婚姻曾經是我生命的一部分。那些經歷、那些感受，以及一路走來的改變，也都成為現在的我。
+我不需要假裝一切從未發生，也不必要求自己立刻放下所有情緒。我只是想試著用自己的方式，面對這個已經發生的轉變。
+我希望這場派對，可以是一個新的起點。不是宣告從此以後的人生就會一帆風順，而是提醒自己，即使經歷過不如預期的事情，我仍然可以重新選擇，接下來想怎麼生活。
+我依然是孩子的媽媽，也依然有需要承擔的責任。婚姻結束了，不代表親子之間的愛與責任也跟著結束。我不會因為恢復單身，就突然成為一個什麼都不害怕、什麼都能處理好的人。但我想給自己一個機會，重新認識自己，也重新想像未來的生活。
+> 或許，這場派對真正想慶祝的，並不是離婚本身。而是走到這一天的自己。
+那個曾經努力過、難過過，也終於願意面對人生轉變的自己。而這一次，我想更認真地聽聽自己的心聲，也更勇敢地為自己做出選擇。
+我想好好告別的，不只是過去的一段婚姻，也是那個曾經不知道該如何繼續往前走的自己。接下來的日子，我希望自己能夠帶著過去給我的經驗，繼續生活、繼續成長，也慢慢把日子過成自己喜歡的樣子。
+—— 朵朵曉語` },
+{ no:'05', theme:'品牌的未來', title:'我想把日子，慢慢過成自己喜歡的樣子', sub:'從個人的重新開始，走向「朵朵曉語」想陪伴更多人的初衷。',
+  letterTo:'這裡是朵朵曉語', letter:'陪妳，把日子慢慢過成自己喜歡的樣子。',
+  body:`我知道，有些女人在走進婚姻之後，才慢慢發現，原來生活和自己曾經想像的模樣，可以有這麼大的差距。
+有些委屈，不知道該向誰說。有些困難，即使說出口，也未必有人能夠理解。有時候，我們不是沒有努力過，只是走著走著，才發現，原來有些問題不是一個人努力就能解決；有些關係，也不是只要自己再多忍耐一點，就能回到最初的模樣。
+在人前，我們依然扮演著好妻子、好媽媽、好女兒，或是一個什麼事情都能處理好的大人。但那些沒有說出口的疲憊、失落與無奈，也是真實存在的。
+每個人的故事都不一樣。有人正在努力維持一段關係，有人還在思考該不該離開，有人已經做出了選擇，卻仍然要面對接下來的生活。我們都有各自的難題，也都有不容易被別人看見的那一面。
+> 妳不需要因為自己正在經歷困難，就覺得是自己不夠好。
+妳可以有不知所措的時候，可以暫時找不到答案，也可以在照顧別人很久之後，重新問問自己：我真正想要的是什麼？我希望未來的日子，過得像什麼模樣？除了扮演好每一個角色，我還能不能好好成為自己？
+這些問題，不一定要今天就有答案。有時候，我們需要的不是另一個人告訴自己應該怎麼做，而是一個願意理解我們、陪我們整理思緒，讓我們可以慢慢找到方向的地方。
+這也是我想開始「朵朵曉語」的原因。我想把自己走過的路、曾經有過的困惑，以及在生命轉折中慢慢學會的事，整理成文字、分享、活動與陪伴。我希望這裡不只是我說故事的地方，也能成為更多人願意停下來、聽聽自己心聲的地方。
+> 妳不是唯一一個正在努力的人。
+我們不必急著變得更好，也不必急著證明自己已經放下。就從看見自己的感受開始，從照顧好今天的自己開始。慢慢整理，慢慢前進。慢慢把日子，過成自己真正喜歡的樣子。
+—— 朵朵曉語` }
+];
+
+const NAV = [['home','首頁'],['farewell','好好告別'],['about','關於朵朵'],['stories','新生故事'],['whispers','朵朵曉語'],['partner','一起創造美好']];
+const SECTION_OF = { set:'farewell', story:'stories', article:'whispers' };
+
+class Component extends DCLogic {
+  state = (() => {
+    const q = new URLSearchParams(location.search);
+    const n = k => parseInt(q.get(k) || '0', 10) || 0;
+    return { page: q.get('page') || 'home', set:n('set'), story:n('story'), article:n('article'), sent:false, menu:false, w: window.innerWidth };
+  })();
+  componentDidMount() { this.onResize = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this.onResize); }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); }
+  go(page, extra) { this.setState({ page, menu:false, ...(extra||{}) }); window.scrollTo(0,0); }
+  renderVals() {
+    const { page, set, story, article, sent, menu, w } = this.state;
+    const mobile = w < 820;
+    const active = SECTION_OF[page] || page;
+    const a = ARTICLES[article];
+    const blocks = a.body.split('\n').map(l => {
+      if (l.startsWith('## ')) return { text:l.slice(3), font:"'Noto Serif TC',serif", size:'22px', lh:'1.7', color:'#8C4A46', margin:'28px 0 0', pad:'0', border:'none' };
+      if (l.startsWith('> ')) return { text:l.slice(2), font:"'Noto Serif TC',serif", size:'19px', lh:'2', color:'#3A2826', margin:'10px 0', pad:'4px 0 4px 22px', border:'2px solid #C9A88E' };
+      if (l.startsWith('——')) return { text:l, font:"'Noto Serif TC',serif", size:'16px', lh:'2', color:'#8C4A46', margin:'8px 0 0', pad:'0', border:'none' };
+      return { text:l, font:"'Noto Sans TC',sans-serif", size:'16.5px', lh:'2.15', color:'#4E3835', margin:'0', pad:'0', border:'none' };
+    });
+    const sets = SETS.map((s,i) => ({ ...s, open:() => this.go('set',{ set:i }) }));
+    return {
+      nav: NAV.map(([k,label]) => ({ label, go:() => this.go(k), color: active===k ? '#8C4A46' : '#5A4340', line: active===k ? '#A9605A' : 'transparent', mark: active===k ? '✦' : '→' })),
+      footPad: mobile && page==='set' ? '110px' : '36px',
+      isMobile: mobile, isDesktop: !mobile, menuOpen: mobile && menu,
+      toggleMenu: () => this.setState(s => ({ menu: !s.menu })),
+      heroImgW: mobile ? '260px' : '440px', stick: mobile ? 'static' : 'sticky',
+      listCols: mobile ? '44px minmax(0,1fr)' : 'minmax(0,120px) minmax(0,1fr)', listPad: mobile ? '26px 0' : '34px 0',
+      goHome:() => this.go('home'), goAbout:() => this.go('about'), goFarewell:() => this.go('farewell'),
+      goWhispers:() => this.go('whispers'), goStories:() => this.go('stories'),
+      isHome: page==='home', isFarewell: page==='farewell', isSet: page==='set', isAbout: page==='about',
+      isStories: page==='stories', isStory: page==='story', isWhispers: page==='whispers', isArticle: page==='article', isPartner: page==='partner',
+      sets, cur: SETS[set], otherSets: sets.filter((_,i) => i!==set),
+      pillars: [{zh:'美麗',en:'BEAUTY'},{zh:'紀錄',en:'MEMORY'},{zh:'儀式',en:'RITUAL'},{zh:'生活',en:'LIVING'}],
+      roadmap: ['妝髮 × 寫真','花藝 × 寫真','美麗 × 攝影 × 餐飲','儀式 × 生活體驗','跨品牌專業組合'],
+      showRoadmap: this.props.showRoadmap ?? true,
+      aboutParas: ABOUT.map(t => t.startsWith('>')
+        ? { text:t.slice(1), size:'19px', color:'#8C4A46', font:"'Noto Serif TC',serif" }
+        : { text:t, size:'16px', color:'#5A4340', font:"'Noto Sans TC',sans-serif" }),
+      stories: STORIES.map((s,i) => ({ ...s, open:() => this.go('story',{ story:i }) })),
+      curStory: STORIES[story], storyParts: STORY_PARTS,
+      articles: ARTICLES.map((x,i) => ({ ...x, open:() => this.go('article',{ article:i }) })),
+      curArticle: a, articleBlocks: blocks,
+      prevLabel: article>0 ? '← ' + ARTICLES[article-1].title : '',
+      nextLabel: article<ARTICLES.length-1 ? ARTICLES[article+1].title + ' →' : '',
+      prevArticle: () => article>0 && this.go('article',{ article:article-1 }),
+      nextArticle: () => article<ARTICLES.length-1 && this.go('article',{ article:article+1 }),
+      sent, notSent: !sent, send: () => this.setState({ sent:true })
+    };
+  }
+}
+</script>
+</body>
+</html>

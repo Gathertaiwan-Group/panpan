@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+.DS_Store
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+design_handoff_duoduo_website/docs/
+playwright-report/
+test-results/

@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* README §6 Design Tokens — 原型 inline style 為唯一真相 */
+@theme {
+  --breakpoint-dt: 820px; /* RWD 斷點：<820 行動版 */
+
+  --color-cream: #faf5f2; /* bg */
+  --color-blush: #f3e6e0;
+  --color-rose: #a35b55;
+  --color-rose-deep: #8c4a46;
+  --color-rose-hover: #a9605a;
+  --color-ink: #3a2826;
+  --color-ink-2: #4e3835;
+  --color-body: #5a4340;
+  --color-muted: #7a615d;
+  --color-gold: #9c7a5c;
+  --color-gold-line: #c9a88e;
+  --color-line: #eadad3;
+  --color-line-2: #d9bfb4;
+  --color-input-line: #dcc7be;
+  --color-on-rose: #fbefea;
+  --color-on-rose-2: #f4d9cf;
+  --color-foot-text: #e9d6ce;
+  --color-foot-muted: #bfa59c;
+  --color-row-hover: #f7eeea;
+
+  --font-serif: var(--font-noto-serif), "Noto Serif TC", serif;
+  --font-sans: var(--font-noto-sans), "Noto Sans TC", sans-serif;
+  --font-en: var(--font-cormorant), "Cormorant Garamond", serif;
+  --font-mono: ui-monospace, Menlo, monospace;
+}
+
+@layer base {
+  html {
+    line-height: normal; /* 原型未指定行高處沿用瀏覽器 normal */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  html,
+  body {
+    margin: 0;
+    background: #faf5f2;
+    color: #3a2826;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    font-family: var(--font-sans);
+    -webkit-tap-highlight-color: rgba(163, 91, 85, 0.12);
+  }
+  a {
+    color: #8c4a46;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #a9605a;
+  }
+  input,
+  textarea,
+  select,
+  button {
+    font-family: inherit;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: pretty;
+  }
+  /* 鍵盤焦點可見（滑鼠點擊不顯示） */
+  :focus-visible {
+    outline: 2px solid #a9605a;
+    outline-offset: 3px;
+  }
+  /* 全螢幕選單 / 對話框開啟時鎖捲動 */
+  html.scroll-locked,
+  html.scroll-locked body {
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  /* 照片佔位斜紋 */
+  .photo-stripes {
+    background: repeating-linear-gradient(135deg, #efe1da 0 10px, #f5eae4 10px 20px);
+  }
+  /* 擴大點擊範圍（不影響視覺排版）：小字連結在手機上仍有 ≥44px 觸控區 */
+  .hit {
+    position: relative;
+  }
+  .hit::after {
+    content: "";
+    position: absolute;
+    inset: -12px -8px;
+  }
+  /* Hero Logo 邊緣融入玫瑰底 */
+  .hero-logo-mask {
+    -webkit-mask-image: radial-gradient(ellipse 72% 66% at 50% 48%, #000 58%, transparent 100%);
+    mask-image: radial-gradient(ellipse 72% 66% at 50% 48%, #000 58%, transparent 100%);
+  }
+}
+
+/* 詳細頁有底部固定 CTA 時，Footer 底部加高避免被遮（原型 footPad 110px） */
+@media (max-width: 819.98px) {
+  body:has([data-mobile-cta]) footer {
+    padding-bottom: 110px;
+  }
+}
+
+/* select：移除 iOS 圓角漸層後補回箭頭 */
+.select-chevron {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%237A615D' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+/* 段落避免單字孤行（原型未處理；lang=zh-Hant-TW 下「——」為全形寬度，斷行可能與原型略有不同） */
+p,
+blockquote,
+li {
+  text-wrap: pretty;
+}
