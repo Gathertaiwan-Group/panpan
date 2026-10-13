@@ -127,9 +127,17 @@ export async function getWhisper(slug: string) {
  * 依品牌文件不得虛構會員案例——Supabase 尚無已公開故事時，顯示 content.json
  * 的 3 則「範例」（與原型一致，詳細頁為四段架構提示框，不含虛構內文）。
  */
+/** 範例故事（尚無經同意的真實故事時）：封面用 Storage 的 AI 意境圖，不露臉 */
+function sampleStories(): Story[] {
+  return fallbackStories.map((s) => ({
+    ...s,
+    coverUrl: s.coverUrl ?? storagePublicUrl(`panpan-stories/samples/${s.slug}.jpg`),
+  }));
+}
+
 export async function getStories(): Promise<Story[]> {
   const db = contentClient(["stories"]);
-  if (!db) return fallbackStories;
+  if (!db) return sampleStories();
   const { data, error } = await db
     .from("stories")
     .select("slug,no,title,summary,before_text,what_i_did,record_text,closing_quote,gallery_paths,author_display")
@@ -139,7 +147,7 @@ export async function getStories(): Promise<Story[]> {
     .order("created_at", { ascending: true });
   if (error || !data?.length) {
     if (error) warn("stories", error.message);
-    return fallbackStories;
+    return sampleStories();
   }
   return (data as StoryRow[]).map((r, i) => ({
     slug: r.slug,

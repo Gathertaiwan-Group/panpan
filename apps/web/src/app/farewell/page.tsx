@@ -3,6 +3,7 @@ import { content } from "@duoduo/content";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { getRoadmap, getSets } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
+import { storagePublicUrl } from "@/lib/env";
 import { Phrase } from "@/components/Phrase";
 
 export const revalidate = 300;
@@ -62,7 +63,12 @@ export default async function FarewellPage() {
 
       <section data-screen-label="好好告別 是什麼" className="px-[clamp(20px,4vw,48px)] py-[clamp(72px,9vw,120px)]">
         <div className="mx-auto grid max-w-[1140px] grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] items-center gap-[clamp(32px,6vw,90px)]">
-          <PhotoSlot ratio="4/5" label="形象照：鏡前重新打理自己的女性" pad={16} />
+          <PhotoSlot
+            ratio="4/5"
+            label="形象照：鏡前重新打理自己的女性"
+            src={storagePublicUrl("panpan-brand/farewell-portrait.jpg")}
+            pad={16}
+          />
           <div className="flex flex-col gap-[22px] text-[16px] leading-[2.1] text-body">
             <h2 className="m-0 font-serif text-[clamp(24px,2.6vw,32px)] leading-[1.7] font-normal tracking-[.08em] text-ink">
               為每一次重要的轉身，
