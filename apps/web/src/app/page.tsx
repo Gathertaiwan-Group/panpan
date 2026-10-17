@@ -6,7 +6,6 @@ import { PhotoSlot } from "@/components/PhotoSlot";
 import { Phrase } from "@/components/Phrase";
 import { SectionHead } from "@/components/SectionHead";
 import { getSets } from "@/lib/data";
-import logo from "../../public/images/logo-full.webp";
 
 export const revalidate = 300;
 
@@ -49,16 +48,8 @@ export default async function HomePage() {
 
       {/* 2. 朵朵是誰 */}
       <section data-screen-label="首頁 朵朵是誰" className="bg-dawn-glow overflow-hidden text-ink">
-        <div className="mx-auto grid max-w-[1140px] items-center gap-[clamp(28px,6vw,90px)] px-[clamp(20px,4vw,48px)] py-[clamp(72px,9vw,120px)] dt:grid-cols-[minmax(0,.8fr)_minmax(0,1fr)]">
-          <div data-reveal className="flex justify-center">
-            <Image
-              src={logo}
-              alt="朵朵曉語 Logo"
-              sizes="(max-width: 819px) 220px, 360px"
-              className="aspect-[2/3] h-auto w-full max-w-[220px] object-cover dt:max-w-[360px]"
-            />
-          </div>
-          <div className="poem flex flex-col gap-6 text-center dt:text-left">
+        <div className="mx-auto max-w-[760px] px-[clamp(20px,4vw,48px)] py-[clamp(72px,9vw,120px)]">
+          <div className="poem flex flex-col items-center gap-6 text-center">
             <span data-reveal className="font-en text-[14px] tracking-[.3em] text-gold">
               WHO IS DUODUO
             </span>
@@ -75,7 +66,7 @@ export default async function HomePage() {
             <Link
               data-reveal
               href="/about"
-              className="hit self-center border-b border-gold-line pb-1 text-[15px] tracking-[.16em] text-rose-deep hover:text-rose-deep dt:self-start"
+              className="hit border-b border-gold-line pb-1 text-[15px] tracking-[.16em] text-rose-deep hover:text-rose-deep"
             >
               認識朵朵 →
             </Link>
