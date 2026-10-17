@@ -1,7 +1,7 @@
 import "server-only";
 import { redirect } from "next/navigation";
 import { userDb } from "../server/user-db";
-import { accessRedirect } from "./access";
+import { accessRedirect, accountRedirect } from "./access";
 
 export interface Staff {
   userId: string;
@@ -55,4 +55,12 @@ export async function requireVendor(): Promise<Staff & { vendorId: string }> {
   const to = accessRedirect("vendor", staff, staff ? true : await isLoggedIn());
   if (to || !staff) redirect(to ?? "/login");
   return staff as Staff & { vendorId: string };
+}
+
+/** 管理員與供應商都可用的頁面／Server Action（例如變更密碼） */
+export async function requireStaff(): Promise<Staff> {
+  const staff = await getStaff();
+  const to = accountRedirect(staff, staff ? true : await isLoggedIn());
+  if (to || !staff) redirect(to ?? "/login");
+  return staff;
 }

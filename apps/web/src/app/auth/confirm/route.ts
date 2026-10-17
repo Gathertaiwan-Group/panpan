@@ -8,7 +8,10 @@ export const dynamic = "force-dynamic";
 
 const ALLOWED: EmailOtpType[] = ["magiclink", "email"];
 
-/** magic link 落地：verifyOtp → 依角色導向 /admin 或 /vendor；沒有 staff 紀錄 → 登出並拒絕 */
+/**
+ * magic link 落地（「忘記密碼／用登入連結」備援）：verifyOtp → 沒有 staff 紀錄 → 登出並拒絕；
+ * 有後台身分 → 一律導到變更密碼頁（尚未設密碼或忘記密碼的人在此設定；頁面上可略過直接進後台）。
+ */
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const tokenHash = url.searchParams.get("token_hash") ?? "";
@@ -26,5 +29,5 @@ export async function GET(req: Request) {
     await db.auth.signOut();
     return to("/login?error=no_access");
   }
-  return to(staff.role === "admin" ? "/admin" : "/vendor");
+  return to("/account/password?from=link");
 }

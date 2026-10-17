@@ -3,6 +3,7 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { authPasswordErrorMessage, passwordError } from "@/lib/auth/password";
 import { requireAdmin } from "@/lib/auth/staff";
 import { adminAuth, adminDb } from "@/lib/server/admin-db";
 
@@ -77,22 +78,39 @@ export async function setVendorActive(fd: FormData) {
   });
 }
 
-/** 為供應商建立登入帳號（Supabase Auth，email 已驗證、不設密碼；之後用 magic link 登入） */
+/**
+ * 為供應商建立登入帳號（Supabase Auth，email 已驗證）。
+ * mode=password：管理員設定初始密碼（套用密碼規則）；mode=link：不設密碼，供應商用登入連結登入後自行設定。
+ * 密碼只傳給 Supabase Auth，不寫 log、不進 DB 一般欄位、不出現在導回網址。
+ */
 export async function createVendorLogin(fd: FormData) {
   await requireAdmin();
   const vendorId = z.string().uuid().safeParse(fd.get("vendor_id"));
   const email = z.string().trim().toLowerCase().email().max(254).safeParse(fd.get("email"));
   if (!vendorId.success || !email.success) back("/admin/vendors", { err: "請填寫正確的 Email。" });
+  const withPassword = fd.get("mode") === "password";
+  const rawPassword = fd.get("password");
+  const password = withPassword && typeof rawPassword === "string" ? rawPassword : null;
+  if (withPassword) {
+    const pwErr = passwordError(rawPassword);
+    if (pwErr) back("/admin/vendors", { err: `初始密碼不符合規則：${pwErr}` });
+  }
   const db = adminDb();
   const { data: vendor } = await db.from("vendors").select("id,active").eq("id", vendorId.data).maybeSingle();
   if (!vendor) back("/admin/vendors", { err: "找不到供應商。" });
 
   let userId: string | null = null;
-  const created = await adminAuth().createUser({ email: email.data, email_confirm: true });
+  let existedBefore = false;
+  const created = await adminAuth().createUser(
+    password ? { email: email.data, password, email_confirm: true } : { email: email.data, email_confirm: true },
+  );
   if (created.data.user) {
     userId = created.data.user.id;
+  } else if (created.error?.code === "weak_password") {
+    back("/admin/vendors", { err: authPasswordErrorMessage("weak_password") });
   } else if (created.error && (created.error.code === "email_exists" || /already/i.test(created.error.message))) {
-    // 已有 Auth 帳號（例如之前建過）→ 找出來綁定
+    // 已有 Auth 帳號（例如之前建過）→ 找出來綁定（不改動其既有密碼）
+    existedBefore = true;
     for (let page = 1; page <= 20 && !userId; page++) {
       const { data, error } = await adminAuth().listUsers({ page, perPage: 200 });
       if (error || !data.users.length) break;
@@ -114,7 +132,38 @@ export async function createVendorLogin(fd: FormData) {
     .insert({ user_id: userId, email: email.data, role: "vendor", vendor_id: vendorId.data, active: true });
   if (error) back("/admin/vendors", { err: `綁定失敗：${error.message}` });
   revalidatePath("/admin/vendors");
-  back("/admin/vendors", { msg: `已建立登入帳號 ${email.data}。請供應商到 /login 輸入 Email 取得登入連結。` });
+  back("/admin/vendors", {
+    msg: existedBefore
+      ? `已綁定既有帳號 ${email.data}（未變更其密碼）。如需設定密碼，請用「重設密碼」，或請供應商用 /login 的 Email 登入連結登入後自行設定。`
+      : password
+        ? `已建立登入帳號 ${email.data}，並設定初始密碼。請以安全管道告知供應商，並提醒登入後到「變更密碼」改成自己的密碼。`
+        : `已建立登入帳號 ${email.data}（未設密碼）。請供應商到 /login 點「改用 Email 登入連結」，登入後設定密碼。`,
+  });
+}
+
+/** 管理員重設既有供應商帳號的密碼（只限已綁定為供應商的帳號；不可重設管理員） */
+export async function resetVendorPassword(fd: FormData) {
+  await requireAdmin();
+  const userId = z.string().uuid().safeParse(fd.get("user_id"));
+  if (!userId.success) back("/admin/vendors", { err: "資料不正確" });
+  const password = fd.get("password");
+  const pwErr = passwordError(password);
+  if (pwErr) back("/admin/vendors", { err: `新密碼不符合規則：${pwErr}` });
+  const { data: row } = await adminDb()
+    .from("staff")
+    .select("email,role")
+    .eq("user_id", userId.data)
+    .eq("role", "vendor")
+    .maybeSingle();
+  if (!row) back("/admin/vendors", { err: "找不到這個供應商帳號。" });
+  const { error } = await adminAuth().updateUserById(userId.data, { password: password as string });
+  if (error) {
+    console.warn("[admin] resetVendorPassword:", error.status, error.code);
+    back("/admin/vendors", { err: authPasswordErrorMessage(error.code) });
+  }
+  back("/admin/vendors", {
+    msg: `已重設 ${row.email ?? "該帳號"} 的密碼。請以安全管道告知供應商，並提醒登入後到「變更密碼」改成自己的密碼。`,
+  });
 }
 
 export async function setStaffActive(fd: FormData) {

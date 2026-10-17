@@ -8,3 +8,9 @@ export function accessRedirect(
   if (area === "admin") return staff.role === "admin" ? null : "/vendor?denied=admin"; // 供應商進 /admin 被拒
   return staff.role === "vendor" && staff.vendorId ? null : "/admin";
 }
+
+/** 帳號頁（變更密碼）：管理員與供應商都能進；未登入 → /login，已登入但無後台身分 → 登出拒絕 */
+export function accountRedirect(staff: { role: "admin" | "vendor" } | null, loggedIn: boolean, path = "/account/password"): string | null {
+  if (staff) return null;
+  return loggedIn ? "/auth/denied" : `/login?next=${encodeURIComponent(path)}`;
+}
