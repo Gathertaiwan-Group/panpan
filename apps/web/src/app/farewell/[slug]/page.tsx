@@ -45,6 +45,8 @@ export default async function SetPage({ params }: Props) {
             label={cur.photo}
             src={cur.coverUrl}
             pad={16}
+            priority
+            sizes="(max-width: 819px) 100vw, 50vw"
             className="max-dt:max-h-[max(300px,calc(100svh_-_260px_-_env(safe-area-inset-bottom)))] dt:sticky dt:top-[110px]"
           />
           <div className="flex flex-col gap-6">
@@ -62,18 +64,18 @@ export default async function SetPage({ params }: Props) {
               ))}
             </div>
             <SetActions slug={cur.slug} name={cur.name} lineUrl={LINE_URL} />
-            <div className="mt-3 flex flex-col gap-[10px]">
+            <div className="mt-6 flex flex-col gap-4">
               <span className="text-[13px] tracking-[.14em] text-muted">其他體驗</span>
-              {others.map((o) => (
-                <Link
-                  key={o.slug}
-                  href={`/farewell/${o.slug}`}
-                  className="flex justify-between border-b border-line py-[14px] font-serif text-[16px] text-ink hover:text-rose-deep"
-                >
-                  <span>{o.name}</span>
-                  <span>→</span>
-                </Link>
-              ))}
+              <div className="grid grid-cols-2 gap-3">
+                {others.map((o) => (
+                  <Link key={o.slug} href={`/farewell/${o.slug}`} className="group flex flex-col gap-2 text-ink hover:text-rose-deep">
+                    <PhotoSlot ratio="4/5" label={o.photo} src={o.coverUrl} sizes="(max-width: 819px) 50vw, 240px" />
+                    <span className="poem font-serif text-[15px] leading-[1.6] tracking-[.06em]">
+                      <Phrase text={o.name} /> →
+                    </span>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>

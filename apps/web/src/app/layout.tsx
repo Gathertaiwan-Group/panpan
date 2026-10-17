@@ -1,25 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Noto_Sans_TC, Noto_Serif_TC } from "next/font/google";
+import { Cormorant_Garamond, Noto_Serif_TC } from "next/font/google";
 import { BrandClosing } from "@/components/BrandClosing";
+import { RevealObserver } from "@/components/Reveal";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SITE_URL } from "@/lib/env";
 import { SITE_DESC, SITE_NAME } from "@/lib/seo";
 import "./globals.css";
 
+// 可變字重：@font-face 數量從「字重 × 子集」降為「子集」，縮小阻塞渲染的 CSS
 const serif = Noto_Serif_TC({
-  weight: ["300", "400", "500", "600"],
+  weight: "variable",
   variable: "--font-noto-serif",
   display: "swap",
   preload: false,
   // CJK 字型不在 Google 子集內的字元（如「——」）需落到系統字型，與原型一致；不用 Arial 調整後備字
-  adjustFontFallback: false,
-});
-const sans = Noto_Sans_TC({
-  weight: ["300", "400", "500"],
-  variable: "--font-noto-sans",
-  display: "swap",
-  preload: false,
   adjustFontFallback: false,
 });
 const en = Cormorant_Garamond({
@@ -57,7 +52,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="zh-Hant-TW" className={`${serif.variable} ${sans.variable} ${en.variable}`}>
+    <html lang="zh-Hant-TW" className={`${serif.variable} ${en.variable}`}>
       <body>
         <div className="flex min-h-screen flex-col">
           <SiteHeader />
@@ -67,6 +62,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           </main>
           <SiteFooter />
         </div>
+        <RevealObserver />
       </body>
     </html>
   );

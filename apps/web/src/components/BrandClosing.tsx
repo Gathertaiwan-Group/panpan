@@ -1,28 +1,27 @@
+import Image from "next/image";
+
 export function BrandClosing() {
   return (
-    <section
-      data-screen-label="品牌收尾"
-      className="bg-blush px-6 py-[clamp(80px,11vw,150px)] text-center"
-    >
-      <div className="poem mx-auto flex max-w-[600px] flex-col items-center gap-7 font-serif">
-        <h2 className="m-0 text-[clamp(26px,3.2vw,40px)] leading-[1.6] font-normal tracking-[.1em] text-ink">
+    <section data-screen-label="品牌收尾" className="relative isolate overflow-hidden bg-ink-2 text-center text-white">
+      <Image
+        src="/images/closing.webp"
+        alt=""
+        fill
+        sizes="100vw"
+        className="-z-10 object-cover object-[50%_60%] opacity-90"
+      />
+      <div aria-hidden className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(58,40,38,.18)_0%,rgba(58,40,38,.55)_100%)]" />
+      <div className="poem on-photo mx-auto flex min-h-[min(78svh,640px)] max-w-[640px] flex-col items-center justify-center gap-7 px-6 py-[clamp(88px,12vw,150px)] font-serif">
+        <h2 data-reveal className="m-0 text-[clamp(26px,3.4vw,42px)] leading-[1.6] font-normal tracking-[.1em]">
           妳不需要急著開花。
           <br />
-          每一朵花，都有自己的花期。
+          <span className="inline-block">每一朵花，</span>
+          <span className="inline-block">都有自己的花期。</span>
         </h2>
-        <p className="m-0 text-[17px] leading-[2.2] tracking-[.06em] text-ink-2">
-          也許現在的妳，還在土裡。也許正在生根。
-          <br />
-          也許已經看見了一點光。沒關係，慢慢來。
-          <br />
-          那些曾經走過的路，都會成為妳的養分。
-        </p>
-        <p className="m-0 text-[18px] leading-[2] text-rose-deep">有一天妳會發現：原來妳一直都在成為自己。</p>
-        <div className="h-11 w-px bg-gold-line" />
-        <p className="m-0 text-[16px] leading-[2] tracking-[.1em] text-ink-2">
-          我是朵朵，這裡是朵朵曉語。
-          <br />
-          願我們都能，好好告別，然後好好開始。
+        <div aria-hidden className="h-11 w-px bg-on-rose-2" />
+        <p data-reveal className="m-0 text-[17px] leading-[2] tracking-[.1em] text-on-rose">
+          <span className="inline-block">願我們都能，好好告別，</span>
+          <span className="inline-block">然後好好開始。</span>
         </p>
       </div>
     </section>

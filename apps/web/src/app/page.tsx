@@ -1,158 +1,165 @@
 import Image from "next/image";
 import Link from "next/link";
+import { HeroPicture } from "@/components/HeroPicture";
+import { JourneyStrip } from "@/components/Journey";
 import { PhotoSlot } from "@/components/PhotoSlot";
+import { Phrase } from "@/components/Phrase";
+import { SectionHead } from "@/components/SectionHead";
 import { getSets } from "@/lib/data";
 import logo from "../../public/logo.jpg";
-import { Phrase } from "@/components/Phrase";
 
 export const revalidate = 300;
+
+const btnLight =
+  "inline-flex min-h-[48px] items-center bg-on-rose px-[28px] text-[15px] tracking-[.16em] text-rose-deep hover:bg-white hover:text-rose-deep";
+const btnGhostLight =
+  "inline-flex min-h-[48px] items-center border border-on-rose-2 px-[28px] text-[15px] tracking-[.16em] text-white hover:bg-[rgba(255,255,255,.12)] hover:text-white";
 
 export default async function HomePage() {
   const sets = await getSets();
   return (
     <>
-      <section data-screen-label="首頁 Hero" className="overflow-hidden bg-rose text-on-rose">
-        <div className="mx-auto grid max-w-[1240px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-center gap-[clamp(32px,5vw,72px)] px-[clamp(20px,4vw,48px)] py-[clamp(40px,6vw,80px)]">
-          <div className="flex justify-center">
-            <Image
-              src={logo}
-              alt="朵朵曉語 Logo"
-              priority
-              sizes="(max-width: 819px) 260px, 440px"
-              className="hero-logo-mask aspect-[2/3] h-auto w-full max-w-[260px] object-cover dt:max-w-[440px]"
-            />
-          </div>
-          <div className="flex flex-col gap-7">
-            <span className="font-en text-[18px] tracking-[.14em] text-on-rose-2 italic">Every flower has its own season</span>
-            <h1 className="m-0 font-serif text-[clamp(32px,4.2vw,54px)] leading-[1.45] font-normal tracking-[.08em]">
+      {/* 1. Hero：滿版情境圖 + 主標 */}
+      <section data-screen-label="首頁 Hero" className="relative isolate overflow-hidden bg-ink-2 text-white">
+        <HeroPicture alt="晨光窗邊，捧著粉色玫瑰的女性背影" />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(58,40,38,.05)_30%,rgba(58,40,38,.68)_100%)] dt:bg-[linear-gradient(90deg,rgba(58,40,38,.58)_0%,rgba(58,40,38,.2)_55%,transparent_80%)]"
+        />
+        <div className="mx-auto flex min-h-[calc(100svh-68px)] max-w-[1240px] flex-col justify-end px-[clamp(20px,4vw,48px)] pt-24 pb-[clamp(44px,8vw,96px)] dt:min-h-[min(calc(100svh-68px),760px)] dt:justify-center">
+          <div className="on-photo flex max-w-[560px] flex-col gap-6">
+            <span className="font-en text-[17px] tracking-[.14em] text-on-rose italic">Every flower has its own season</span>
+            <h1 className="m-0 font-serif text-[clamp(32px,4.4vw,56px)] leading-[1.45] font-normal tracking-[.08em]">
               每一朵花，
               <br />
               都有屬於自己的花期
             </h1>
-            <p className="poem m-0 font-serif text-[clamp(16px,1.5vw,19px)] leading-[2] tracking-[.1em] text-on-rose">
-              把走過的每一步人生，化作溫柔而堅定的心語
-            </p>
-            <div className="mt-2 flex flex-wrap gap-[14px]">
-              <Link
-                href="/about"
-                className="bg-on-rose px-[30px] py-[15px] text-[15px] tracking-[.16em] text-rose-deep hover:bg-white hover:text-rose-deep"
-              >
-                認識朵朵 →
+            <p className="m-0 font-serif text-[clamp(16px,1.5vw,19px)] tracking-[.16em] text-on-rose">在人生轉場時・陪妳優雅重啟</p>
+            <div className="mt-2 flex flex-wrap gap-3">
+              <Link href="/farewell" className={btnLight}>
+                探索體驗 →
               </Link>
-              <Link
-                href="/farewell"
-                className="border border-on-rose-2 px-[30px] py-[14px] text-[15px] tracking-[.16em] text-on-rose hover:bg-[rgba(255,255,255,.1)] hover:text-on-rose"
-              >
-                探索好好告別 →
+              <Link href="/about" className={btnGhostLight}>
+                認識朵朵
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      <section data-screen-label="首頁 序言" className="px-6 py-[clamp(72px,10vw,140px)] text-center">
-        <div className="poem mx-auto flex max-w-[620px] flex-col gap-[30px] font-serif text-[clamp(16px,1.6vw,19px)] leading-[2.2] tracking-[.08em] text-ink-2">
-          <p className="m-0">
-            人生很多時候，
-            <br />
-            我們常常會有告別一個人、<span className="whitespace-nowrap">一段關係、一種身分、</span>
-            <br />
-            一種生活，或是一種模式的時候——
-            <br />
-            同時，也正在重新認識自己。
-          </p>
-          <div className="mx-auto h-12 w-px bg-gold-line" />
-          <p className="m-0">
-            我相信，每個人都是世上獨一無二的一朵花，
-            <br />
-            都有屬於自己的花期。
-          </p>
-          <p className="m-0">
-            有些日子，我們正在黑暗裡生根；
-            <br />
-            有些日子，我們終於迎來破曉。
-            <br />
-            而那些曾經走過的路，
-            <br />
-            也許最後都會成為我們綻放的養分。
-          </p>
-          <p className="m-0 text-[clamp(18px,1.9vw,22px)] text-rose-deep">
-            我是朵朵，
-            <br />
-            這裡，是「朵朵曉語」。
-          </p>
-        </div>
-      </section>
-
-      <section data-screen-label="首頁 IP × 品牌" className="bg-blush px-[clamp(20px,4vw,48px)] py-[clamp(72px,9vw,120px)]">
-        <div className="mx-auto flex max-w-[1140px] flex-col gap-14">
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-start gap-[clamp(28px,5vw,80px)]">
-            <h2 className="m-0 font-serif text-[clamp(24px,2.8vw,34px)] leading-[1.7] font-normal tracking-[.08em] text-ink">
-              朵朵的故事，
+      {/* 2. 朵朵是誰 */}
+      <section data-screen-label="首頁 朵朵是誰" className="overflow-hidden bg-rose text-on-rose">
+        <div className="mx-auto grid max-w-[1140px] items-center gap-[clamp(28px,6vw,90px)] px-[clamp(20px,4vw,48px)] py-[clamp(72px,9vw,120px)] dt:grid-cols-[minmax(0,.8fr)_minmax(0,1fr)]">
+          <div data-reveal className="flex justify-center">
+            <Image
+              src={logo}
+              alt="朵朵曉語 Logo"
+              sizes="(max-width: 819px) 220px, 360px"
+              className="hero-logo-mask aspect-[2/3] h-auto w-full max-w-[220px] object-cover dt:max-w-[360px]"
+            />
+          </div>
+          <div className="poem flex flex-col gap-6 text-center dt:text-left">
+            <span data-reveal className="font-en text-[14px] tracking-[.3em] text-on-rose-2">
+              WHO IS DUODUO
+            </span>
+            <h2 data-reveal className="m-0 font-serif text-[clamp(26px,3.2vw,40px)] leading-[1.6] font-normal tracking-[.1em]">
+              我是朵朵。
               <br />
-              陪妳在每個人生轉場時刻，
-              <br />
-              一起找回最初的自己。
+              <span className="inline-block">曾經弄丟自己，</span>
+              <span className="inline-block">也把自己找了回來。</span>
             </h2>
-            <div className="flex flex-col gap-[18px] text-[16px] leading-[2.1] tracking-[.06em] text-body">
-              <p className="m-0">每個人，都走在人生不同的季節。有些時候，我們正在告別；有些時候，我們正在重新開始。</p>
-              <p className="m-0">
-                而那些曾經走過的迷惘、失去與重新整理，慢慢也能變成帶給妳力量的種子。如果妳現在，也正在人生的某個轉場裡，希望這裡，能陪妳一起走一段。
-              </p>
-              <p className="m-0 font-serif text-rose-deep">不用急著成為誰，慢慢找回自己就好。</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] gap-6">
-            <div className="flex flex-col gap-5 bg-cream p-[clamp(28px,4vw,48px)]">
-              <span className="font-en text-[14px] tracking-[.3em] text-gold">WHISPERS</span>
-              <h3 className="m-0 font-serif text-[26px] font-medium tracking-[.14em] text-rose-deep">朵朵曉語</h3>
-              <p className="poem m-0 font-serif text-[18px] leading-[1.8] text-ink">把走過的人生，沉澱成溫柔且堅強的心語</p>
-              <p className="m-0 text-[15px] leading-[2] text-body">這裡有我的故事、我的生活、我的體悟，也有那些一路走來，慢慢才明白的事。</p>
-              <Link
-                href="/whispers"
-                className="hit mt-auto self-start border-b border-gold-line pb-1 text-[15px] tracking-[.14em] text-rose-deep"
-              >
-                走進朵朵曉語 →
-              </Link>
-            </div>
-            <div className="flex flex-col gap-5 bg-rose p-[clamp(28px,4vw,48px)] text-on-rose">
-              <span className="font-en text-[14px] tracking-[.3em] text-on-rose-2">A GRACEFUL FAREWELL</span>
-              <h3 className="m-0 font-serif text-[26px] font-medium tracking-[.14em]">好好告別</h3>
-              <p className="poem m-0 font-serif text-[18px] leading-[1.8]">陪妳，好好告別；也陪妳，好好開始。</p>
-              <p className="m-0 text-[15px] leading-[2]">
-                也許是一段讓自己重新變美的時光；也許是一張值得珍藏的照片；也許是一場只屬於自己的美好儀式。陪妳為每一個階段留下句點，也為下一個自己，留下美好的起點。
-              </p>
-              <Link
-                href="/farewell"
-                className="hit mt-auto self-start border-b border-on-rose-2 pb-1 text-[15px] tracking-[.14em] text-on-rose hover:text-on-rose-2"
-              >
-                探索好好告別 →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section data-screen-label="首頁 體驗入口" className="px-[clamp(20px,4vw,48px)] py-[clamp(72px,9vw,120px)]">
-        <div className="mx-auto flex max-w-[1140px] flex-col gap-11">
-          <div className="flex flex-wrap items-end justify-between gap-5">
-            <h2 className="m-0 font-serif text-[clamp(24px,2.8vw,34px)] font-normal tracking-[.1em]">為自己選一段值得的體驗</h2>
-            <Link href="/farewell" className="hit text-[14px] tracking-[.14em] text-rose-deep">
-              查看全部 →
+            <p data-reveal className="m-0 font-serif text-[17px] leading-[2] tracking-[.08em] text-on-rose-2">
+              <span className="inline-block">現在，我想陪正在轉場的妳，</span>
+              <span className="inline-block">走一段。</span>
+            </p>
+            <Link
+              data-reveal
+              href="/about"
+              className="hit self-center border-b border-on-rose-2 pb-1 text-[15px] tracking-[.16em] text-on-rose hover:text-white dt:self-start"
+            >
+              認識朵朵 →
             </Link>
           </div>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-6">
-            {sets.map((s) => (
-              <Link key={s.slug} href={`/farewell/${s.slug}`} className="flex flex-col gap-4 hover:opacity-[.88]">
-                <PhotoSlot ratio="4/5" label={s.photo} src={s.coverUrl} sizes="(max-width: 819px) 100vw, 33vw" />
-                <span className="font-en text-[13px] tracking-[.24em] text-gold">{s.no}</span>
-                <h3 className="poem m-0 font-serif text-[21px] font-medium tracking-[.1em] text-ink">
-                  <Phrase text={s.name} />
-                </h3>
-                <p className="m-0 text-[15px] leading-[1.9] text-body">{s.tagline}</p>
+        </div>
+      </section>
+
+      {/* 3. 好好告別是什麼：旅程五階段 */}
+      <section data-screen-label="首頁 好好告別" className="px-[clamp(20px,4vw,48px)] py-[clamp(72px,9vw,120px)]">
+        <div className="mx-auto flex max-w-[1240px] flex-col gap-10">
+          <SectionHead
+            eyebrow="A GRACEFUL FAREWELL"
+            title={
+              <>
+                <span className="inline-block">好好告別，</span>
+                <span className="inline-block">是一段溫柔的轉場</span>
+              </>
+            }
+            lead="陪妳好好告別，也陪妳好好開始。"
+          />
+          <JourneyStrip />
+          <Link href="/farewell" className="hit self-start border-b border-gold-line pb-1 text-[15px] tracking-[.14em] text-rose-deep">
+            探索好好告別 →
+          </Link>
+        </div>
+      </section>
+
+      {/* 4. 我能預約什麼：三個 SET */}
+      <section data-screen-label="首頁 體驗入口" className="bg-blush px-[clamp(20px,4vw,48px)] py-[clamp(72px,9vw,120px)]">
+        <div className="mx-auto flex max-w-[1240px] flex-col gap-10">
+          <SectionHead eyebrow="EXPERIENCES" title="為自己，選一段值得的體驗" />
+          <div className="grid gap-5 dt:grid-cols-3 dt:gap-6">
+            {sets.map((s, i) => (
+              <Link
+                key={s.slug}
+                href={`/farewell/${s.slug}`}
+                data-reveal
+                style={{ ["--reveal-delay" as string]: `${i * 110}ms` }}
+                className="group relative block overflow-hidden text-white hover:text-white"
+              >
+                <PhotoSlot
+                  ratio="4/5"
+                  label={s.photo}
+                  src={s.coverUrl}
+                  sizes="(max-width: 819px) 100vw, 33vw"
+                  className="transition-transform duration-700 group-hover:scale-[1.03]"
+                />
+                <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,transparent_50%,rgba(58,40,38,.7)_100%)]" />
+                <div className="on-photo absolute right-0 bottom-0 left-0 flex flex-col gap-2 p-6">
+                  <span className="font-en text-[13px] tracking-[.24em] text-on-rose-2">{s.no}</span>
+                  <h3 className="poem m-0 font-serif text-[23px] font-medium tracking-[.1em]">
+                    <Phrase text={s.name} />
+                  </h3>
+                  <p className="m-0 font-serif text-[15px] leading-[1.8] tracking-[.06em] text-on-rose">{s.tagline}</p>
+                  <span className="mt-1 text-[14px] tracking-[.16em] text-on-rose-2">預約這段體驗 →</span>
+                </div>
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* 5. 朵朵曉語：滿版心語 */}
+      <section data-screen-label="首頁 朵朵曉語" className="relative isolate overflow-hidden bg-ink-2 text-white">
+        <Image
+          src="/images/whispers.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          className="-z-10 object-cover object-[40%_50%]"
+        />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-[rgba(58,40,38,.5)]" />
+        <div className="poem on-photo mx-auto flex min-h-[min(70svh,560px)] max-w-[680px] flex-col items-center justify-center gap-6 px-6 py-[clamp(80px,10vw,130px)] text-center">
+          <span data-reveal className="font-en text-[14px] tracking-[.3em] text-on-rose-2">
+            WHISPERS
+          </span>
+          <h2 data-reveal className="m-0 font-serif text-[clamp(24px,3vw,36px)] leading-[1.7] font-normal tracking-[.08em]">
+            把走過的人生，
+            <br />
+            沉澱成溫柔而堅定的心語
+          </h2>
+          <Link data-reveal href="/whispers" className={btnGhostLight}>
+            讀朵朵的心語 →
+          </Link>
         </div>
       </section>
     </>

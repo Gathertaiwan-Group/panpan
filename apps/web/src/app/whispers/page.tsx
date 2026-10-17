@@ -1,7 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
+import { Phrase } from "@/components/Phrase";
 import { getWhispers } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
-import { Phrase } from "@/components/Phrase";
 
 export const revalidate = 300;
 
@@ -14,46 +15,56 @@ export const metadata = pageMeta(
 export default async function WhispersPage() {
   const whispers = await getWhispers();
   return (
-    <section data-screen-label="朵朵曉語 列表" className="px-[clamp(20px,4vw,48px)] py-[clamp(64px,9vw,120px)]">
-      <div className="mx-auto flex max-w-[1000px] flex-col gap-14">
-        <div className="flex max-w-[680px] flex-col gap-[22px]">
-          <span className="font-en text-[14px] tracking-[.3em] text-gold">WHISPERS</span>
-          <h1 className="poem m-0 font-serif text-[clamp(26px,3.2vw,40px)] leading-[1.6] font-normal tracking-[.08em]">
+    <>
+      {/* 1. 滿版氛圍圖 + 標題 */}
+      <section data-screen-label="朵朵曉語 列表" className="relative isolate overflow-hidden bg-ink-2 text-white">
+        <Image
+          src="/images/whispers.webp"
+          alt="晨光書桌上攤開的空白筆記本、鋼筆與一杯茶"
+          fill
+          priority
+          sizes="100vw"
+          className="-z-10 object-cover object-[40%_50%]"
+        />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(58,40,38,.2)_0%,rgba(58,40,38,.62)_100%)]" />
+        <div className="poem on-photo mx-auto flex min-h-[min(62svh,520px)] max-w-[1000px] flex-col justify-end gap-5 px-[clamp(20px,4vw,48px)] pt-24 pb-[clamp(40px,6vw,72px)]">
+          <span className="font-en text-[14px] tracking-[.3em] text-on-rose-2">WHISPERS</span>
+          <h1 className="m-0 font-serif text-[clamp(28px,3.4vw,42px)] leading-[1.6] font-normal tracking-[.08em]">
             把走過的人生，
             <br />
-            沉澱成
-            <wbr />
-            溫柔而堅定的心語。
+            沉澱成<span className="inline-block">溫柔而堅定的心語。</span>
           </h1>
-          <p className="m-0 text-[16px] leading-[2.1] text-body">
-            有些故事，是經歷過才懂得。這裡記錄我的生活、心情、故事與體悟，也分享那些曾經困住我，後來才漸漸明白的事。
+          <p className="m-0 font-serif text-[16px] leading-[2] tracking-[.06em] text-on-rose">
+            <span className="inline-block">如果有一句話剛好說中妳，</span>
+            <span className="inline-block">就讓它陪妳走一段。</span>
           </p>
-          <p className="m-0 font-serif text-[16px] leading-[2.1] text-rose-deep">如果有一句話，剛好說中了妳的心情，那就讓它陪妳走一段。</p>
         </div>
-        <div className="flex flex-col">
+      </section>
+
+      {/* 2. 文章列表：編號 + 主題 + 標題 */}
+      <section className="px-[clamp(20px,4vw,48px)] py-[clamp(56px,8vw,110px)]">
+        <ol className="mx-auto m-0 flex max-w-[1000px] list-none flex-col p-0">
           {whispers.map((ar) => (
-            <Link
-              key={ar.slug}
-              href={`/whispers/${ar.slug}`}
-              className="grid grid-cols-[44px_minmax(0,1fr)] gap-[clamp(16px,3vw,40px)] border-t border-line py-[26px] hover:bg-row-hover dt:grid-cols-[minmax(0,120px)_minmax(0,1fr)] dt:py-[34px]"
-            >
-              <span className="font-en text-[clamp(30px,4vw,46px)] leading-none text-gold-line">{ar.no}</span>
-              <div className="flex flex-col gap-[10px]">
-                <span className="text-[13px] tracking-[.2em] text-gold">{ar.theme}</span>
-                <h3 className="poem m-0 font-serif text-[clamp(18px,2vw,23px)] leading-[1.6] font-medium tracking-[.04em] text-ink">
-                  <Phrase text={ar.title} />
-                </h3>
-                <p className="m-0 text-[15px] leading-[1.9] text-body">{ar.sub}</p>
-              </div>
-            </Link>
+            <li key={ar.slug} data-reveal>
+              <Link
+                href={`/whispers/${ar.slug}`}
+                className="grid grid-cols-[52px_minmax(0,1fr)_auto] items-center gap-[clamp(14px,3vw,40px)] border-t border-line py-[24px] hover:bg-row-hover dt:grid-cols-[minmax(0,120px)_minmax(0,1fr)_auto] dt:py-[32px]"
+              >
+                <span className="font-en text-[clamp(34px,4vw,48px)] leading-none text-gold-line">{ar.no}</span>
+                <div className="flex flex-col gap-2">
+                  <span className="text-[13px] tracking-[.2em] text-gold">{ar.theme}</span>
+                  <h2 className="poem m-0 font-serif text-[clamp(18px,2vw,23px)] leading-[1.6] font-medium tracking-[.04em] text-ink">
+                    <Phrase text={ar.title} />
+                  </h2>
+                </div>
+                <span aria-hidden className="text-[18px] text-rose-deep">
+                  →
+                </span>
+              </Link>
+            </li>
           ))}
-        </div>
-        <div className="border-t border-line py-10 text-center font-serif text-[17px] leading-[2.1] text-ink-2">
-          我是朵朵。還在生活，也還在學習；還在經歷，也還在慢慢明白。
-          <br />
-          每一朵花，都有屬於自己的花期。
-        </div>
-      </div>
-    </section>
+        </ol>
+      </section>
+    </>
   );
 }

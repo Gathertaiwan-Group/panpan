@@ -8,6 +8,7 @@ export function PhotoSlot({
   pad = 14,
   sizes = "(max-width: 819px) 100vw, 40vw",
   className = "",
+  priority,
 }: {
   ratio: string; // e.g. "4/5"
   label: string;
@@ -15,11 +16,12 @@ export function PhotoSlot({
   pad?: 14 | 16;
   sizes?: string;
   className?: string;
+  priority?: boolean;
 }) {
   if (src) {
     return (
       <div className={`relative w-full overflow-hidden bg-blush ${className}`} style={{ aspectRatio: ratio }}>
-        <Image src={src} alt={label} fill sizes={sizes} className="object-cover" />
+        <Image src={src} alt={label} fill sizes={sizes} priority={priority} className="object-cover" />
       </div>
     );
   }

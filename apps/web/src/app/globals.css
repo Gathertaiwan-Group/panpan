@@ -25,7 +25,9 @@
   --color-row-hover: #f7eeea;
 
   --font-serif: var(--font-noto-serif), "Noto Serif TC", serif;
-  --font-sans: var(--font-noto-sans), "Noto Sans TC", sans-serif;
+  /* 內文黑體改用系統字（Android = Noto Sans CJK TC、Apple = 蘋方、Windows = 微軟正黑體），
+     省下約 1MB 的 CJK webfont，首屏更快；標題襯線體仍用 Noto Serif TC webfont */
+  --font-sans: "Noto Sans TC", "Noto Sans CJK TC", "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
   --font-en: var(--font-cormorant), "Cormorant Garamond", serif;
   --font-mono: ui-monospace, Menlo, monospace;
 }
@@ -135,4 +137,35 @@ p,
 blockquote,
 li {
   text-wrap: pretty;
+}
+
+/* ── 改版：捲動淡入（僅在使用者未要求減少動態時啟用；JS 未載入前內容一律可見） ── */
+@media (prefers-reduced-motion: no-preference) {
+  html.reveal-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.9s ease,
+      transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  html.reveal-ready [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 橫向滑動圖卡：隱藏捲軸、保留觸控滑動 */
+.snap-row {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+.snap-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* 滿版圖上的文字：柔和陰影提高可讀性（不是卡片陰影） */
+.on-photo {
+  text-shadow: 0 1px 18px rgba(58, 40, 38, 0.35);
 }

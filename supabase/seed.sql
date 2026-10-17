@@ -16,17 +16,17 @@ insert into panpan.experience_modules (slug, name, category) values ('photo', '�
 
 -- 體驗 SET
 insert into panpan.experience_sets (slug, code, name, tagline, description, headline, body, photo_label, status, sort_order)
-values ('nail-photo', 'SET 01', '美甲 × 寫真', '從指尖開始，漂亮一次', '為自己留一點時間，也替這個愛自己的時刻留下一份紀念。', '從心漂亮一次', array['有時候，重新開始不需要很大的決定。', '只是留一點時間給自己，做一件讓自己開心的小事。', '從指尖開始，也從心開始。', '漂亮，不是為了讓別人看見，而是重新看見自己。', '也把這一刻，那個願意好好愛自己的自己，用張照片記錄下來。', '也許未來回頭看，妳會記得——原來，那一天的我，正在好好地愛著自己。']::text[], '美甲 × 寫真 主視覺', 'published', 1)
+values ('nail-photo', 'SET 01', '美甲 × 寫真', '從指尖開始，漂亮一次', '留一點時間給自己，也替愛自己的這一刻，留下紀念。', '從心漂亮一次', array['重新開始，不一定需要很大的決定。', '從指尖開始，也從心開始——漂亮，是為了重新看見自己。', '再用一張照片，記下那天正好好愛著自己的妳。']::text[], '美甲 × 寫真 主視覺', 'published', 1)
 on conflict (slug) do update set code = excluded.code, name = excluded.name, tagline = excluded.tagline,
   description = excluded.description, headline = excluded.headline, body = excluded.body,
   photo_label = excluded.photo_label, sort_order = excluded.sort_order, updated_at = now();
 insert into panpan.experience_sets (slug, code, name, tagline, description, headline, body, photo_label, status, sort_order)
-values ('hair-photo', 'SET 02', '美髮 × 寫真', '換一個模樣，也換一個心情', '為改變留下照片，也替重新開始的自己，留下那一天的樣子。', '剪掉一點過去，留住一個全新的自己。', array['有時候，重新開始，只是從改變自己的樣子開始。', '剪短一點、換個髮色，或只是好好整理一次自己。', '不是為了成為另一個人，而是想看看——當我換一個模樣，是不是也能看見不一樣的自己。', '而這一次，也替這個新的自己留下照片。把改變的那一刻，把重新喜歡上自己的那一刻，好好記錄下來。', '也許未來回頭看，妳會發現——那不只是一個新髮型，而是那一天，我決定重新開始的樣子。']::text[], '美髮 × 寫真 主視覺', 'published', 2)
+values ('hair-photo', 'SET 02', '美髮 × 寫真', '換一個模樣，也換一個心情', '剪掉一點過去，留下重新開始那一天的樣子。', '剪掉一點過去，留住一個全新的自己。', array['剪短一點、換個髮色，或只是好好整理一次自己。', '不是成為另一個人，而是看見不一樣的自己。', '把重新喜歡上自己的那一刻，好好拍下來。']::text[], '美髮 × 寫真 主視覺', 'published', 2)
 on conflict (slug) do update set code = excluded.code, name = excluded.name, tagline = excluded.tagline,
   description = excluded.description, headline = excluded.headline, body = excluded.body,
   photo_label = excluded.photo_label, sort_order = excluded.sort_order, updated_at = now();
 insert into panpan.experience_sets (slug, code, name, tagline, description, headline, body, photo_label, status, sort_order)
-values ('nail-brow-lip', 'SET 03', '美甲 × 絨霧眉／霧唇改色', '從細節開始，喜歡現在的自己', '從眉眼、唇色與指尖開始，讓喜歡自己的樣子，成為每天的日常。', '當妳開始在意自己的每一個細節，生活也會跟著亮起來', array['也許只是整理眉型、調整唇色，再為指尖換上一個喜歡的樣子。', '沒有什麼大不了的改變，卻能讓妳每天照鏡子的時候，多看自己一眼。', '有時候，好好對待自己，就是從這些小地方開始。', '讓喜歡自己的樣子，不只發生在特別的日子，而是成為每天都能感受到的小小美好。']::text[], '眉眼・唇色・指尖 主視覺', 'published', 3)
+values ('nail-brow-lip', 'SET 03', '美甲 × 絨霧眉／霧唇改色', '從細節開始，喜歡現在的自己', '眉眼、唇色與指尖，讓喜歡自己，成為每天的日常。', '在意自己的每個細節，生活也會跟著亮起來。', array['整理眉型、調整唇色，再為指尖換上喜歡的樣子。', '小小的改變，讓妳每天照鏡子時，都想多看自己一眼。', '喜歡自己，不必等到特別的日子。']::text[], '眉眼・唇色・指尖 主視覺', 'published', 3)
 on conflict (slug) do update set code = excluded.code, name = excluded.name, tagline = excluded.tagline,
   description = excluded.description, headline = excluded.headline, body = excluded.body,
   photo_label = excluded.photo_label, sort_order = excluded.sort_order, updated_at = now();

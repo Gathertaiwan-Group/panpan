@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { content, fallbackStories } from "@duoduo/content";
+import { PhotoSlot } from "@/components/PhotoSlot";
 import { getStory } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 import { Phrase } from "@/components/Phrase";
@@ -42,6 +43,7 @@ export default async function StoryPage({ params }: Props) {
             <Phrase text={story.title} />
           </h1>
         </div>
+        {story.coverUrl && <PhotoSlot ratio="3/2" label="故事主視覺（經同意）" src={story.coverUrl} priority sizes="(max-width: 819px) 100vw, 760px" />}
         {content.storyDetailStructure.map((part, i) => {
           const text = story.parts[i];
           return (
