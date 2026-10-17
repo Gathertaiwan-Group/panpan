@@ -65,7 +65,7 @@ export function Flash({ msg, err }: { msg?: string; err?: string }) {
   return (
     <div
       role={err ? "alert" : "status"}
-      className={`border px-4 py-3 text-[14px] leading-[1.8] ${err ? "border-rose bg-[#fbeeea] text-rose-deep" : "border-gold-line bg-[#f7f0e8] text-ink"}`}
+      className={`border px-4 py-3 text-[14px] leading-[1.8] ${err ? "border-rose bg-row-hover text-rose-deep" : "border-gold-line bg-[#fdf3e6] text-ink"}`}
     >
       {err || msg}
     </div>

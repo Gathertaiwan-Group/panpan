@@ -116,10 +116,10 @@ export function VendorSlotsView({
           <fieldset className="m-0 flex flex-wrap gap-4 border-0 p-0">
             <legend className="mb-1 text-[14px] text-body">類型</legend>
             <label className="flex min-h-[44px] cursor-pointer items-center gap-2 text-[15px]">
-              <input type="radio" name="mode" value="closed" defaultChecked className="h-5 w-5 accent-[#a35b55]" /> 請假
+              <input type="radio" name="mode" value="closed" defaultChecked className="h-5 w-5 accent-rose" /> 請假
             </label>
             <label className="flex min-h-[44px] cursor-pointer items-center gap-2 text-[15px]">
-              <input type="radio" name="mode" value="extra" className="h-5 w-5 accent-[#a35b55]" /> 加開一個時段
+              <input type="radio" name="mode" value="extra" className="h-5 w-5 accent-rose" /> 加開一個時段
             </label>
           </fieldset>
           <label className="flex flex-col gap-1 text-[14px] text-body">

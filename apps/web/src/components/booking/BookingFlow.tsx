@@ -341,7 +341,7 @@ export function BookingFlow({ set, atmEnabled, initialMonth }: { set: FlowSet; a
                         ? "border-rose bg-rose text-on-rose"
                         : open
                           ? "cursor-pointer border-line-2 bg-white text-ink hover:border-rose"
-                          : "cursor-default border-transparent bg-transparent text-[#c4b0aa]"
+                          : "cursor-default border-transparent bg-transparent text-[#c9aca6]"
                     }`}
                   >
                     <span>{n}</span>
@@ -381,7 +381,7 @@ export function BookingFlow({ set, atmEnabled, initialMonth }: { set: FlowSet; a
                         ? "border-rose bg-rose text-on-rose"
                         : s.available
                           ? "cursor-pointer border-line-2 bg-white text-ink hover:border-rose"
-                          : "cursor-not-allowed border-line bg-transparent text-[#b9a39d] line-through"
+                          : "cursor-not-allowed border-line bg-transparent text-[#c0a29b] line-through"
                     }`}
                   >
                     {s.time}–{addMinutes(s.time, set.durationMinutes)}
@@ -465,7 +465,7 @@ export function BookingFlow({ set, atmEnabled, initialMonth }: { set: FlowSet; a
             <label className="flex min-h-[44px] cursor-pointer items-start gap-3 text-[15px] leading-[1.7] text-ink">
               <input
                 type="checkbox"
-                className="mt-[3px] h-5 w-5 shrink-0 accent-[#a35b55]"
+                className="mt-[3px] h-5 w-5 shrink-0 accent-rose"
                 checked={info.consent}
                 onChange={(e) => setInfo({ ...info, consent: e.target.checked })}
               />
@@ -519,7 +519,7 @@ export function BookingFlow({ set, atmEnabled, initialMonth }: { set: FlowSet; a
               <input
                 type="radio"
                 name="pay"
-                className="h-5 w-5 accent-[#a35b55]"
+                className="h-5 w-5 accent-rose"
                 checked={payMethod === "card"}
                 onChange={() => setPayMethod("card")}
               />
@@ -537,7 +537,7 @@ export function BookingFlow({ set, atmEnabled, initialMonth }: { set: FlowSet; a
                 <input
                   type="radio"
                   name="pay"
-                  className="h-5 w-5 accent-[#a35b55]"
+                  className="h-5 w-5 accent-rose"
                   disabled={!atmAllowed}
                   checked={payMethod === "atm"}
                   onChange={() => setPayMethod("atm")}
@@ -563,7 +563,7 @@ export function BookingFlow({ set, atmEnabled, initialMonth }: { set: FlowSet; a
       {/* 操作列：行動版固定在底部（data-mobile-cta 讓 footer 自動加高避免被遮），桌面版跟在內容後 */}
       <div
         data-mobile-cta
-        className="fixed right-0 bottom-0 left-0 z-30 flex items-center gap-3 border-t border-line bg-[rgba(250,245,242,.97)] px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))] dt:static dt:border-0 dt:bg-transparent dt:p-0"
+        className="fixed right-0 bottom-0 left-0 z-30 flex items-center gap-3 border-t border-line bg-[rgba(255,249,245,.97)] px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))] dt:static dt:border-0 dt:bg-transparent dt:p-0"
       >
         <div className="min-w-0 flex-1 text-[13px] leading-[1.5] text-body dt:hidden">
           <span className="block truncate text-ink">{set.name}</span>

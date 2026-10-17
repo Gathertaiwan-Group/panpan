@@ -18,9 +18,9 @@ export default function PartnerPage() {
   return (
     <>
       {/* 1. 開場：圖文左右 */}
-      <section data-screen-label="一起創造美好" className="bg-rose text-on-rose">
+      <section data-screen-label="一起創造美好" className="bg-dawn-glow text-ink">
         <div className="mx-auto grid max-w-[1240px] items-stretch dt:grid-cols-2">
-          <div className="relative aspect-[3/2] overflow-hidden bg-rose-deep dt:order-2 dt:aspect-auto dt:min-h-[560px]">
+          <div className="relative aspect-[3/2] overflow-hidden bg-blush dt:order-2 dt:aspect-auto dt:min-h-[560px]">
             <Image
               src="/images/partner.webp"
               alt="職人們在亞麻桌布上一起整理玫瑰花束，旁邊擺著化妝刷、指甲油與底片相機"
@@ -31,19 +31,19 @@ export default function PartnerPage() {
             />
           </div>
           <div className="poem flex flex-col justify-center gap-6 px-[clamp(20px,5vw,72px)] py-[clamp(48px,7vw,96px)]">
-            <span className="font-en text-[14px] tracking-[.3em] text-on-rose-2">CREATE BEAUTY TOGETHER</span>
+            <span className="font-en text-[14px] tracking-[.3em] text-gold">CREATE BEAUTY TOGETHER</span>
             <h1 className="m-0 font-serif text-[clamp(28px,3.6vw,44px)] leading-[1.55] font-normal tracking-[.08em]">
               讓你的專業，
               <br />
               成為別人<span className="inline-block">生命裡的一道光。</span>
             </h1>
-            <p className="m-0 font-serif text-[17px] leading-[2] tracking-[.06em]">
+            <p className="m-0 font-serif text-[17px] leading-[2] tracking-[.06em] text-body">
               <span className="inline-block">我們把用專業創造美好的你，</span>
               <span className="inline-block">稱為「美麗的魔法師」。</span>
             </p>
             <a
               href="#partner-form"
-              className="inline-flex min-h-[48px] items-center self-start bg-on-rose px-[28px] text-[15px] tracking-[.16em] text-rose-deep hover:bg-white hover:text-rose-deep"
+              className="inline-flex min-h-[48px] items-center self-start bg-rose px-[28px] text-[15px] tracking-[.16em] text-on-rose hover:bg-rose-deep hover:text-on-rose"
             >
               成為合作夥伴 ↓
             </a>

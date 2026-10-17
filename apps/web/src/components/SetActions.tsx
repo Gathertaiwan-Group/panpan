@@ -46,7 +46,7 @@ export function SetActions({ slug, name, lineUrl }: { slug: string; name: string
 
       <div
         data-mobile-cta
-        className="fixed right-0 bottom-0 left-0 z-30 flex gap-[10px] border-t border-line bg-[rgba(250,245,242,.97)] px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))] dt:hidden"
+        className="fixed right-0 bottom-0 left-0 z-30 flex gap-[10px] border-t border-line bg-[rgba(255,249,245,.97)] px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))] dt:hidden"
       >
         {dmButton("flex-1 cursor-pointer border border-rose bg-transparent py-[14px] text-center text-[15px] tracking-[.12em] text-rose-deep hover:text-rose-deep")}
         <button

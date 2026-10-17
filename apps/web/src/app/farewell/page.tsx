@@ -29,9 +29,9 @@ export default async function FarewellPage() {
   return (
     <>
       {/* 1. 共鳴：大圖 + 一句話 */}
-      <section data-screen-label="好好告別 共鳴" className="bg-rose text-on-rose">
+      <section data-screen-label="好好告別 共鳴" className="bg-dawn-glow text-ink">
         <div className="mx-auto grid max-w-[1240px] items-stretch dt:grid-cols-2">
-          <div className="relative aspect-[4/5] max-h-[72svh] w-full overflow-hidden bg-rose-deep dt:aspect-auto dt:max-h-none dt:min-h-[640px]">
+          <div className="relative aspect-[4/5] max-h-[72svh] w-full overflow-hidden bg-blush dt:aspect-auto dt:max-h-none dt:min-h-[640px]">
             {portrait && (
               <Image
                 src={portrait}
@@ -44,7 +44,7 @@ export default async function FarewellPage() {
             )}
           </div>
           <div className="poem flex flex-col justify-center gap-7 px-[clamp(20px,5vw,72px)] py-[clamp(48px,7vw,96px)]">
-            <span className="font-en text-[14px] tracking-[.3em] text-on-rose-2">
+            <span className="font-en text-[14px] tracking-[.3em] text-gold">
               A GRACEFUL FAREWELL <span className="whitespace-nowrap">· 好好告別</span>
             </span>
             <h1 className="m-0 font-serif text-[clamp(28px,3.8vw,46px)] leading-[1.6] font-normal tracking-[.1em]">
@@ -52,14 +52,14 @@ export default async function FarewellPage() {
               <br />
               是為了<span className="inline-block">重新遇見自己。</span>
             </h1>
-            <p className="m-0 font-serif text-[17px] leading-[2.1] tracking-[.06em]">
+            <p className="m-0 font-serif text-[17px] leading-[2.1] tracking-[.06em] text-body">
               不是失去一個版本的自己，
               <br />
               而是終於能成為下一個自己。
             </p>
             <a
               href="#sets"
-              className="inline-flex min-h-[48px] items-center self-start bg-on-rose px-[28px] text-[15px] tracking-[.16em] text-rose-deep hover:bg-white hover:text-rose-deep"
+              className="inline-flex min-h-[48px] items-center self-start bg-rose px-[28px] text-[15px] tracking-[.16em] text-on-rose hover:bg-rose-deep hover:text-on-rose"
             >
               探索體驗 ↓
             </a>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { LogoMark } from "@/components/LogoMark";
 import { NAV, activeSection } from "@/lib/nav";
 import { useScrollLock } from "@/lib/scroll-lock";
 
@@ -37,11 +38,14 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-20 border-b border-line bg-[rgba(250,245,242,.94)] backdrop-blur-[10px]">
+      <header className="sticky top-0 z-20 border-b border-line bg-[rgba(255,249,245,.94)] backdrop-blur-[10px]">
         <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-between gap-5 px-[clamp(20px,4vw,48px)] py-[14px]">
-          <Link href="/" aria-label="朵朵曉語 首頁" className="flex flex-col gap-[2px] hover:text-inherit">
-            <span className="font-serif text-[21px] font-medium tracking-[.32em] text-rose-deep">朵朵曉語</span>
-            <span className="font-en text-[11px] tracking-[.3em] text-muted">DUODUO WHISPERS</span>
+          <Link href="/" aria-label="朵朵曉語 首頁" className="flex items-center gap-3 hover:text-inherit">
+            <LogoMark />
+            <span className="flex flex-col gap-[2px]">
+              <span className="font-serif text-[21px] font-medium tracking-[.32em] text-rose-deep">朵朵曉語</span>
+              <span className="font-en text-[11px] tracking-[.3em] text-muted">DUODUO WHISPERS</span>
+            </span>
           </Link>
 
           <nav aria-label="主要導覽" className="hidden flex-wrap items-center gap-[clamp(14px,2.2vw,30px)] dt:flex">
@@ -52,7 +56,7 @@ export function SiteHeader() {
                   key={n.key}
                   href={n.href}
                   aria-current={isActive ? "page" : undefined}
-                  className={`border-b py-[6px] text-[14px] tracking-[.12em] hover:text-rose-hover ${
+                  className={`border-b py-[6px] text-[14px] tracking-[.12em] hover:text-rose-deep ${
                     isActive ? "border-rose-hover text-rose-deep" : "border-transparent text-body"
                   }`}
                 >
@@ -82,19 +86,22 @@ export function SiteHeader() {
           role="dialog"
           aria-modal="true"
           aria-label="網站選單"
-          className="fixed inset-0 z-40 flex flex-col overflow-auto overscroll-contain bg-rose px-5 pt-[calc(14px+env(safe-area-inset-top))] pb-[calc(32px+env(safe-area-inset-bottom))] text-on-rose dt:hidden"
+          className="fixed inset-0 z-40 flex flex-col overflow-auto overscroll-contain bg-cream px-5 pt-[calc(14px+env(safe-area-inset-top))] pb-[calc(32px+env(safe-area-inset-bottom))] text-ink dt:hidden"
         >
           <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-[2px]">
-              <span className="font-serif text-[21px] font-medium tracking-[.32em] text-on-rose">朵朵曉語</span>
-              <span className="font-en text-[11px] tracking-[.3em] text-on-rose-2">DUODUO WHISPERS</span>
+            <div className="flex items-center gap-3">
+              <LogoMark />
+              <div className="flex flex-col gap-[2px]">
+                <span className="font-serif text-[21px] font-medium tracking-[.32em] text-rose-deep">朵朵曉語</span>
+                <span className="font-en text-[11px] tracking-[.3em] text-gold">DUODUO WHISPERS</span>
+              </div>
             </div>
             <button
               type="button"
               aria-label="關閉"
               autoFocus
               onClick={() => setOpen(false)}
-              className="-mr-2 flex h-11 w-11 cursor-pointer items-center justify-center border-0 bg-transparent text-[26px] font-light text-on-rose"
+              className="-mr-2 flex h-11 w-11 cursor-pointer items-center justify-center border-0 bg-transparent text-[26px] font-light text-ink"
             >
               ×
             </button>
@@ -108,15 +115,15 @@ export function SiteHeader() {
                   href={n.href}
                   onClick={close}
                   aria-current={isActive ? "page" : undefined}
-                  className="flex items-center justify-between border-b border-[rgba(251,239,234,.22)] py-5 font-serif text-[21px] tracking-[.18em] text-on-rose hover:text-on-rose"
+                  className="flex items-center justify-between border-b border-line py-5 font-serif text-[21px] tracking-[.18em] text-ink hover:text-rose-deep"
                 >
                   <span>{n.label}</span>
-                  <span className="text-[15px] text-on-rose-2">{isActive ? "✦" : "→"}</span>
+                  <span className="text-[15px] text-rose-deep">{isActive ? "✦" : "→"}</span>
                 </Link>
               );
             })}
           </nav>
-          <span className="mt-auto pt-10 text-[13px] tracking-[.16em] text-on-rose-2">在人生轉場時・陪妳優雅重啟</span>
+          <span className="mt-auto pt-10 text-[13px] tracking-[.16em] text-muted">在人生轉場時・陪妳優雅重啟</span>
         </div>
       )}
     </>

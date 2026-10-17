@@ -71,7 +71,7 @@ export function AdminBookingsView({
     <Shell eyebrow="ADMIN" title="全部預約" who={who} nav={ADMIN_NAV} active="/admin">
       <Flash msg={sp.msg} err={sp.err || loadError} />
       {attentionCount > 0 && (
-        <div role="alert" className="flex flex-wrap items-center justify-between gap-3 border border-rose bg-[#fbeeea] px-4 py-3 text-[15px] text-rose-deep">
+        <div role="alert" className="flex flex-wrap items-center justify-between gap-3 border border-rose bg-row-hover px-4 py-3 text-[15px] text-rose-deep">
           <span>有 {attentionCount} 筆預約需要人工處理（多半需要退款）。</span>
           <Link href="/admin?attention=1" className={smallBtn}>
             只看這些
@@ -145,7 +145,7 @@ export function AdminBookingsView({
                 </span>
               </div>
               {b.needs_attention && (
-                <p className="m-0 bg-[#fbeeea] px-3 py-2 text-[14px] text-rose-deep">⚠️ {attentionLabel(b.attention_reason)}</p>
+                <p className="m-0 bg-row-hover px-3 py-2 text-[14px] text-rose-deep">⚠️ {attentionLabel(b.attention_reason)}</p>
               )}
               <dl className="m-0 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-[14px] leading-[1.7]">
                 <dt className="text-muted">體驗</dt>

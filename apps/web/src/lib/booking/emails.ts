@@ -25,9 +25,9 @@ function esc(s: string): string {
 const money = (n: number) => `NT$${n.toLocaleString("en-US")}`;
 
 function frame(title: string, inner: string): string {
-  return `<div style="font-family:'Noto Sans TC',-apple-system,sans-serif;color:#3A2826;max-width:520px;margin:0 auto;padding:32px 24px;background:#FAF5F2">
-<p style="font-size:20px;letter-spacing:.2em;color:#8C4A46;margin:0 0 4px">朵朵曉語</p>
-<p style="font-size:11px;letter-spacing:.3em;color:#7A615D;margin:0 0 28px">DUODUO WHISPERS</p>
+  return `<div style="font-family:'Noto Sans TC',-apple-system,sans-serif;color:#4A3532;max-width:520px;margin:0 auto;padding:32px 24px;background:#FFF9F5">
+<p style="font-size:20px;letter-spacing:.2em;color:#A8463F;margin:0 0 4px">朵朵曉語</p>
+<p style="font-size:11px;letter-spacing:.3em;color:#775A55;margin:0 0 28px">DUODUO WHISPERS</p>
 <h1 style="font-size:18px;font-weight:500;letter-spacing:.1em;margin:0 0 18px">${esc(title)}</h1>
 ${inner}
 </div>`;
@@ -37,7 +37,7 @@ function rows(list: Array<[string, string]>): string {
   return `<table style="border-collapse:collapse;font-size:15px;line-height:1.8;margin:0 0 18px">${list
     .map(
       ([k, v]) =>
-        `<tr><td style="padding:4px 18px 4px 0;color:#7A615D;white-space:nowrap;vertical-align:top">${esc(k)}</td><td style="padding:4px 0;color:#3A2826">${esc(v)}</td></tr>`,
+        `<tr><td style="padding:4px 18px 4px 0;color:#775A55;white-space:nowrap;vertical-align:top">${esc(k)}</td><td style="padding:4px 0;color:#4A3532">${esc(v)}</td></tr>`,
     )
     .join("")}</table>`;
 }
@@ -61,8 +61,8 @@ ${rows([
   ["金額", `${money(b.amount)}（已付清）`],
   ["訂單編號", b.order_no],
 ])}
-<p style="margin:24px 0"><a href="${statusUrl(b)}" style="background:#A35B55;color:#FBEFEA;padding:14px 28px;text-decoration:none;letter-spacing:.16em;font-size:14px">查看預約</a></p>
-<p style="font-size:13px;color:#7A615D;line-height:1.8;margin:0">附件為行事曆檔（.ics），可直接加入手機行事曆。若需要改期或取消，請直接回覆這封信與我們聯繫。</p>`,
+<p style="margin:24px 0"><a href="${statusUrl(b)}" style="background:#B9524C;color:#FFFFFF;padding:14px 28px;text-decoration:none;letter-spacing:.16em;font-size:14px">查看預約</a></p>
+<p style="font-size:13px;color:#775A55;line-height:1.8;margin:0">附件為行事曆檔（.ics），可直接加入手機行事曆。若需要改期或取消，請直接回覆這封信與我們聯繫。</p>`,
   );
   const text = `${b.customer_name} 您好，預約已確認。\n體驗：${b.set_name}\n日期時間：${when(b)}\n地點：供應商將於體驗前與妳聯繫\n金額：${money(b.amount)}（已付清）\n訂單編號：${b.order_no}\n查看預約：${statusUrl(b)}`;
   const ics = buildIcs({
@@ -93,7 +93,7 @@ ${rows([
   ["電話", b.phone],
   ["備註", b.note || "—"],
 ])}
-<p style="margin:24px 0"><a href="${SITE_URL}/vendor" style="background:#A35B55;color:#FBEFEA;padding:14px 28px;text-decoration:none;letter-spacing:.16em;font-size:14px">打開供應商後台</a></p>`,
+<p style="margin:24px 0"><a href="${SITE_URL}/vendor" style="background:#B9524C;color:#FFFFFF;padding:14px 28px;text-decoration:none;letter-spacing:.16em;font-size:14px">打開供應商後台</a></p>`,
   );
   return { subject: `新預約｜${b.set_name} ${formatTaipeiDisplay(new Date(b.starts_at))}`, html };
 }
@@ -110,7 +110,7 @@ function adminMail(b: BookingRecord) {
       ["付款方式", b.pay_method === "atm" ? "ATM 轉帳" : "信用卡"],
       ["備註", b.note || "—"],
     ])}
-<p style="margin:24px 0"><a href="${SITE_URL}/admin" style="color:#8C4A46">到管理後台查看</a></p>`,
+<p style="margin:24px 0"><a href="${SITE_URL}/admin" style="color:#A8463F">到管理後台查看</a></p>`,
   );
   return { subject: `新預約已付款｜${b.order_no} ${b.set_name}`, html };
 }
@@ -185,7 +185,7 @@ export async function sendAttentionAlert(bookingId: string, reason: string): Pro
   if (!adminTo) return "skipped";
   const html = frame(
     "⚠️ 預約需要人工處理",
-    `<p style="font-size:15px;line-height:1.9;margin:0 0 18px;color:#8C4A46">${esc(attentionLabel(reason))}</p>
+    `<p style="font-size:15px;line-height:1.9;margin:0 0 18px;color:#A8463F">${esc(attentionLabel(reason))}</p>
 ${rows([
   ["訂單編號", b.order_no],
   ["體驗", b.set_name],
@@ -195,7 +195,7 @@ ${rows([
   ["目前狀態", b.status],
 ])}
 <p style="font-size:14px;line-height:1.8">如需退款，請至 PChomePay 支付連後台辦理，完成後在管理後台將此筆標記為「已退款」。</p>
-<p style="margin:24px 0"><a href="${SITE_URL}/admin?attention=1" style="color:#8C4A46">到管理後台查看</a></p>`,
+<p style="margin:24px 0"><a href="${SITE_URL}/admin?attention=1" style="color:#A8463F">到管理後台查看</a></p>`,
   );
   const r = await sendMail({
     to: adminTo,

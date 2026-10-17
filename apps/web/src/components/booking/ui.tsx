@@ -45,9 +45,9 @@ export function Field({
 export function Notice({ tone = "info", children }: { tone?: "info" | "warn" | "ok"; children: ReactNode }) {
   const cls =
     tone === "warn"
-      ? "border-rose bg-[#fbeeea] text-rose-deep"
+      ? "border-rose bg-row-hover text-rose-deep"
       : tone === "ok"
-        ? "border-gold-line bg-[#f7f0e8] text-ink"
+        ? "border-gold-line bg-[#fdf3e6] text-ink"
         : "border-line bg-blush text-body";
   return <div className={`border px-4 py-3 text-[14px] leading-[1.8] ${cls}`}>{children}</div>;
 }

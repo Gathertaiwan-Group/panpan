@@ -71,7 +71,7 @@ export function AdminSetsView({
             </div>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <label className="flex min-h-[44px] cursor-pointer items-center gap-3 text-[15px] text-ink">
-                <input type="checkbox" name="booking_enabled" defaultChecked={s.booking_enabled} className="h-5 w-5 accent-[#a35b55]" />
+                <input type="checkbox" name="booking_enabled" defaultChecked={s.booking_enabled} className="h-5 w-5 accent-rose" />
                 開放線上預約
               </label>
               <button type="submit" className={primaryBtn}>

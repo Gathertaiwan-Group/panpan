@@ -24,10 +24,10 @@ export function JourneyStrip() {
         >
           <div className="relative aspect-[4/5] overflow-hidden bg-blush">
             <Image src={j.img} alt={j.alt} fill sizes="(max-width: 819px) 72vw, 20vw" className="object-cover" />
-            <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(58,40,38,.62)_100%)]" />
-            <div className="on-photo absolute right-0 bottom-0 left-0 flex flex-col gap-1 p-4 text-on-rose">
-              <span className="font-en text-[13px] tracking-[.24em] text-on-rose-2">{j.no} · {j.en}</span>
-              <span className="font-serif text-[22px] tracking-[.16em] text-white">{j.zh}</span>
+            <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,249,245,0)_40%,rgba(255,249,245,.9)_68%,rgba(255,249,245,.97)_100%)]" />
+            <div className="on-photo absolute right-0 bottom-0 left-0 flex flex-col gap-1 p-4 text-ink">
+              <span className="font-en text-[13px] tracking-[.24em] text-gold">{j.no} · {j.en}</span>
+              <span className="font-serif text-[22px] tracking-[.16em] text-ink">{j.zh}</span>
             </div>
           </div>
           <p className="m-0 mt-3 font-serif text-[15px] leading-[1.8] tracking-[.06em] text-ink-2">{j.line}</p>

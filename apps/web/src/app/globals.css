@@ -1,28 +1,32 @@
 @import "tailwindcss";
 
-/* README §6 Design Tokens — 原型 inline style 為唯一真相 */
+/* Design Tokens — 2026-10「晨光花開」色系（業主選定：乳白底、花瓣粉區塊、珊瑚玫瑰主色、晨光金點綴）
+   無障礙：所有文字色對 cream / blush / white 皆 ≥ 4.5:1；按鈕底 rose 配 on-rose ≥ 4.5:1
+   （#D9776F 配白字僅 3.08:1，故按鈕底用 #B9524C，#D9776F 留作 coral 裝飾色） */
 @theme {
   --breakpoint-dt: 820px; /* RWD 斷點：<820 行動版 */
 
-  --color-cream: #faf5f2; /* bg */
-  --color-blush: #f3e6e0;
-  --color-rose: #a35b55;
-  --color-rose-deep: #8c4a46;
-  --color-rose-hover: #a9605a;
-  --color-ink: #3a2826;
-  --color-ink-2: #4e3835;
-  --color-body: #5a4340;
-  --color-muted: #7a615d;
-  --color-gold: #9c7a5c;
-  --color-gold-line: #c9a88e;
-  --color-line: #eadad3;
-  --color-line-2: #d9bfb4;
-  --color-input-line: #dcc7be;
-  --color-on-rose: #fbefea;
-  --color-on-rose-2: #f4d9cf;
-  --color-foot-text: #e9d6ce;
-  --color-foot-muted: #bfa59c;
-  --color-row-hover: #f7eeea;
+  --color-cream: #fff9f5; /* 底色：溫暖乳白 */
+  --color-blush: #fbe4df; /* 區塊：花瓣粉 */
+  --color-dawn: #fdefe8; /* 花瓣粉與乳白之間的過渡色（晨光漸層中段） */
+  --color-coral: #d9776f; /* 主色：珊瑚玫瑰（裝飾、線條、漸層；不可放小字） */
+  --color-rose: #b9524c; /* 按鈕底／選取態（配 on-rose 4.80:1） */
+  --color-rose-deep: #a8463f; /* 文字連結、強調字、按鈕 hover（blush 上 4.78:1） */
+  --color-rose-hover: #c25f58; /* 連結 hover、焦點框、導覽底線（非文字 ≥3:1） */
+  --color-ink: #4a3532; /* 文字：柔和深棕 */
+  --color-ink-2: #5a423e;
+  --color-body: #5e4744;
+  --color-muted: #775a55;
+  --color-gold: #8a5f2e; /* 晨光金的可讀版（英文小標、編號文字；blush 上 4.60:1） */
+  --color-gold-large: #a9762f; /* 晨光金大字版（≥24px 編號；cream 3.78:1、row-hover 3.54:1） */
+  --color-gold-line: #e8b56a; /* 晨光金：細線、點綴（非文字） */
+  --color-line: #f3ddd6;
+  --color-line-2: #ebc9bf;
+  --color-input-line: #e2c4ba;
+  --color-on-rose: #ffffff;
+  --color-foot-text: #4a3532; /* 頁尾改花瓣粉底＋深棕字 */
+  --color-foot-muted: #775a55;
+  --color-row-hover: #fdf0eb;
 
   --font-serif: var(--font-noto-serif), "Noto Serif TC", serif;
   /* 內文黑體改用系統字（Android = Noto Sans CJK TC、Apple = 蘋方、Windows = 微軟正黑體），
@@ -41,21 +45,21 @@
   html,
   body {
     margin: 0;
-    background: #faf5f2;
-    color: #3a2826;
+    background: var(--color-cream);
+    color: var(--color-ink);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   body {
     font-family: var(--font-sans);
-    -webkit-tap-highlight-color: rgba(163, 91, 85, 0.12);
+    -webkit-tap-highlight-color: rgba(217, 119, 111, 0.14);
   }
   a {
-    color: #8c4a46;
+    color: var(--color-rose-deep);
     text-decoration: none;
   }
   a:hover {
-    color: #a9605a;
+    color: var(--color-rose-deep);
   }
   input,
   textarea,
@@ -70,7 +74,7 @@
   }
   /* 鍵盤焦點可見（滑鼠點擊不顯示） */
   :focus-visible {
-    outline: 2px solid #a9605a;
+    outline: 2px solid var(--color-rose-hover);
     outline-offset: 3px;
   }
   /* 全螢幕選單 / 對話框開啟時鎖捲動 */
@@ -83,7 +87,7 @@
 @layer components {
   /* 照片佔位斜紋 */
   .photo-stripes {
-    background: repeating-linear-gradient(135deg, #efe1da 0 10px, #f5eae4 10px 20px);
+    background: repeating-linear-gradient(135deg, #f9e2dc 0 10px, #fdf0eb 10px 20px);
   }
   /* 擴大點擊範圍（不影響視覺排版）：小字連結在手機上仍有 ≥44px 觸控區 */
   .hit {
@@ -93,11 +97,6 @@
     content: "";
     position: absolute;
     inset: -14px -8px;
-  }
-  /* Hero Logo 邊緣融入玫瑰底 */
-  .hero-logo-mask {
-    -webkit-mask-image: radial-gradient(ellipse 72% 66% at 50% 48%, #000 58%, transparent 100%);
-    mask-image: radial-gradient(ellipse 72% 66% at 50% 48%, #000 58%, transparent 100%);
   }
 }
 
@@ -126,7 +125,7 @@
 
 /* select：移除 iOS 圓角漸層後補回箭頭 */
 .select-chevron {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%237A615D' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23775A55' stroke-width='1.2'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   padding-right: 40px;
@@ -165,7 +164,21 @@ li {
   display: none;
 }
 
-/* 滿版圖上的文字：柔和陰影提高可讀性（不是卡片陰影） */
+/* 滿版圖上的深色文字：乳白柔光暈提高可讀性（不是卡片陰影） */
 .on-photo {
-  text-shadow: 0 1px 18px rgba(58, 40, 38, 0.35);
+  text-shadow: 0 0 18px rgba(255, 249, 245, 0.9), 0 0 4px rgba(255, 249, 245, 0.6);
+}
+
+/* 晨光漸層：取代原本整塊玫瑰底的區塊（花瓣粉 → 乳白 → 微微晨光金），深色字皆 ≥4.5:1 */
+.bg-dawn-glow {
+  background: linear-gradient(135deg, var(--color-blush) 0%, var(--color-dawn) 55%, #fcead9 100%);
+}
+
+/* 滿版照片上的乳白霧面：中央最濃（文字所在處），往外漸淡，照片保持清透 */
+.veil-center {
+  background: radial-gradient(ellipse 70% 62% at 50% 50%, rgba(255, 249, 245, 0.86) 0%, rgba(255, 249, 245, 0.7) 55%, rgba(255, 249, 245, 0.38) 100%);
+}
+/* 圖卡下緣乳白漸層（文字在下方） */
+.veil-bottom {
+  background: linear-gradient(180deg, rgba(255, 249, 245, 0) 28%, rgba(255, 249, 245, 0.88) 54%, rgba(255, 249, 245, 0.97) 100%);
 }

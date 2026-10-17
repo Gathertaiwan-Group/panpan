@@ -34,7 +34,7 @@ export function Dialog({
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-stretch justify-center bg-[rgba(58,40,38,.45)] dt:items-center dt:p-6" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-stretch justify-center bg-[rgba(74,53,50,.32)] dt:items-center dt:p-6" onClick={onClose}>
       <div
         ref={panelRef}
         role="dialog"

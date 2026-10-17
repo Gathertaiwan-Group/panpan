@@ -59,13 +59,13 @@ export default function AboutPage() {
       </section>
 
       {/* 2. 轉折金句 */}
-      <section data-screen-label="關於朵朵 轉折" className="bg-rose px-6 py-[clamp(72px,10vw,130px)] text-center text-on-rose">
+      <section data-screen-label="關於朵朵 轉折" className="bg-dawn-glow px-6 py-[clamp(72px,10vw,130px)] text-center text-ink">
         <blockquote data-reveal className="poem mx-auto my-0 flex max-w-[720px] flex-col gap-6 font-serif">
           <p className="m-0 text-[clamp(20px,2.4vw,28px)] leading-[1.9] tracking-[.06em]">
             <span className="inline-block">那段不忠的事實，</span>
             <span className="inline-block">像是上帝狠狠打醒我的一巴掌。</span>
           </p>
-          <p className="m-0 text-[clamp(22px,2.8vw,32px)] tracking-[.2em] text-white">——不值得！</p>
+          <p className="m-0 text-[clamp(22px,2.8vw,32px)] tracking-[.2em] text-rose-deep">——不值得！</p>
         </blockquote>
       </section>
 
@@ -93,9 +93,9 @@ export default function AboutPage() {
       </section>
 
       {/* 4. 滿版金句 */}
-      <section data-screen-label="關於朵朵 發光" className="relative isolate overflow-hidden bg-ink-2 text-white">
+      <section data-screen-label="關於朵朵 發光" className="relative isolate overflow-hidden bg-blush text-ink">
         <Image src="/images/journey-bloom.webp" alt="" fill sizes="100vw" className="-z-10 object-cover object-[50%_40%]" />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-[rgba(58,40,38,.42)]" />
+        <div aria-hidden className="absolute inset-0 -z-10 veil-center" />
         <div className="poem on-photo mx-auto flex min-h-[min(64svh,520px)] max-w-[680px] flex-col items-center justify-center gap-5 px-6 py-24 text-center font-serif">
           <p data-reveal className="m-0 text-[clamp(26px,3.4vw,42px)] leading-[1.6] tracking-[.12em]">
             <span className="inline-block">原來，</span>

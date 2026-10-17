@@ -18,7 +18,7 @@ export function useFormAction(fn: (prev: FormState, fd: FormData) => Promise<For
   return { state, onSubmit, pending, fe: state?.fieldErrors ?? {} };
 }
 
-/** 原型輸入框：padding 13/14、1px #DCC7BE、#FAF5F2 底、15px；行動版 16px 避免 iOS 自動放大 */
+/** 原型輸入框：padding 13/14、1px input-line、cream 底、15px；行動版 16px 避免 iOS 自動放大 */
 export const inputClass =
   "w-full appearance-none rounded-none border border-input-line bg-cream px-[14px] py-[13px] text-[16px] text-ink outline-none focus:border-rose-hover dt:text-[15px]";
 
