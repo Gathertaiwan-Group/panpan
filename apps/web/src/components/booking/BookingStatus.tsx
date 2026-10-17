@@ -150,6 +150,19 @@ export function BookingStatus({ initial, token }: { initial: PublicBooking; toke
           回到首頁
         </Link>
       </div>
+
+      <div className="flex flex-col gap-2 border-t border-line pt-5 text-[15px] leading-[1.8] text-body">
+        <Link
+          href={`/account/bookings/${b.id}`}
+          className="inline-flex min-h-[44px] items-center self-start text-ink underline underline-offset-4 hover:text-rose-deep"
+        >
+          查看我的預約 →
+        </Link>
+        <span className="text-[14px] text-muted">
+          還沒有會員帳號？用預約時填寫的同一個 Email <Link href="/register" className="underline underline-offset-4 hover:text-rose-deep">註冊</Link>
+          ，就能在會員專區隨時查看這筆預約與消費紀錄。
+        </span>
+      </div>
     </>
   );
 }

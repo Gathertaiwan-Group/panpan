@@ -56,20 +56,36 @@ export function safeNext(next: unknown): string | null {
   }
 }
 
-export type Role = "admin" | "vendor";
+export type Role = "admin" | "vendor" | "customer";
 
-export const roleHome = (role: Role) => (role === "admin" ? "/admin" : "/vendor");
+export const roleHome = (role: Role) => (role === "admin" ? "/admin" : role === "vendor" ? "/vendor" : "/account");
+
+/** next 是否指向後台（供應商／管理員入口）：這種情況寄登入連結時不可自動建立帳號 */
+export function isBackofficePath(next: unknown): boolean {
+  const n = safeNext(next);
+  if (!n) return false;
+  const path = n.split(/[?#]/)[0];
+  return ["/admin", "/vendor"].some((p) => path === p || path.startsWith(`${p}/`));
+}
 
 /**
- * 登入成功後要去哪：沒有後台身分 → null（呼叫端須立即登出並拒絕）；
+ * 登入成功後要去哪：未登入 → null；
+ * 角色白名單：管理員 /admin、供應商 /vendor、其他已驗證使用者（客人）/account；三者都可進 /account（變更密碼、自己的預約）。
  * next 只在「站內、且是該角色可進的區域」時採用，否則回角色首頁。
  */
-export function postLoginTarget(staff: { role: Role } | null, next: unknown): string | null {
-  if (!staff) return null;
+export function postLoginTarget(who: { role: Role } | null, next: unknown): string | null {
+  if (!who) return null;
   const n = safeNext(next);
-  const home = roleHome(staff.role);
+  const home = roleHome(who.role);
   if (!n) return home;
   const path = n.split(/[?#]/)[0];
-  const allowed = [home, "/account"];
+  const allowed = who.role === "customer" ? ["/account"] : [home, "/account"];
   return allowed.some((p) => path === p || path.startsWith(`${p}/`)) ? n : home;
+}
+
+/** 註冊時的稱呼 */
+export function displayNameError(name: unknown): string | null {
+  if (typeof name !== "string" || !name.trim()) return "請填寫稱呼。";
+  if (name.trim().length > 40) return "稱呼最多 40 個字。";
+  return null;
 }

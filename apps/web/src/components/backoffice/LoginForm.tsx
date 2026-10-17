@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useState } from "react";
 import { sendLoginLink, signInWithPassword, type LoginState } from "@/app/login/actions";
 import { Field, Notice, inputCls, primaryBtn } from "@/components/booking/ui";
@@ -12,7 +13,7 @@ export function LoginForm({ next }: { next?: string }) {
   return mode === "password" ? (
     <PasswordForm next={next} onUseLink={() => setMode("link")} />
   ) : (
-    <MagicLinkForm onBack={() => setMode("password")} />
+    <MagicLinkForm next={next} onBack={() => setMode("password")} />
   );
 }
 
@@ -47,22 +48,29 @@ function PasswordForm({ next, onUseLink }: { next?: string; onUseLink: () => voi
       <button type="button" onClick={onUseLink} className={linkBtn}>
         忘記密碼？改用 Email 登入連結
       </button>
+      <p className="m-0 border-t border-line pt-5 text-[15px] text-body">
+        還沒有帳號？
+        <Link href={next ? `/register?next=${encodeURIComponent(next)}` : "/register"} className={`${linkBtn} ml-1 inline-flex`}>
+          註冊
+        </Link>
+      </p>
     </div>
   );
 }
 
-function MagicLinkForm({ onBack }: { onBack: () => void }) {
+function MagicLinkForm({ next, onBack }: { next?: string; onBack: () => void }) {
   const [state, action, pending] = useActionState<LoginState, FormData>(sendLoginLink, null);
   return (
     <div className="flex flex-col gap-5">
       {state?.sent ? (
         <div role="status">
           <Notice tone="ok">
-            若此 Email 有帳號，我們已寄出登入連結。請到信箱點「登入後台」，連結 60 分鐘內有效、只能使用一次；登入後可設定新密碼。
+            若此 Email 有帳號，我們已寄出登入連結。請到信箱點信中的連結，連結 60 分鐘內有效、只能使用一次；登入後可設定新密碼。
           </Notice>
         </div>
       ) : (
         <form action={action} className="flex flex-col gap-5">
+          {next && <input type="hidden" name="next" value={next} />}
           <p className="m-0 text-[15px] leading-[1.9] text-body">
             輸入 Email，我們會寄一封一次性登入連結給妳。登入後會帶妳到「變更密碼」頁設定新密碼。
           </p>

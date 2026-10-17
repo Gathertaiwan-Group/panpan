@@ -23,7 +23,7 @@ export function ChangePasswordForm({ home, email }: { home: string; email: strin
           <Notice tone="ok">密碼已更新。下次請用 Email 與新密碼登入。</Notice>
         </div>
         <Link href={home} className={primaryBtn}>
-          回到後台
+          {home === "/account" ? "回到我的預約" : "回到後台"}
         </Link>
       </div>
     );

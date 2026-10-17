@@ -9,9 +9,9 @@ describe("後台存取", () => {
     expect(accessRedirect("admin", null, false)).toBe("/login?next=/admin");
     expect(accessRedirect("vendor", null, false)).toBe("/login?next=/vendor");
   });
-  it("已登入但沒有 staff 紀錄（或停用）→ 登出並拒絕", () => {
-    expect(accessRedirect("admin", null, true)).toBe("/auth/denied");
-    expect(accessRedirect("vendor", null, true)).toBe("/auth/denied");
+  it("已登入但沒有 staff 紀錄（客人或已停用）→ 拒絕，回會員專區", () => {
+    expect(accessRedirect("admin", null, true)).toBe("/account?denied=staff");
+    expect(accessRedirect("vendor", null, true)).toBe("/account?denied=staff");
   });
   it("供應商進 /admin 被拒", () => {
     expect(accessRedirect("admin", vendor, true)).toBe("/vendor?denied=admin");

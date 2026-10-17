@@ -1,14 +1,14 @@
 "use server";
 
 import { authPasswordErrorMessage, newPasswordError } from "@/lib/auth/password";
-import { requireStaff } from "@/lib/auth/staff";
+import { requireViewer } from "@/lib/auth/staff";
 import { userDb } from "@/lib/server/user-db";
 
 export type ChangePasswordState = { ok?: boolean; error?: string } | null;
 
-/** 登入者（管理員／供應商）變更自己的密碼。密碼不寫 log、不回傳。 */
+/** 登入者（客人／供應商／管理員）變更自己的密碼。密碼不寫 log、不回傳。 */
 export async function changePassword(_prev: ChangePasswordState, fd: FormData): Promise<ChangePasswordState> {
-  await requireStaff();
+  await requireViewer("/account/password");
   const password = fd.get("password");
   const err = newPasswordError(password, fd.get("confirm"));
   if (err) return { error: err };

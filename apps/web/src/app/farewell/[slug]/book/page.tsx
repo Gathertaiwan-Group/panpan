@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { BookingFlow } from "@/components/booking/BookingFlow";
 import { durationLabel, money } from "@/components/booking/ui";
 import { enabledPayTypes } from "@/lib/booking/pchomepay";
+import { getViewer } from "@/lib/auth/staff";
 import { getBookableSet } from "@/lib/booking/repo";
 import { taipeiMonth } from "@/lib/booking/time";
 
@@ -24,6 +25,8 @@ export default async function BookPage({ params }: Props) {
   const { slug } = await params;
   const set = await getBookableSet(slug);
   if (!set) redirect(`/farewell/${slug}`);
+  const viewer = await getViewer();
+  const prefill = viewer?.emailConfirmed ? { name: viewer.name, email: viewer.email } : undefined;
 
   return (
     <section
@@ -45,6 +48,7 @@ export default async function BookPage({ params }: Props) {
           set={{ slug: set.slug, code: set.code, name: set.name, price: set.price, durationMinutes: set.durationMinutes }}
           atmEnabled={enabledPayTypes().includes("ATM")}
           initialMonth={taipeiMonth(new Date())}
+          prefill={prefill}
         />
       </div>
     </section>

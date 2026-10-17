@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { accountRedirect } from "@/lib/auth/access";
-import { newPasswordError, passwordError, postLoginTarget, safeNext } from "@/lib/auth/password";
+import { displayNameError, isBackofficePath, newPasswordError, passwordError, postLoginTarget, safeNext } from "@/lib/auth/password";
 
 describe("密碼規則（與 Supabase 設定一致：≥10 碼、英文字母＋數字）", () => {
   it("合格", () => {
@@ -54,9 +54,29 @@ describe("next 參數只接受站內相對路徑", () => {
 describe("登入後角色導向／拒絕", () => {
   const admin = { role: "admin" as const };
   const vendor = { role: "vendor" as const };
-  it("沒有 staff（或已停用）→ null（呼叫端登出拒絕）", () => {
+  const customer = { role: "customer" as const };
+  it("未登入 → null", () => {
     expect(postLoginTarget(null, "/admin")).toBeNull();
     expect(postLoginTarget(null, undefined)).toBeNull();
+  });
+  it("客人（非 staff）不被拒絕 → /account；next 只接受 /account 底下", () => {
+    expect(postLoginTarget(customer, undefined)).toBe("/account");
+    expect(postLoginTarget(customer, "/account/bookings/abc")).toBe("/account/bookings/abc");
+    expect(postLoginTarget(customer, "/admin")).toBe("/account");
+    expect(postLoginTarget(customer, "/vendor/slots")).toBe("/account");
+    expect(postLoginTarget(customer, "https://evil.com/account")).toBe("/account");
+  });
+  it("後台入口判斷（寄登入連結時不自動建帳號）", () => {
+    expect(isBackofficePath("/admin")).toBe(true);
+    expect(isBackofficePath("/vendor/slots")).toBe(true);
+    expect(isBackofficePath("/account")).toBe(false);
+    expect(isBackofficePath("/administrator")).toBe(false);
+    expect(isBackofficePath(undefined)).toBe(false);
+  });
+  it("稱呼", () => {
+    expect(displayNameError("朵朵")).toBeNull();
+    expect(displayNameError("  ")).toMatch(/稱呼/);
+    expect(displayNameError("字".repeat(41))).toMatch(/40/);
   });
   it("依角色回首頁", () => {
     expect(postLoginTarget(admin, undefined)).toBe("/admin");
@@ -77,15 +97,15 @@ describe("登入後角色導向／拒絕", () => {
   });
 });
 
-describe("變更密碼頁存取", () => {
-  it("未登入 → /login?next=/account/password", () => {
-    expect(accountRedirect(null, false)).toBe("/login?next=%2Faccount%2Fpassword");
+describe("會員專區（含變更密碼）存取", () => {
+  it("未登入 → /login?next=…", () => {
+    expect(accountRedirect(null, "/account/password")).toBe("/login?next=%2Faccount%2Fpassword");
+    expect(accountRedirect(null)).toBe("/login?next=%2Faccount");
   });
-  it("已登入但無後台身分 → 登出拒絕", () => {
-    expect(accountRedirect(null, true)).toBe("/auth/denied");
+  it("Email 未驗證 → 拒絕", () => {
+    expect(accountRedirect({ emailConfirmed: false })).toBe("/login?error=unverified");
   });
-  it("管理員與供應商皆可進", () => {
-    expect(accountRedirect({ role: "admin" }, true)).toBeNull();
-    expect(accountRedirect({ role: "vendor" }, true)).toBeNull();
+  it("已驗證的客人／供應商／管理員皆可進", () => {
+    expect(accountRedirect({ emailConfirmed: true })).toBeNull();
   });
 });

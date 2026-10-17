@@ -50,6 +50,11 @@ function statusUrl(b: BookingRecord): string {
   return `${SITE_URL}/booking/${encodeURIComponent(b.order_no)}?t=${encodeURIComponent(b.access_token)}`;
 }
 
+/** 會員專區的預約詳情（未登入 → /login?next=… 登入後回跳） */
+function accountUrl(b: BookingRecord): string {
+  return `${SITE_URL}/account/bookings/${encodeURIComponent(b.id)}`;
+}
+
 function customerMail(b: BookingRecord) {
   const html = frame(
     "預約已確認",
@@ -62,9 +67,10 @@ ${rows([
   ["訂單編號", b.order_no],
 ])}
 <p style="margin:24px 0"><a href="${statusUrl(b)}" style="background:#A35B55;color:#FBEFEA;padding:14px 28px;text-decoration:none;letter-spacing:.16em;font-size:14px">查看預約</a></p>
-<p style="font-size:13px;color:#7A615D;line-height:1.8;margin:0">附件為行事曆檔（.ics），可直接加入手機行事曆。若需要改期或取消，請直接回覆這封信與我們聯繫。</p>`,
+<p style="font-size:13px;color:#7A615D;line-height:1.8;margin:0 0 12px">附件為行事曆檔（.ics），可直接加入手機行事曆。若需要改期或取消，請直接回覆這封信與我們聯繫。</p>
+<p style="font-size:13px;color:#7A615D;line-height:1.8;margin:0">會員專區：<a href="${accountUrl(b)}" style="color:#8C4A46">查看我的預約</a>（還沒有帳號？用這個 Email <a href="${SITE_URL}/register" style="color:#8C4A46">註冊</a>，預約會自動出現在會員專區）</p>`,
   );
-  const text = `${b.customer_name} 您好，預約已確認。\n體驗：${b.set_name}\n日期時間：${when(b)}\n地點：供應商將於體驗前與妳聯繫\n金額：${money(b.amount)}（已付清）\n訂單編號：${b.order_no}\n查看預約：${statusUrl(b)}`;
+  const text = `${b.customer_name} 您好，預約已確認。\n體驗：${b.set_name}\n日期時間：${when(b)}\n地點：供應商將於體驗前與妳聯繫\n金額：${money(b.amount)}（已付清）\n訂單編號：${b.order_no}\n查看預約：${statusUrl(b)}\n會員專區：${accountUrl(b)}`;
   const ics = buildIcs({
     uid: `${b.order_no}@duoduo-whispers`,
     start: new Date(b.starts_at),
