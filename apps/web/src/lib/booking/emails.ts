@@ -2,7 +2,7 @@ import "server-only";
 import { SITE_URL } from "../env";
 import { adminDb } from "../server/admin-db";
 import { buildIcs } from "./ics";
-import { attentionLabel } from "./labels";
+import { attentionLabel, shouldSendConfirmation } from "./labels";
 import { sendMail, type MailResult } from "./mail";
 import { getBookingById, getVendorContact, type BookingRecord } from "./repo";
 import { formatTaipeiDisplay, taipeiTime } from "./time";
@@ -122,6 +122,8 @@ async function claim(bookingId: string, kind: Kind): Promise<boolean> {
     .update({ [col]: new Date().toISOString() })
     .eq("id", bookingId)
     .eq("status", "confirmed")
+    // 防線：開始後才付款／時段被佔等需人工處理者不搶（與 shouldSendConfirmation 一致）
+    .or("needs_attention.eq.false,attention_reason.is.null,attention_reason.not.in.(paid_after_start,paid_after_expiry_slot_taken,paid_after_expiry_past)")
     .is(col, null)
     .select("id");
   if (error) {
@@ -146,7 +148,8 @@ async function deliver(bookingId: string, kind: Kind, send: () => Promise<MailRe
 export async function ensureBookingEmails(bookingId: string): Promise<Record<Kind, MailResult | "skipped">> {
   const b = await getBookingById(bookingId);
   const out: Record<Kind, MailResult | "skipped"> = { customer: "skipped", vendor: "skipped", admin: "skipped" };
-  if (!b || b.status !== "confirmed") return out;
+  // 未確認、或屬「開始後才付款／時段已被佔」等需人工處理者 → 不寄確認信（管理員另有人工處理通知）
+  if (!b || !shouldSendConfirmation(b)) return out;
 
   if (!b.customer_email_sent_at) {
     const m = customerMail(b);

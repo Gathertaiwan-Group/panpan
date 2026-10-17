@@ -1,13 +1,13 @@
 import "server-only";
 import { SITE_URL } from "../env";
 import { adminDb } from "../server/admin-db";
-import { checkSlot, holdExpiry, monthRange } from "./availability";
+import { checkSlot, excludeOwnHold, holdExpiry, monthRange } from "./availability";
 import { createGatewayCheckout, enabledPayTypes, pchomepayConfigured } from "./pchomepay";
 import { POLICY } from "./policy";
 import { getBookableSet, getSchedule } from "./repo";
 import { fromTaipei } from "./time";
 import { genAccessToken, genOrderNo } from "./tokens";
-import type { BookingInput } from "./validation";
+import { normalizeEmail, normalizeMobile, type BookingInput } from "./validation";
 
 export type CreateResult =
   | { ok: true; orderNo: string; token: string }
@@ -20,6 +20,8 @@ const MESSAGES: Record<string, [number, string]> = {
   out_of_range: [409, "這個時段已超出可預約的時間範圍（需提前 24 小時、60 天內）。"],
   atm_not_allowed: [400, "ATM 轉帳只適用於 72 小時之後的時段，請改用信用卡付款。"],
   pay_method_disabled: [400, "目前不提供這個付款方式。"],
+  rate_limited: [429, "送出次數過多，請稍候一小時再試，或透過私訊與我們聯繫。"],
+  atm_rate_limited: [429, "今天的 ATM 轉帳預約次數已達上限，請改用信用卡付款，或透過私訊與我們聯繫。"],
   too_many_pending: [429, "妳已有尚未完成付款的預約，請先完成付款或等保留時間結束後再試。"],
   invalid_input: [400, "資料格式不正確，請檢查後再試一次。"],
   payment_unavailable: [503, "線上付款暫時無法使用，請稍後再試，或透過私訊與我們聯繫。"],
@@ -32,7 +34,11 @@ function fail(code: string): CreateResult {
   return { ok: false, status, code, message };
 }
 
-export async function createBooking(input: BookingInput, now = new Date()): Promise<CreateResult> {
+export async function createBooking(
+  input: BookingInput,
+  opts: { ipHash: string },
+  now = new Date(),
+): Promise<CreateResult> {
   if (!pchomepayConfigured()) return fail("payment_unavailable");
   const set = await getBookableSet(input.slug);
   if (!set) return fail("not_bookable");
@@ -49,13 +55,27 @@ export async function createBooking(input: BookingInput, now = new Date()): Prom
     console.error("[booking] 讀取排班失敗:", err);
     return fail("server_error");
   }
-  const slot = checkSlot(input.date, input.time, schedule);
+  const startsAt = fromTaipei(input.date, input.time);
+  // 客人自己同時段的未付款舊保留不算佔用（RPC 會取代它）
+  const own = excludeOwnHold(schedule, startsAt, normalizeEmail(input.email), normalizeMobile(input.phone));
+  const slot = checkSlot(input.date, input.time, own);
   if (!slot.ok) return fail("slot_unavailable");
   if (input.payMethod === "atm" && !slot.atm) return fail("atm_not_allowed");
 
-  const startsAt = fromTaipei(input.date, input.time);
   const hold = holdExpiry(input.payMethod, now);
   const db = adminDb();
+
+  // IP 限流（DB 原子檢查＋寫入）：每 IP 每小時 5 次建單、每日 2 次 ATM 保留
+  const { data: rate, error: rateErr } = await db.rpc("check_booking_rate", {
+    p_ip_hash: opts.ipHash,
+    p_pay_method: input.payMethod,
+  });
+  if (rateErr) {
+    console.error("[booking] check_booking_rate 失敗:", rateErr.message);
+    return fail("server_error");
+  }
+  const rateResult = (rate as { result: string }).result;
+  if (rateResult !== "ok") return fail(rateResult === "invalid_input" ? "server_error" : rateResult);
 
   let orderNo = "";
   let token = "";

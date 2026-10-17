@@ -1,7 +1,12 @@
 import { z } from "zod";
 import { isValidDate, isValidTime } from "./time";
 
-/** 手機：接受 09xx-xxx-xxx、+886 9xx… → 正規化成 09xxxxxxxx */
+/** 與 DB 的 email_norm 一致：lower(btrim(email)) */
+export function normalizeEmail(s: string): string {
+  return s.trim().toLowerCase();
+}
+
+/** 手機（與 DB 的 panpan.normalize_phone 一致）：接受 09xx-xxx-xxx、+886 9xx… → 正規化成 09xxxxxxxx */
 export function normalizeMobile(s: string): string {
   const d = s.replace(/\D/g, "");
   return d.startsWith("886") ? `0${d.slice(3)}` : d;

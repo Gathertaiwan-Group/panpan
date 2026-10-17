@@ -51,6 +51,9 @@ export interface BusyBooking {
   startsAt: Date;
   endsAt: Date;
   holdExpiresAt: Date | null;
+  /** 只在伺服器端建單預檢查時使用（排除客人自己的舊保留） */
+  emailNorm?: string;
+  phoneNorm?: string;
 }
 export interface Interval {
   start: number;
@@ -181,6 +184,26 @@ export function checkSlot(
   const slot = day.slots.find((s) => s.time === time);
   if (!slot || !slot.available) return { ok: false };
   return { ok: true, atm: slot.atm };
+}
+
+/**
+ * 建單預檢查用：排除「同一位客人（Email 與電話都相同）在同一開始時間、尚未付款」的保留。
+ * 與 create_booking RPC 的「取代同人同時段舊保留」一致——否則刷卡失敗按上一頁重選同時段會被自己的保留擋住。
+ */
+export function excludeOwnHold(input: ScheduleInput, startsAt: Date, emailNorm: string, phoneNorm: string): ScheduleInput {
+  const t = startsAt.getTime();
+  return {
+    ...input,
+    busy: input.busy.filter(
+      (b) =>
+        !(
+          b.status === "pending_payment" &&
+          b.startsAt.getTime() === t &&
+          b.emailNorm === emailNorm &&
+          b.phoneNorm === phoneNorm
+        ),
+    ),
+  };
 }
 
 /** 付款方式對應的保留期限 */

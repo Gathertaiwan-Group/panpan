@@ -111,7 +111,8 @@ export async function reconcileOrder(
 
   if (payment.status === "paid") return { http: 200, outcome: "already_paid" };
 
-  if (q.status_code === "F" || notifyType === "order_expired") {
+  // 失敗只依伺服器回查的狀態判斷（notify_type 未簽章，任何人都能偽造）
+  if (q.status_code === "F") {
     await deps.markFailed(orderId, raw);
     return { http: 200, outcome: "failed" };
   }

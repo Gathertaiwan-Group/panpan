@@ -76,7 +76,7 @@ export async function getSchedule(
       .lte("date", toDate),
     db
       .from("bookings")
-      .select("status,starts_at,ends_at,hold_expires_at")
+      .select("status,starts_at,ends_at,hold_expires_at,email_norm,phone_norm")
       .eq("vendor_id", vendorId)
       .in("status", ["pending_payment", "confirmed"])
       .lt("starts_at", to.toISOString())
@@ -98,11 +98,20 @@ export async function getSchedule(
       }),
     ),
     busy: (busy.data ?? []).map(
-      (b: { status: string; starts_at: string; ends_at: string; hold_expires_at: string | null }): BusyBooking => ({
+      (b: {
+        status: string;
+        starts_at: string;
+        ends_at: string;
+        hold_expires_at: string | null;
+        email_norm: string;
+        phone_norm: string;
+      }): BusyBooking => ({
         status: b.status,
         startsAt: new Date(b.starts_at),
         endsAt: new Date(b.ends_at),
         holdExpiresAt: b.hold_expires_at ? new Date(b.hold_expires_at) : null,
+        emailNorm: b.email_norm,
+        phoneNorm: b.phone_norm,
       }),
     ),
   };

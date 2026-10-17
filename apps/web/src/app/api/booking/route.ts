@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createBooking } from "@/lib/booking/create";
+import { clientIp, hashIp } from "@/lib/booking/ratelimit";
 import { bookingInput, fieldErrors } from "@/lib/booking/validation";
 
 export const runtime = "nodejs";
@@ -20,7 +21,7 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   }
-  const r = await createBooking(parsed.data);
+  const r = await createBooking(parsed.data, { ipHash: hashIp(clientIp(req.headers)) });
   if (!r.ok) return NextResponse.json(r, { status: r.status });
   const q = `o=${encodeURIComponent(r.orderNo)}&t=${encodeURIComponent(r.token)}`;
   return NextResponse.json({

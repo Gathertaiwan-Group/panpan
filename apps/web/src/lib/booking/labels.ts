@@ -14,3 +14,15 @@ export function attentionLabel(reason: string | null | undefined): string {
   return ATTENTION_LABEL[reason] ?? reason;
 }
 
+
+/** 這些原因代表「錢收了但預約不能照常進行」→ 不寄確認信給客人／供應商，只通知管理員處理 */
+const NO_CONFIRMATION_REASONS = new Set(["paid_after_start", "paid_after_expiry_slot_taken", "paid_after_expiry_past"]);
+
+export function shouldSendConfirmation(b: {
+  status: string;
+  needs_attention: boolean;
+  attention_reason: string | null;
+}): boolean {
+  if (b.status !== "confirmed") return false;
+  return !(b.needs_attention && b.attention_reason !== null && NO_CONFIRMATION_REASONS.has(b.attention_reason));
+}
