@@ -10,6 +10,7 @@ export { publicStatus, type PublicStatus };
 
 
 export interface PublicBooking {
+  id: string;
   orderNo: string;
   status: PublicStatus;
   setName: string;
@@ -66,6 +67,7 @@ export async function getPublicBooking(orderNo: string, token: string, opts: { r
 
   const status = publicStatus(b);
   return {
+    id: b.id,
     orderNo: b.order_no,
     status,
     setName: b.set_name,

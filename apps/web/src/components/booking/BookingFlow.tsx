@@ -53,7 +53,18 @@ function readUrl(): { step: Step; date: string; time: string } {
 
 const DRAFT_KEY = "dd-booking-info";
 
-export function BookingFlow({ set, atmEnabled, initialMonth }: { set: FlowSet; atmEnabled: boolean; initialMonth: string }) {
+export function BookingFlow({
+  set,
+  atmEnabled,
+  initialMonth,
+  prefill,
+}: {
+  set: FlowSet;
+  atmEnabled: boolean;
+  initialMonth: string;
+  /** 已登入會員：預填稱呼與 Email（草稿已有內容時以草稿為準） */
+  prefill?: { name: string; email: string };
+}) {
   const [step, setStep] = useState<Step>("date");
   const [month, setMonth] = useState(initialMonth);
   const [months, setMonths] = useState<string[]>([initialMonth]);
@@ -94,14 +105,24 @@ export function BookingFlow({ set, atmEnabled, initialMonth }: { set: FlowSet; a
       setStep(s);
     };
     apply();
+    let draft: Partial<Info> = {};
     try {
       const raw = sessionStorage.getItem(DRAFT_KEY);
-      if (raw) setInfo({ ...EMPTY_INFO, ...(JSON.parse(raw) as Partial<Info>), consent: false });
+      if (raw) draft = JSON.parse(raw) as Partial<Info>;
     } catch {
       /* 無痕模式等：略過 */
     }
+    setInfo({
+      ...EMPTY_INFO,
+      ...draft,
+      name: draft.name || prefill?.name || "",
+      email: draft.email || prefill?.email || "",
+      consent: false,
+    });
     window.addEventListener("popstate", apply);
     return () => window.removeEventListener("popstate", apply);
+    // 只在掛載時還原一次（prefill 由伺服器給、不會變）
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

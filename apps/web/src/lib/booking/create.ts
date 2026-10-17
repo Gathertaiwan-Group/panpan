@@ -36,7 +36,7 @@ function fail(code: string): CreateResult {
 
 export async function createBooking(
   input: BookingInput,
-  opts: { ipHash: string },
+  opts: { ipHash: string; userId?: string | null },
   now = new Date(),
 ): Promise<CreateResult> {
   if (!pchomepayConfigured()) return fail("payment_unavailable");
@@ -96,6 +96,7 @@ export async function createBooking(
       p_email: input.email,
       p_note: input.note,
       p_max_pending: POLICY.maxPendingPerCustomer,
+      p_user_id: opts.userId ?? null,
     });
     if (error) {
       console.error("[booking] create_booking 失敗:", error.message);

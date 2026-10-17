@@ -8,7 +8,7 @@ end $$;
 
 create schema if not exists extensions;
 create schema if not exists auth;
-create table if not exists auth.users (id uuid primary key, email text);
+create table if not exists auth.users (id uuid primary key, email text, email_confirmed_at timestamptz, raw_user_meta_data jsonb);
 -- 與 Supabase 相同：從 request.jwt.claims 取 sub
 create or replace function auth.uid() returns uuid language sql stable as $$
   select coalesce(

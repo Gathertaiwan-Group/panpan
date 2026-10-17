@@ -1,7 +1,15 @@
 import { ConfirmSubmit } from "@/components/backoffice/ConfirmSubmit";
 import { Flash, Shell } from "@/components/backoffice/Shell";
 import { inputCls, primaryBtn, smallBtn } from "@/components/booking/ui";
-import { createVendor, createVendorLogin, setStaffActive, setVendorActive, updateVendor } from "@/app/admin/actions";
+import {
+  createVendor,
+  createVendorLogin,
+  resetVendorPassword,
+  setStaffActive,
+  setVendorActive,
+  updateVendor,
+} from "@/app/admin/actions";
+import { PASSWORD_RULE_TEXT } from "@/lib/auth/password";
 import { ADMIN_NAV } from "@/app/admin/nav";
 
 export type VendorRow = { id: string; name: string; contact_email: string | null; phone: string | null; active: boolean };
@@ -91,24 +99,63 @@ export function AdminVendorsView({
               <span className="text-[14px] text-body">登入帳號</span>
               {accounts.length === 0 && <span className="text-[14px] text-muted">尚未建立</span>}
               {accounts.map((a) => (
-                <div key={a.user_id} className="flex flex-wrap items-center justify-between gap-2 text-[14px]">
-                  <span className={`break-all ${a.active ? "text-ink" : "text-muted line-through"}`}>{a.email}</span>
-                  <form action={setStaffActive}>
-                    <input type="hidden" name="user_id" value={a.user_id} />
-                    <input type="hidden" name="active" value={a.active ? "false" : "true"} />
-                    <ConfirmSubmit className={smallBtn} message={a.active ? `停用 ${a.email} 的後台存取？` : `重新啟用 ${a.email}？`}>
-                      {a.active ? "停用帳號" : "啟用帳號"}
-                    </ConfirmSubmit>
-                  </form>
+                <div key={a.user_id} className="flex flex-col gap-2 text-[14px]">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className={`break-all ${a.active ? "text-ink" : "text-muted line-through"}`}>{a.email}</span>
+                    <form action={setStaffActive}>
+                      <input type="hidden" name="user_id" value={a.user_id} />
+                      <input type="hidden" name="active" value={a.active ? "false" : "true"} />
+                      <ConfirmSubmit className={smallBtn} message={a.active ? `停用 ${a.email} 的後台存取？` : `重新啟用 ${a.email}？`}>
+                        {a.active ? "停用帳號" : "啟用帳號"}
+                      </ConfirmSubmit>
+                    </form>
+                  </div>
+                  <details className="border border-line px-3">
+                    <summary className="flex min-h-[44px] cursor-pointer items-center text-[14px] text-body">重設密碼</summary>
+                    <form action={resetVendorPassword} className="flex flex-wrap items-end gap-2 pb-3">
+                      <input type="hidden" name="user_id" value={a.user_id} />
+                      <input type="email" name="username" autoComplete="username" value={a.email ?? ""} hidden readOnly />
+                      <label className="flex min-w-[200px] flex-1 flex-col gap-1 text-[13px] text-body">
+                        新密碼（{PASSWORD_RULE_TEXT}）
+                        <input
+                          name="password"
+                          type="password"
+                          autoComplete="new-password"
+                          required
+                          minLength={10}
+                          maxLength={72}
+                          className={inputCls}
+                        />
+                      </label>
+                      <ConfirmSubmit className={smallBtn} message={`確定重設 ${a.email} 的密碼？舊密碼將立即失效。`}>
+                        重設密碼
+                      </ConfirmSubmit>
+                    </form>
+                  </details>
                 </div>
               ))}
-              <form action={createVendorLogin} className="flex flex-wrap items-end gap-2">
+              <form action={createVendorLogin} className="flex flex-col gap-3 border-t border-dashed border-line pt-3">
                 <input type="hidden" name="vendor_id" value={v.id} />
-                <label className="flex min-w-[200px] flex-1 flex-col gap-1 text-[13px] text-body">
+                <label className="flex flex-col gap-1 text-[13px] text-body">
                   新增登入 Email
-                  <input name="email" type="email" required className={inputCls} />
+                  <input name="email" type="email" autoComplete="off" required className={inputCls} />
                 </label>
-                <button type="submit" className={smallBtn}>
+                <fieldset className="m-0 flex flex-col gap-1 border-0 p-0">
+                  <legend className="mb-1 p-0 text-[13px] text-body">密碼</legend>
+                  <label className="flex min-h-[44px] cursor-pointer items-center gap-2 text-[14px] text-ink">
+                    <input type="radio" name="mode" value="link" defaultChecked className="size-5 accent-rose" />
+                    不設密碼：請供應商用登入連結登入後自行設定
+                  </label>
+                  <label className="flex min-h-[44px] cursor-pointer items-center gap-2 text-[14px] text-ink">
+                    <input type="radio" name="mode" value="password" className="size-5 accent-rose" />
+                    設定初始密碼
+                  </label>
+                </fieldset>
+                <label className="flex flex-col gap-1 text-[13px] text-body">
+                  初始密碼（選「設定初始密碼」時填寫；{PASSWORD_RULE_TEXT}）
+                  <input name="password" type="password" autoComplete="new-password" maxLength={72} className={inputCls} />
+                </label>
+                <button type="submit" className={`${smallBtn} self-start`}>
                   建立帳號
                 </button>
               </form>
