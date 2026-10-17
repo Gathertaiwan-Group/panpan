@@ -27,20 +27,14 @@ export default async function HomePage() {
         />
         <div className="mx-auto flex min-h-[calc(100svh-68px)] max-w-[1240px] flex-col justify-end px-[clamp(20px,4vw,48px)] pt-24 pb-[clamp(44px,8vw,96px)] dt:min-h-[min(calc(100svh-68px),760px)] dt:justify-center">
           <div className="on-photo flex max-w-[560px] flex-col gap-6">
-            <span className="font-en text-[17px] tracking-[.14em] text-rose-deep italic">Every flower has its own season</span>
-            <h1 className="poem m-0 font-serif text-[clamp(28px,3.6vw,46px)] leading-[1.55] font-normal tracking-[.08em]">
-              我是朵朵。
-              <br />
+            <h1 className="poem m-0 font-serif text-[clamp(30px,3.8vw,48px)] leading-[1.55] font-normal tracking-[.08em]">
               <span className="inline-block">曾經弄丟自己，</span>
+              <br />
               <span className="inline-block">也把自己找了回來。</span>
             </h1>
-            <span aria-hidden className="block h-px w-12 bg-gold-line" />
-            <p className="poem m-0 font-serif text-[clamp(16px,1.5vw,19px)] leading-[2] tracking-[.1em] text-body">
-              <span className="inline-block">現在，我想陪正在轉場的妳，</span>
-              <span className="inline-block">走一段——</span>
-              <br />
-              <span className="inline-block">用一次美甲、髮型與寫真，</span>
-              <span className="inline-block">為自己好好告別，優雅重啟。</span>
+            <p className="poem m-0 font-serif text-[clamp(16px,1.5vw,19px)] leading-[1.9] tracking-[.12em] text-body">
+              <span className="inline-block">我是朵朵，</span>
+              <span className="inline-block">陪轉場中的妳，優雅重啟。</span>
             </p>
             <div className="mt-2 flex flex-wrap gap-3">
               <Link href="/farewell" className={btnLight}>
