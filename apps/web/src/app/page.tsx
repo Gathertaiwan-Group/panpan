@@ -33,7 +33,15 @@ export default async function HomePage() {
               <br />
               都有屬於自己的花期
             </h1>
-            <p className="m-0 font-serif text-[clamp(16px,1.5vw,19px)] tracking-[.16em] text-body">在人生轉場時・陪妳優雅重啟</p>
+            <span aria-hidden className="block h-px w-12 bg-gold-line" />
+            <p className="poem m-0 font-serif text-[clamp(16px,1.5vw,19px)] leading-[2] tracking-[.1em] text-body">
+              <span className="inline-block">我是朵朵。</span>
+              <span className="inline-block">曾經弄丟自己，</span>
+              <span className="inline-block">也把自己找了回來。</span>
+              <br />
+              <span className="inline-block">現在，想陪正在轉場的妳，</span>
+              <span className="inline-block">走一段。</span>
+            </p>
             <div className="mt-2 flex flex-wrap gap-3">
               <Link href="/farewell" className={btnLight}>
                 探索體驗 →
@@ -42,34 +50,6 @@ export default async function HomePage() {
                 認識朵朵
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. 朵朵是誰 */}
-      <section data-screen-label="首頁 朵朵是誰" className="bg-dawn-glow overflow-hidden text-ink">
-        <div className="mx-auto max-w-[760px] px-[clamp(20px,4vw,48px)] py-[clamp(72px,9vw,120px)]">
-          <div className="poem flex flex-col items-center gap-6 text-center">
-            <span data-reveal className="font-en text-[14px] tracking-[.3em] text-gold">
-              WHO IS DUODUO
-            </span>
-            <h2 data-reveal className="m-0 font-serif text-[clamp(26px,3.2vw,40px)] leading-[1.6] font-normal tracking-[.1em]">
-              我是朵朵。
-              <br />
-              <span className="inline-block">曾經弄丟自己，</span>
-              <span className="inline-block">也把自己找了回來。</span>
-            </h2>
-            <p data-reveal className="m-0 font-serif text-[17px] leading-[2] tracking-[.08em] text-body">
-              <span className="inline-block">現在，我想陪正在轉場的妳，</span>
-              <span className="inline-block">走一段。</span>
-            </p>
-            <Link
-              data-reveal
-              href="/about"
-              className="hit border-b border-gold-line pb-1 text-[15px] tracking-[.16em] text-rose-deep hover:text-rose-deep"
-            >
-              認識朵朵 →
-            </Link>
           </div>
         </div>
       </section>
