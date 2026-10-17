@@ -49,12 +49,13 @@ export function SiteHeader() {
           </Link>
 
           <nav aria-label="主要導覽" className="hidden flex-wrap items-center gap-[clamp(14px,2.2vw,30px)] dt:flex">
-            {NAV.map((n) => {
+            {NAV.filter((n) => n.key !== "home").map((n) => {
               const isActive = active === n.key;
               return (
                 <Link
                   key={n.key}
                   href={n.href}
+                  title={n.hint}
                   aria-current={isActive ? "page" : undefined}
                   className={`border-b py-[6px] text-[14px] tracking-[.12em] hover:text-rose-deep ${
                     isActive ? "border-rose-hover text-rose-deep" : "border-transparent text-body"
@@ -64,6 +65,12 @@ export function SiteHeader() {
                 </Link>
               );
             })}
+            <Link
+              href="/account"
+              className="ml-1 inline-flex min-h-[38px] items-center border border-rose px-4 text-[13px] tracking-[.14em] text-rose-deep hover:bg-blush hover:text-rose-deep"
+            >
+              我的預約
+            </Link>
           </nav>
 
           <button
@@ -115,14 +122,24 @@ export function SiteHeader() {
                   href={n.href}
                   onClick={close}
                   aria-current={isActive ? "page" : undefined}
-                  className="flex items-center justify-between border-b border-line py-5 font-serif text-[21px] tracking-[.18em] text-ink hover:text-rose-deep"
+                  className="flex items-center justify-between gap-4 border-b border-line py-4 text-ink hover:text-rose-deep"
                 >
-                  <span>{n.label}</span>
+                  <span className="flex flex-col gap-1">
+                    <span className="font-serif text-[21px] tracking-[.18em]">{n.label}</span>
+                    {n.key !== "home" && <span className="text-[13px] tracking-[.08em] text-muted">{n.hint}</span>}
+                  </span>
                   <span className="text-[15px] text-rose-deep">{isActive ? "✦" : "→"}</span>
                 </Link>
               );
             })}
           </nav>
+          <Link
+            href="/account"
+            onClick={close}
+            className="mt-8 inline-flex min-h-[48px] items-center justify-center border border-rose text-[15px] tracking-[.16em] text-rose-deep hover:bg-blush hover:text-rose-deep"
+          >
+            我的預約／會員登入
+          </Link>
           <span className="mt-auto pt-10 text-[13px] tracking-[.16em] text-muted">在人生轉場時・陪妳優雅重啟</span>
         </div>
       )}

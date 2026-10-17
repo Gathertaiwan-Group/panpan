@@ -3,27 +3,33 @@
   "nav": [
     {
       "key": "home",
-      "label": "首頁"
+      "label": "首頁",
+      "hint": "回到首頁"
     },
     {
       "key": "farewell",
-      "label": "好好告別"
+      "label": "預約體驗",
+      "hint": "美甲・髮型・寫真，為自己好好告別"
     },
     {
       "key": "about",
-      "label": "關於朵朵"
+      "label": "認識朵朵",
+      "hint": "品牌創辦人的轉場故事"
     },
     {
       "key": "stories",
-      "label": "新生故事"
+      "label": "客人故事",
+      "hint": "她們轉身之後的新生分享"
     },
     {
       "key": "whispers",
-      "label": "朵朵曉語"
+      "label": "朵朵專欄",
+      "hint": "寫給正在轉場的妳"
     },
     {
       "key": "partner",
-      "label": "一起創造美好"
+      "label": "合作招募",
+      "hint": "邀請美麗職人一起加入"
     }
   ],
   "experienceSets": [

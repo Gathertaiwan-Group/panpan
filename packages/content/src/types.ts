@@ -4,6 +4,8 @@ export type NavKey = "home" | "farewell" | "about" | "stories" | "whispers" | "p
 export interface NavItem {
   key: NavKey;
   label: string;
+  /** 一句話說明這一頁能做什麼（行動版選單顯示） */
+  hint: string;
 }
 
 export interface ExperienceSetRaw {
