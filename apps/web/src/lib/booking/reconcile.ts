@@ -2,12 +2,27 @@
 // 原則：
 //   - notify 無簽章 → 不信 payload，只拿 order_id，一律回查閘道為準
 //   - 回查失敗／DB 失敗 → http 500（PChomePay 會重送）
-//   - 已付（status_code ∈ S/00/1）→ mark_booking_paid（DB 內比對金額、條件式轉換、冪等）
+//   - 已付（status === "S" 或 status_code ∈ S/00/1）→ mark_booking_paid（DB 內比對金額、條件式轉換、冪等）
 //   - 只有這一次真的轉成 confirmed（transitioned）或之後補寄時，才呼叫 ensureEmails（其本身也冪等）
 
 export const PAID_CODES = new Set(["S", "00", "1"]);
 
+// PChomePay 查單（GET /v1/payment/{order_id}）的權威付款狀態在 `status` 欄位：
+// "S" 成功、"F" 失敗、"P" 處理中；成功時 status_code 常為 null（僅特定失敗情境有值）。
+// 舊版只認 status_code，真實付款成功仍被當成未付。
+// 依據：Realreal/apps/api/src/lib/pchomepay.ts 註解與 Realreal/apps/api/src/routes/webhooks/pchomepay.ts
+//（2026-07-12 事件：4 筆真實訂單因只認 status_code 卡在 pending）。
+// 已付：status === "S"，或（相容舊行為）status_code ∈ {S,00,1}；失敗：任一為 "F"；其餘視為處理中。
+export function classifyGatewayStatus(q: { status?: string; status_code?: string }): "paid" | "failed" | "pending" {
+  const status = String(q.status ?? "").trim().toUpperCase();
+  const code = String(q.status_code ?? "").trim().toUpperCase();
+  if (status === "S" || PAID_CODES.has(code)) return "paid";
+  if (status === "F" || code === "F") return "failed";
+  return "pending";
+}
+
 export interface GatewayResult {
+  status?: string;
   status_code?: string;
   pay_type?: string;
   amount?: number;
@@ -92,7 +107,8 @@ export async function reconcileOrder(
   if (!q) return { http: 500, outcome: "query_failed" };
   const raw: Record<string, unknown> = { notify_type: notifyType, query: q.raw ?? q };
 
-  if (PAID_CODES.has(String(q.status_code ?? ""))) {
+  const gatewayState = classifyGatewayStatus(q);
+  if (gatewayState === "paid") {
     if (q.amount == null || !Number.isFinite(Number(q.amount))) return { http: 500, outcome: "amount_missing" };
     const r = await deps.markPaid(orderId, Math.round(Number(q.amount)), q.pay_type ?? null, raw);
     if (!r) return { http: 500, outcome: "db_failed" };
@@ -112,7 +128,7 @@ export async function reconcileOrder(
   if (payment.status === "paid") return { http: 200, outcome: "already_paid" };
 
   // 失敗只依伺服器回查的狀態判斷（notify_type 未簽章，任何人都能偽造）
-  if (q.status_code === "F") {
+  if (gatewayState === "failed") {
     await deps.markFailed(orderId, raw);
     return { http: 200, outcome: "failed" };
   }

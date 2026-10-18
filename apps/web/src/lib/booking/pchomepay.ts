@@ -133,6 +133,8 @@ export async function createGatewayCheckout(input: CheckoutInput): Promise<{ pay
 }
 
 export interface GatewayPayment {
+  /** 權威付款狀態："S" 成功／"F" 失敗／"P" 處理中（見 reconcile.ts classifyGatewayStatus 註解與 Realreal 2026-07-12 事件）。 */
+  status?: string;
   status_code?: string;
   pay_type?: string;
   amount?: number;
@@ -158,6 +160,7 @@ export async function queryGatewayPayment(orderId: string): Promise<GatewayPayme
         ? String(data.pay_type)
         : undefined;
     return {
+      status: data.status != null ? String(data.status).trim().toUpperCase() : undefined,
       status_code: data.status_code != null ? String(data.status_code) : undefined,
       pay_type: payType,
       amount: data.amount != null && Number.isFinite(Number(data.amount)) ? Number(data.amount) : undefined,

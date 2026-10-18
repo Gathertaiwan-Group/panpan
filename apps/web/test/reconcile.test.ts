@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import {
+  classifyGatewayStatus,
   parseGatewayDate,
   reconcileOrder,
   type GatewayResult,
@@ -164,5 +165,30 @@ describe("parseGatewayDate", () => {
     expect(parseGatewayDate("2026-10-19")?.toISOString()).toBe("2026-10-19T15:59:59.000Z");
     expect(parseGatewayDate("20261019120000")?.toISOString()).toBe("2026-10-19T04:00:00.000Z");
     expect(parseGatewayDate("not a date")).toBeNull();
+  });
+});
+
+describe("classifyGatewayStatus（PChomePay 查單 status 為權威；Realreal 2026-07-12 事件）", () => {
+  it("status=S 且 status_code=null → paid", () => {
+    expect(classifyGatewayStatus({ status: "S", status_code: undefined })).toBe("paid");
+  });
+  it("status=P → pending", () => {
+    expect(classifyGatewayStatus({ status: "P" })).toBe("pending");
+  });
+  it("status=F → failed；status_code=F → failed", () => {
+    expect(classifyGatewayStatus({ status: "F" })).toBe("failed");
+    expect(classifyGatewayStatus({ status_code: "F" })).toBe("failed");
+  });
+  it("舊格式 status_code=S/00/1 → 仍視為 paid", () => {
+    for (const c of ["S", "00", "1"]) expect(classifyGatewayStatus({ status_code: c })).toBe("paid");
+  });
+  it("無法辨識 → pending", () => {
+    expect(classifyGatewayStatus({})).toBe("pending");
+    expect(classifyGatewayStatus({ status: "X" })).toBe("pending");
+  });
+  it("reconcileOrder：status=S、status_code 缺 → confirmed", async () => {
+    const { deps } = fakeStore({ gateway: () => ({ status: "S", amount: 3600, pay_type: "CARD" }) });
+    const r = await reconcileOrder("DD261017ABCDEF", "order_paid", deps);
+    expect(r.outcome).toBe("confirmed");
   });
 });
